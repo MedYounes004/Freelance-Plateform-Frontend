@@ -1,0 +1,7 @@
+{
+  "name": "Freelance-Platforme",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
