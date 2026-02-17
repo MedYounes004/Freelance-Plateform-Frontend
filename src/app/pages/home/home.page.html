@@ -1,0 +1,123 @@
+<ion-content [fullscreen]="true" class="ion-no-padding">
+  <div class="home-container">
+    <!-- Guest Banner -->
+    <app-guest-banner *ngIf="isGuest" (signIn)="onSignInClick()"></app-guest-banner>
+
+    <!-- Header -->
+    <div class="header-section">
+      <div class="header-top">
+        <div>
+          <h1>Find Talent</h1>
+          <p class="subtitle">Hire the best freelancers</p>
+        </div>
+        <ion-button fill="clear" class="notification-button">
+          <div class="notification-dot"></div>
+          <ion-icon name="notifications-outline"></ion-icon>
+        </ion-button>
+      </div>
+
+      <!-- Search Bar -->
+      <ion-searchbar
+        placeholder="Search for freelancers or skills..."
+        mode="ios"
+        class="custom-searchbar"
+      ></ion-searchbar>
+    </div>
+
+    <!-- Content -->
+    <div class="content-scroll">
+      <!-- Categories -->
+      <div class="section">
+        <div class="section-header">
+          <h2>Categories</h2>
+          <ion-button fill="clear" size="small" color="primary">
+            See all
+          </ion-button>
+        </div>
+        <div class="categories-grid">
+          <ion-button
+            *ngFor="let category of categories"
+            [class]="'category-btn category-' + category.color"
+            (click)="onCategoryClick(category.name)"
+            expand="block"
+          >
+            <div class="category-content">
+              <span class="category-icon">{{ category.icon }}</span>
+              <span class="category-name">{{ category.name }}</span>
+            </div>
+          </ion-button>
+        </div>
+      </div>
+
+      <!-- Featured Freelancers -->
+      <div class="section">
+        <div class="section-header">
+          <h2>Featured Freelancers</h2>
+          <ion-button fill="clear" size="small" color="primary">
+            See all
+          </ion-button>
+        </div>
+        <div class="freelancers-list">
+          <ion-card
+            *ngFor="let freelancer of featuredFreelancers"
+            class="freelancer-card"
+            button="true"
+            (click)="onFreelancerClick(freelancer.id)"
+          >
+            <ion-card-content>
+              <div class="freelancer-content">
+                <img
+                  [src]="freelancer.image"
+                  [alt]="freelancer.name"
+                  class="freelancer-image"
+                />
+                <div class="freelancer-info">
+                  <h3>{{ freelancer.name }}</h3>
+                  <p class="freelancer-title">{{ freelancer.title }}</p>
+                  <div class="rating-container">
+                    <div class="rating">
+                      <ion-icon name="star" class="star-icon"></ion-icon>
+                      <span class="rating-value">{{ freelancer.rating }}</span>
+                    </div>
+                    <span class="reviews">({{ freelancer.reviews }})</span>
+                  </div>
+                  <div class="location-container">
+                    <ion-icon name="location-outline" class="location-icon"></ion-icon>
+                    <span class="location-text">{{ freelancer.location }}</span>
+                  </div>
+                </div>
+                <div class="freelancer-right">
+                  <span class="hourly-rate">${{ freelancer.hourlyRate }}/hr</span>
+                  <ion-icon name="chevron-forward-outline" class="chevron-icon"></ion-icon>
+                </div>
+              </div>
+            </ion-card-content>
+          </ion-card>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>
+
+
+<!--<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Blank
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Blank</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div id="container">
+    <strong>Ready to create an app?</strong>
+    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+  </div>
+</ion-content>
+-->
