@@ -1,0 +1,1 @@
+#this file is for the model of the service, which will handle the data and logic of the service. It will interact with the database and perform the necessary operations to retrieve and manipulate data.
