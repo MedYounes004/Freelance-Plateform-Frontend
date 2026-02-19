@@ -3,7 +3,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { GuestBannerComponent } from '../../components/guest-banner/guest-banner.component';
-
+import { BottomNavigationComponent } from 'src/app/components/bottom-navigation/bottom-navigation.component';
+import { star, notifications } from 'ionicons/icons';
+import { addIcons } from 'ionicons';
 interface Category {
   name: string;
   icon: string;
@@ -26,7 +28,7 @@ interface Freelancer {
   selector: 'app-home',
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
-  imports: [GuestBannerComponent,CommonModule,FormsModule,IonicModule]
+  imports: [GuestBannerComponent,CommonModule,FormsModule,IonicModule, BottomNavigationComponent]
 })
 export class HomePage {
   @Input() isGuest: boolean = true;
@@ -89,7 +91,15 @@ export class HomePage {
       skills: ['Illustrator', 'Photoshop', 'Branding']
     }
   ];
+  
+  constructor() {
+    addIcons({ star, notifications });
+  }
 
+  activeTab = 'home';
+  onTabChange(tab: string): void {
+    this.activeTab = tab;
+  }
   onFreelancerClick(id: number): void {
     this.freelancerClick.emit(id);
   }

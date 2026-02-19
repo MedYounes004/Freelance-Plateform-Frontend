@@ -1,0 +1,156 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/" text="" icon="arrow-back"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="sign-up-content" [fullscreen]="true">
+  <div class="content-wrapper">
+
+    <!-- Title -->
+    <div class="header-section">
+      <h1 class="title">Create Account</h1>
+      <p class="subtitle">Join FreelanceHub today</p>
+    </div>
+
+    <!-- Form -->
+    <form [formGroup]="form" (ngSubmit)="onSignUp()" class="sign-up-form" novalidate>
+
+      <!-- Full Name -->
+      <div class="field-group">
+        <label class="field-label">Full Name</label>
+        <div class="input-wrapper" [class.has-error]="showError(fullName)">
+          <ion-input
+            type="text"
+            placeholder="Enter your full name"
+            formControlName="fullName"
+            fill="outline"
+            class="custom-input"
+          ></ion-input>
+        </div>
+        <p class="error-msg" *ngIf="showError(fullName)">{{ fullNameError }}</p>
+      </div>
+
+      <!-- Email -->
+      <div class="field-group">
+        <label class="field-label">Email</label>
+        <div class="input-wrapper" [class.has-error]="showError(email)">
+          <ion-input
+            type="email"
+            placeholder="Enter your email"
+            formControlName="email"
+            fill="outline"
+            class="custom-input"
+          ></ion-input>
+        </div>
+        <p class="error-msg" *ngIf="showError(email)">{{ emailError }}</p>
+      </div>
+
+      <!-- Password -->
+      <div class="field-group">
+        <label class="field-label">Password</label>
+        <div class="input-wrapper" [class.has-error]="showError(password)">
+          <ion-input
+            type="password"
+            placeholder="Create a password"
+            formControlName="password"
+            fill="outline"
+            class="custom-input"
+          ></ion-input>
+        </div>
+
+        <!-- Password strength bar -->
+        <div class="strength-bar-wrapper" *ngIf="password.value">
+          <div class="strength-bar">
+            <div
+              class="strength-fill"
+              [class]="passwordStrengthClass"
+              [style.width.%]="passwordStrength * 25"
+            ></div>
+          </div>
+          <span class="strength-label" [class]="passwordStrengthClass">
+            {{ passwordStrengthLabel }}
+          </span>
+        </div>
+
+        <p class="error-msg" *ngIf="showError(password)">{{ passwordError }}</p>
+      </div>
+
+      <!-- User Type Selection -->
+      <div class="field-group">
+        <label class="field-label">I want to</label>
+        <ion-grid class="user-type-grid">
+          <ion-row>
+            <ion-col size="6">
+              <div
+                class="user-type-card"
+                [class.selected]="userType === 'hire'"
+                (click)="userType = 'hire'"
+              >
+                <ion-icon name="briefcase-outline" class="type-icon"></ion-icon>
+                <p class="type-label">Hire</p>
+              </div>
+            </ion-col>
+            <ion-col size="6">
+              <div
+                class="user-type-card"
+                [class.selected]="userType === 'work'"
+                (click)="userType = 'work'"
+              >
+                <ion-icon name="ribbon-outline" class="type-icon"></ion-icon>
+                <p class="type-label">Work</p>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+
+      <!-- Terms & Privacy -->
+      <div class="field-group">
+        <div class="terms-row">
+          <ion-checkbox
+            formControlName="agreeToTerms"
+            class="terms-checkbox"
+          ></ion-checkbox>
+          <span class="terms-text">
+            I agree to the
+            <ion-text color="primary">
+              <span class="link" (click)="onTermsClick()">Terms of Service</span>
+            </ion-text>
+            and
+            <ion-text color="primary">
+              <span class="link" (click)="onPrivacyClick()">Privacy Policy</span>
+            </ion-text>
+          </span>
+        </div>
+        <p class="error-msg" *ngIf="showError(agreeToTerms)">
+          You must accept the terms to continue.
+        </p>
+      </div>
+
+      <!-- Submit Button -->
+      <ion-button
+        type="submit"
+        expand="block"
+        class="submit-btn"
+      >
+        Create Account
+      </ion-button>
+
+    </form>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="footer-section">
+    <p class="footer-text">
+      Already have an account?
+      <ion-text color="primary">
+        <span class="link" (click)="onLogin()">Sign in</span>
+      </ion-text>
+    </p>
+  </div>
+
+</ion-content>

@@ -59,6 +59,7 @@
   }
 
   .custom-searchbar {
+    color: #1b1d21;
     --background: #f9fafb;
     --border-radius: 16px;
     --box-shadow: none;
@@ -187,6 +188,7 @@
   border-radius: 16px;
   box-shadow: none;
   transition: transform 0.1s;
+  background-color: white;
 
   &:active {
     transform: scale(0.98);
