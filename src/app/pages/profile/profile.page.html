@@ -1,0 +1,205 @@
+<div class="ion-page">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>Profile & Settings</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content class="ion-padding" [fullscreen]="true">
+
+    <!-- Profile Card -->
+    <ion-card class="profile-card">
+      <ion-card-content>
+        <div class="profile-header">
+          <img
+            src="https://images.unsplash.com/photo-1765648684604-fd0accdbe617?w=400"
+            alt="Sarah Johnson"
+            class="profile-avatar"
+          />
+          <div class="profile-info">
+            <div class="name-row">
+              <h2>Sarah Johnson</h2>
+              <ion-icon name="trophy" class="pro-badge" *ngIf="isPro"></ion-icon>
+            </div>
+            <p class="profile-title">UI/UX Designer</p>
+            <div class="rating-row">
+              <ion-icon name="star" class="star-icon"></ion-icon>
+              <span>4.9 Rating</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="stats-row">
+          <div class="stat-item">
+            <div class="stat-label-row">
+              <ion-icon name="briefcase"></ion-icon>
+              <p>Projects</p>
+            </div>
+            <p class="stat-value">127</p>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label-row">
+              <ion-icon name="cash"></ion-icon>
+              <p>Earnings</p>
+            </div>
+            <p class="stat-value">$45k</p>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label-row">
+              <ion-icon name="star"></ion-icon>
+              <p>Reviews</p>
+            </div>
+            <p class="stat-value">127</p>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Upgrade to Pro Card -->
+    <ion-card class="upgrade-card" *ngIf="!isPro">
+      <ion-card-content>
+        <div class="subscription-row">
+          <ion-icon name="sparkles" class="sparkles-icon"></ion-icon>
+          <div class="subscription-info">
+            <h3>Upgrade to Pro</h3>
+            <p>Unlock premium features</p>
+          </div>
+          <ion-button fill="solid" color="light" (click)="onUpgradeToPro()">
+            Upgrade
+          </ion-button>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Active Pro Card -->
+    <ion-card class="pro-card" *ngIf="isPro">
+      <ion-card-content>
+        <div class="subscription-row">
+          <ion-icon name="trophy" class="trophy-icon"></ion-icon>
+          <div class="subscription-info">
+            <h3>{{ subscriptionLabel }}</h3>
+            <p>Active subscription</p>
+          </div>
+          <ion-button fill="solid" color="light" (click)="onManageSubscription()">
+            Manage
+          </ion-button>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Account -->
+    <ion-list>
+      <ion-list-header>
+        <ion-label>Account</ion-label>
+      </ion-list-header>
+
+      <ion-item button (click)="onEditProfile()">
+        <ion-icon name="person" slot="start"></ion-icon>
+        <ion-label>
+          <h2>Edit Profile</h2>
+          <p>Update your personal information</p>
+        </ion-label>
+        <ion-icon name="chevron-forward" slot="end"></ion-icon>
+      </ion-item>
+
+      <ion-item button (click)="onCVManagement()">
+        <ion-icon name="cloud-upload" slot="start"></ion-icon>
+        <ion-label>
+          <h2>Resume / CV</h2>
+          <p>Upload and manage your resume</p>
+        </ion-label>
+        <ion-icon name="chevron-forward" slot="end"></ion-icon>
+      </ion-item>
+
+      <ion-item button (click)="onNotifications()">
+        <ion-icon name="notifications" slot="start"></ion-icon>
+        <ion-label>
+          <h2>Notifications</h2>
+          <p>Manage notification preferences</p>
+        </ion-label>
+        <ion-icon name="chevron-forward" slot="end"></ion-icon>
+      </ion-item>
+    </ion-list>
+
+    <!-- Payment -->
+    <ion-list>
+      <ion-list-header>
+        <ion-label>Payment</ion-label>
+      </ion-list-header>
+
+      <ion-item button (click)="onPaymentMethods()">
+        <ion-icon name="card" slot="start"></ion-icon>
+        <ion-label>
+          <h2>Payment Methods</h2>
+          <p>Manage your payment options</p>
+        </ion-label>
+        <ion-icon name="chevron-forward" slot="end"></ion-icon>
+      </ion-item>
+
+      <ion-item button (click)="onEarnings()">
+        <ion-icon name="cash" slot="start"></ion-icon>
+        <ion-label>
+          <h2>Earnings</h2>
+          <p>View transaction history</p>
+        </ion-label>
+        <ion-icon name="chevron-forward" slot="end"></ion-icon>
+      </ion-item>
+    </ion-list>
+
+    <!-- Security & Support -->
+    <ion-list>
+      <ion-list-header>
+        <ion-label>Security & Support</ion-label>
+      </ion-list-header>
+
+      <ion-item button (click)="onPrivacySecurity()">
+        <ion-icon name="shield" slot="start"></ion-icon>
+        <ion-label>
+          <h2>Privacy & Security</h2>
+          <p>Password, 2FA, and privacy</p>
+        </ion-label>
+        <ion-icon name="chevron-forward" slot="end"></ion-icon>
+      </ion-item>
+
+      <ion-item button (click)="onHelpSupport()">
+        <ion-icon name="help-circle" slot="start"></ion-icon>
+        <ion-label>
+          <h2>Help & Support</h2>
+          <p>Get help with your account</p>
+        </ion-label>
+        <ion-icon name="chevron-forward" slot="end"></ion-icon>
+      </ion-item>
+
+      <ion-item button (click)="onTerms()">
+        <ion-icon name="document-text" slot="start"></ion-icon>
+        <ion-label>
+          <h2>Terms & Policies</h2>
+          <p>Read our terms and privacy policy</p>
+        </ion-label>
+        <ion-icon name="chevron-forward" slot="end"></ion-icon>
+      </ion-item>
+    </ion-list>
+
+    <!-- Logout -->
+    <ion-list>
+      <ion-item button (click)="onLogout()">
+        <ion-icon name="log-out" slot="start" color="danger"></ion-icon>
+        <ion-label color="danger">
+          <h2>Log Out</h2>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+
+    <div class="version-footer">
+      <p>FreelanceHub v1.0.0</p>
+    </div>
+
+  </ion-content>
+
+  <!-- Bottom Navigation -->
+  <app-bottom-navigation
+    [currentTab]="'profile'"
+    (tabChange)="onTabChange($event)"
+  ></app-bottom-navigation>
+
+</div>

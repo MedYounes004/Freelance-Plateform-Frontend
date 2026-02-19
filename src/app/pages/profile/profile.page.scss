@@ -1,0 +1,192 @@
+// --- Profile Card ---
+.profile-card {
+  background: linear-gradient(to bottom right, #4f46e5, #9333ea);
+  color: white;
+  margin-bottom: 16px;
+
+  ion-card-content { color: white; }
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.profile-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 16px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.profile-info {
+  flex: 1;
+  color: white;
+}
+
+.name-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+  h2 { margin: 0; font-size: 20px; font-weight: 700; color: white; }
+}
+
+.pro-badge {
+  font-size: 20px;
+  color: #fbbf24;
+}
+
+.profile-title {
+  margin: 0 0 8px;
+  font-size: 14px;
+  opacity: 0.9;
+  color: white;
+}
+
+.rating-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  color: white;
+}
+
+.star-icon { color: #fbbf24; font-size: 16px; }
+
+// --- Stats Row ---
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.stat-item { color: white; }
+
+.stat-label-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 4px;
+  p { margin: 0; font-size: 12px; opacity: 0.9; }
+  ion-icon { font-size: 16px; }
+}
+
+.stat-value {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: white;
+}
+
+// --- Upgrade Card ---
+.upgrade-card {
+  background: linear-gradient(to right, #9333ea, #4f46e5);
+  color: white;
+  margin-bottom: 16px;
+  ion-card-content { color: white; }
+}
+
+.sparkles-icon {
+  font-size: 32px;
+  color: #fbbf24;
+}
+
+// --- Pro Card ---
+.pro-card {
+  background: linear-gradient(to right, #fbbf24, #f97316);
+  color: white;
+  margin-bottom: 16px;
+  ion-card-content { color: white; }
+}
+
+.trophy-icon {
+  font-size: 32px;
+  color: white;
+}
+
+// --- Shared subscription row ---
+.subscription-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.subscription-info {
+  flex: 1;
+  color: white;
+  h3 { margin: 0 0 4px; font-size: 18px; font-weight: 600; color: white; }
+  p  { margin: 0; font-size: 14px; opacity: 0.9; }
+}
+
+// --- Version Footer ---
+.version-footer {
+  text-align: center;
+  padding: 24px 0;
+  p { font-size: 12px; color: #9ca3af; margin: 0; }
+}
+
+// --- Background fixes ---
+:host {
+  background: #ffffff;
+}
+
+ion-content {
+  --background: #ffffff;
+}
+
+ion-header ion-toolbar {
+  --background: #ffffff;
+  --color: #1f2937;
+}
+
+// --- List & Items ---
+ion-list {
+  background: #ffffff !important;
+  --background: #ffffff !important;
+  border: none;
+  box-shadow: none;
+}
+
+ion-list-header {
+  --background: #ffffff;
+  --color: #6b7280;
+}
+
+ion-list-header ion-label {
+  color: #6b7280 !important;
+}
+
+ion-item {
+  --background: #ffffff !important;
+  --background-hover: #f9fafb;
+  --color: #1f2937;
+  --border-color: transparent;
+  --inner-border-width: 0;
+  --border-width: 0;
+}
+
+ion-item::part(native) {
+  border-bottom: 1px solid #f3f4f6;
+}
+
+ion-item ion-label h2 {
+  color: #1f2937 !important;
+}
+
+ion-item ion-label p {
+  color: #6b7280 !important;
+}
+
+ion-item ion-icon[slot="start"] {
+  color: #4f46e5;
+}
+
+ion-item ion-icon[slot="end"] {
+  color: #9ca3af;
+}
