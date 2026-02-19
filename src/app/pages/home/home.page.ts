@@ -4,7 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { GuestBannerComponent } from '../../components/guest-banner/guest-banner.component';
 import { BottomNavigationComponent } from 'src/app/components/bottom-navigation/bottom-navigation.component';
-
+import { star, notifications } from 'ionicons/icons';
+import { addIcons } from 'ionicons';
 interface Category {
   name: string;
   icon: string;
@@ -90,6 +91,10 @@ export class HomePage {
       skills: ['Illustrator', 'Photoshop', 'Branding']
     }
   ];
+  
+  constructor() {
+    addIcons({ star, notifications });
+  }
 
   activeTab = 'home';
   onTabChange(tab: string): void {

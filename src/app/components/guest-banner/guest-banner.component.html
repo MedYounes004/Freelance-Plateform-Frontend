@@ -1,11 +1,15 @@
 <div class="guest-banner">
-  <div class="banner-content">
-    <div class="banner-text">
-      <ion-icon name="information-circle-outline" class="info-icon"></ion-icon>
-      <span>Sign in to access all features</span>
+  <div class="banner-inner">
+
+    <div class="banner-message">
+      <ion-icon name="lock-closed-outline" class="lock-icon"></ion-icon>
+      <p class="message-text">Browsing as guest - Sign in to unlock full features</p>
     </div>
-    <ion-button size="small" fill="solid" color="primary" (click)="onSignIn()">
+
+    <button class="sign-in-btn" (click)="onSignIn()">
+      <ion-icon name="log-in-outline"></ion-icon>
       Sign In
-    </ion-button>
+    </button>
+
   </div>
 </div>

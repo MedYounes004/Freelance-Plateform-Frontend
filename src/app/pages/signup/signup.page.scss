@@ -1,0 +1,246 @@
+// sign-up.page.scss
+
+ion-header ion-toolbar {
+  --background: #ffffff;
+  --border-color: transparent;
+
+  ion-back-button {
+    --color: #4b5563;
+  }
+}
+
+.sign-up-content {
+  --background: #ffffff;
+}
+
+.content-wrapper {
+  padding: 8px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+// ── Header ──────────────────────────────────────────────
+.header-section {
+  .title {
+    font-size: 30px;
+    font-weight: 400;
+    color: #111827;
+    margin: 0 0 8px;
+    line-height: 1.2;
+  }
+
+  .subtitle {
+    font-size: 15px;
+    color: #6b7280;
+    margin: 0;
+  }
+}
+
+// ── Form ────────────────────────────────────────────────
+.sign-up-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field-label {
+  font-size: 14px;
+  color: #374151;
+  font-weight: 400;
+}
+
+// ── Input ────────────────────────────────────────────────
+.input-wrapper {
+  .custom-input {
+    --background: #ffffff;
+    --border-color: #e5e7eb;
+    --border-radius: 12px;
+    --border-width: 1px;
+    --highlight-color-focused: #4f46e5;
+    --padding-start: 16px;
+    --padding-end: 16px;
+    --padding-top: 12px;
+    --padding-bottom: 12px;
+    --color: #111827;
+    --placeholder-color: #9ca3af;
+    font-size: 15px;
+  }
+
+  &.has-error .custom-input {
+    --border-color: #ef4444;
+    --highlight-color-focused: #ef4444;
+  }
+}
+
+// ── Error message ────────────────────────────────────────
+.error-msg {
+  font-size: 12px;
+  color: #ef4444;
+  margin: 2px 4px 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  &::before {
+    content: '⚠';
+    font-size: 11px;
+  }
+}
+
+// ── Password strength bar ────────────────────────────────
+.strength-bar-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 2px;
+}
+
+.strength-bar {
+  flex: 1;
+  height: 4px;
+  background-color: #e5e7eb;
+  border-radius: 99px;
+  overflow: hidden;
+
+  .strength-fill {
+    height: 100%;
+    border-radius: 99px;
+    transition: width 0.3s ease, background-color 0.3s ease;
+
+    &.strength-weak   { background-color: #ef4444; }
+    &.strength-fair   { background-color: #f97316; }
+    &.strength-good   { background-color: #eab308; }
+    &.strength-strong { background-color: #22c55e; }
+  }
+}
+
+.strength-label {
+  font-size: 12px;
+  font-weight: 500;
+  min-width: 40px;
+  text-align: right;
+
+  &.strength-weak   { color: #ef4444; }
+  &.strength-fair   { color: #f97316; }
+  &.strength-good   { color: #eab308; }
+  &.strength-strong { color: #22c55e; }
+}
+
+// ── User Type Cards ──────────────────────────────────────
+.user-type-grid {
+  padding: 0;
+
+  ion-row {
+    gap: 12px;
+    flex-wrap: nowrap;
+  }
+
+  ion-col {
+    padding: 0;
+  }
+}
+
+.user-type-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 16px 8px;
+  border-radius: 12px;
+  border: 2px solid #e5e7eb;
+  cursor: pointer;
+  transition: border-color 0.2s, background-color 0.2s;
+  background-color: #ffffff;
+
+  &.selected {
+    border-color: #4f46e5;
+    background-color: #eef2ff;
+
+    .type-icon,
+    .type-label {
+      color: #4f46e5;
+    }
+  }
+
+  .type-icon {
+    font-size: 28px;
+    color: #6b7280;
+    transition: color 0.2s;
+  }
+
+  .type-label {
+    font-size: 14px;
+    color: #374151;
+    margin: 0;
+    transition: color 0.2s;
+  }
+}
+
+// ── Terms Row ────────────────────────────────────────────
+.terms-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+
+  .terms-checkbox {
+    --size: 18px;
+    --border-radius: 4px;
+    --checkmark-color: #ffffff;
+    --background-checked: #4f46e5;
+    --border-color: #d1d5db;
+    --border-color-checked: #4f46e5;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .terms-text {
+    font-size: 14px;
+    color: #6b7280;
+    line-height: 1.5;
+
+    .link {
+      color: #4f46e5;
+      cursor: pointer;
+    }
+  }
+}
+
+// ── Submit Button ────────────────────────────────────────
+.submit-btn {
+  --background: #4f46e5;
+  --background-hover: #4338ca;
+  --background-activated: #4338ca;
+  --border-radius: 16px;
+  --padding-top: 16px;
+  --padding-bottom: 16px;
+  --box-shadow: none;
+  font-size: 16px;
+  font-weight: 500;
+  height: 56px;
+  margin-top: 8px;
+}
+
+// ── Footer ───────────────────────────────────────────────
+.footer-section {
+  padding: 16px 24px 32px;
+  text-align: center;
+
+  .footer-text {
+    font-size: 15px;
+    color: #6b7280;
+    margin: 0;
+
+    .link {
+      color: #4f46e5;
+      cursor: pointer;
+    }
+  }
+}
