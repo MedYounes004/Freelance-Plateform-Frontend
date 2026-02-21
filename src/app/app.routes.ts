@@ -34,6 +34,14 @@ export const routes: Routes = [
   loadComponent: () =>
     import('./pages/cv-management/cv-management.page').then(m => m.CvManagementPage),
 },
+  
+
+  {
+  path: 'upgrade',
+  loadComponent: () =>
+    import('./pages/pricing/pricing.page').then(m => m.PricingPage),
+},
+
 
   
 
