@@ -41,6 +41,18 @@ export const routes: Routes = [
   loadComponent: () =>
     import('./pages/pricing/pricing.page').then(m => m.PricingPage),
 },
+  {
+    path: 'subscription-success',
+    loadComponent: () => import('./pages/subscription-success/subscription-success.page').then( m => m.SubscriptionSuccessPage)
+  },
+
+  {
+  path: 'subscription-success',
+  loadComponent: () =>
+    import('./pages/subscription-success/subscription-success.page')
+      .then(m => m.SubscriptionSuccessPage),
+},
+
 
 
   

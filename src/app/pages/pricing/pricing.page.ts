@@ -75,9 +75,15 @@ export class PricingPage {
     this.billingCycle = this.billingCycle === 'monthly' ? 'yearly' : 'monthly';
   }
 
-  onSelectPlan(plan: PlanType): void {
+  onSelectPlanc(plan: PlanType): void {
     this.navCtrl.navigateForward('/checkout', {
       queryParams: { plan, billing: this.billingCycle }
     });
   }
+
+  onSelectPlan(plan: PlanType): void {
+  this.navCtrl.navigateForward('/subscription-success', {
+    queryParams: { plan, billing: this.billingCycle }
+  });
+}
 }
