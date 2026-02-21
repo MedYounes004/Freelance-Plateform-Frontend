@@ -24,6 +24,17 @@ export const routes: Routes = [
   loadComponent: () =>
     import('./pages/profile/profile.page').then(m => m.ProfilePage),
 },
+  {
+    path: 'cv-management',
+    loadComponent: () => import('./pages/cv-management/cv-management.page').then( m => m.CvManagementPage)
+  },
+
+{
+  path: 'cv-management',
+  loadComponent: () =>
+    import('./pages/cv-management/cv-management.page').then(m => m.CvManagementPage),
+},
+
   
 
 
