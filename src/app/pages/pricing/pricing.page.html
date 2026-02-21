@@ -1,0 +1,138 @@
+<div class="ion-page">
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-back-button defaultHref="/profile"></ion-back-button>
+      </ion-buttons>
+      <ion-title>Choose Your Plan</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content [fullscreen]="true">
+    <div class="page-wrapper">
+
+      <!-- Subtitle -->
+      <p class="subtitle">Unlock premium features and grow faster</p>
+
+      <!-- Billing Toggle -->
+      <div class="billing-toggle">
+        <span [class.active]="billingCycle === 'monthly'">Monthly</span>
+
+        <button class="toggle-btn" (click)="toggleBilling()">
+          <div class="toggle-track" [class.yearly]="billingCycle === 'yearly'">
+            <div class="toggle-thumb" [class.yearly]="billingCycle === 'yearly'"></div>
+          </div>
+        </button>
+
+        <div class="yearly-label">
+          <span [class.active]="billingCycle === 'yearly'">Yearly</span>
+          <span class="save-badge">Save {{ yearlyDiscount }}%</span>
+        </div>
+      </div>
+
+      <!-- Freelancer Plan -->
+      <div class="plan-card purple-card">
+        <div class="popular-badge">
+          <ion-icon name="sparkles"></ion-icon>
+          Most Popular
+        </div>
+
+        <div class="plan-header">
+          <div class="plan-icon purple-icon">
+            <ion-icon name="flash-outline"></ion-icon>
+          </div>
+          <div>
+            <h3>Freelancer Pro</h3>
+            <p>For independent professionals</p>
+          </div>
+        </div>
+
+        <div class="plan-price">
+          <span class="price">${{ freelancerPrice }}</span>
+          <span class="period">/month</span>
+        </div>
+        <p class="yearly-note" *ngIf="billingCycle === 'yearly'">
+          ${{ freelancerPrice * 12 }} billed annually (was ${{ 29 * 12 }})
+        </p>
+
+        <ul class="features-list">
+          <li *ngFor="let feature of freelancerFeatures">
+            <div class="check-icon purple-check">
+              <ion-icon name="checkmark"></ion-icon>
+            </div>
+            <span>{{ feature }}</span>
+          </li>
+        </ul>
+
+        <button class="plan-btn purple-btn" (click)="onSelectPlan('freelancer')">
+          Start Freelancer Pro
+        </button>
+      </div>
+
+      <!-- Client Plan -->
+      <div class="plan-card indigo-card">
+        <div class="plan-header">
+          <div class="plan-icon indigo-icon">
+            <ion-icon name="briefcase-outline"></ion-icon>
+          </div>
+          <div>
+            <h3>Client Pro</h3>
+            <p>For hiring managers & teams</p>
+          </div>
+        </div>
+
+        <div class="plan-price">
+          <span class="price">${{ clientPrice }}</span>
+          <span class="period">/month</span>
+        </div>
+        <p class="yearly-note" *ngIf="billingCycle === 'yearly'">
+          ${{ clientPrice * 12 }} billed annually (was ${{ 49 * 12 }})
+        </p>
+
+        <ul class="features-list">
+          <li *ngFor="let feature of clientFeatures">
+            <div class="check-icon indigo-check">
+              <ion-icon name="checkmark"></ion-icon>
+            </div>
+            <span>{{ feature }}</span>
+          </li>
+        </ul>
+
+        <button class="plan-btn indigo-btn" (click)="onSelectPlan('client')">
+          Start Client Pro
+        </button>
+      </div>
+
+      <!-- Free Plan -->
+      <div class="free-card">
+        <h3>Free Plan</h3>
+        <p>Basic features with 15% service fee</p>
+        <ul class="features-list">
+          <li *ngFor="let feature of freeFeatures">
+            <div class="check-icon gray-check">
+              <ion-icon name="checkmark"></ion-icon>
+            </div>
+            <span>{{ feature }}</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Trust Indicators -->
+      <div class="trust-card">
+        <div class="trust-item">
+          <div class="trust-icon green-trust">
+            <ion-icon name="shield-checkmark"></ion-icon>
+          </div>
+          <span>Secure Payment</span>
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon blue-trust">
+            <ion-icon name="checkmark"></ion-icon>
+          </div>
+          <span>Cancel Anytime</span>
+        </div>
+      </div>
+
+    </div>
+  </ion-content>
+</div>

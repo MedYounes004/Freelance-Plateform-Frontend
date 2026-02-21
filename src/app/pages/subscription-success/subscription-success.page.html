@@ -1,0 +1,49 @@
+<div class="ion-page">
+  <ion-content [fullscreen]="true">
+    <div class="page-wrapper">
+
+      <!-- Success Icon -->
+      <div class="success-icon-wrap">
+        <div class="success-icon">
+          <ion-icon name="checkmark"></ion-icon>
+        </div>
+      </div>
+
+      <!-- Title -->
+      <div class="title-section">
+        <h1>Welcome to {{ planName }}!</h1>
+        <p>Your subscription is now active. Enjoy all premium features and start growing your business.</p>
+      </div>
+
+      <!-- Benefits Card -->
+      <div class="benefits-card">
+        <div class="benefits-header">
+          <ion-icon name="sparkles" class="sparkles-icon"></ion-icon>
+          <h3>You now have access to:</h3>
+        </div>
+        <ul class="benefits-list">
+          <li *ngFor="let benefit of benefits">
+            <div class="check-icon">
+              <ion-icon name="checkmark"></ion-icon>
+            </div>
+            <span>{{ benefit }}</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Subscription Info -->
+      <div class="info-card">
+        <p>
+          Your {{ billingCycle }} subscription will renew automatically.
+          <span class="cancel-link">You can cancel anytime.</span>
+        </p>
+      </div>
+
+      <!-- CTA Button -->
+      <button class="cta-btn" (click)="onContinue()">
+        Start Exploring
+      </button>
+
+    </div>
+  </ion-content>
+</div>

@@ -1,0 +1,169 @@
+:host {
+  background: #f0fdf4;
+}
+
+ion-content {
+  --background: linear-gradient(to bottom, #f0fdf4, #ffffff);
+}
+
+// --- Page Wrapper ---
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100%;
+  padding: 40px 24px;
+}
+
+// --- Success Icon ---
+.success-icon-wrap {
+  margin-bottom: 24px;
+  animation: bounce 1s infinite;
+}
+
+.success-icon {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: #dcfce7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  ion-icon {
+    font-size: 48px;
+    color: #16a34a;
+  }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-12px); }
+}
+
+// --- Title Section ---
+.title-section {
+  text-align: center;
+  margin-bottom: 32px;
+
+  h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1f2937;
+    margin: 0 0 12px;
+  }
+
+  p {
+    font-size: 15px;
+    color: #6b7280;
+    line-height: 1.6;
+    margin: 0;
+    max-width: 320px;
+  }
+}
+
+// --- Benefits Card ---
+.benefits-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
+  width: 100%;
+  max-width: 360px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+
+.benefits-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+
+  h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #1f2937;
+  }
+}
+
+.sparkles-icon {
+  font-size: 20px;
+  color: #4f46e5;
+}
+
+.benefits-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: #374151;
+  }
+}
+
+.check-icon {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #dcfce7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  ion-icon {
+    font-size: 13px;
+    color: #16a34a;
+  }
+}
+
+// --- Info Card ---
+.info-card {
+  background: #eef2ff;
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+  width: 100%;
+  max-width: 360px;
+  margin-bottom: 32px;
+
+  p {
+    margin: 0;
+    font-size: 13px;
+    color: #374151;
+    line-height: 1.5;
+  }
+}
+
+.cancel-link {
+  color: #4f46e5;
+  font-weight: 500;
+}
+
+// --- CTA Button ---
+.cta-btn {
+  width: 100%;
+  max-width: 360px;
+  padding: 16px;
+  border-radius: 16px;
+  border: none;
+  background: #4f46e5;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+
+  &:active {
+    opacity: 0.85;
+  }
+}
