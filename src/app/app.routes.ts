@@ -2,60 +2,43 @@ import { Routes } from '@angular/router';
 
 export const routes: Routes = [
   {
-    path: 'home',
-    loadComponent: () => import('./pages/home/home.page').then((m) => m.HomePage),
-  },
-  {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'onboarding',  // ✅ première page au lancement
     pathMatch: 'full',
   },
   {
+    path: 'onboarding',
+    loadComponent: () =>
+      import('./pages/onboarding/onboarding.page').then(m => m.OnboardingPage),
+  },
+  {
+    path: 'home',
+    loadComponent: () =>
+      import('./pages/home/home.page').then(m => m.HomePage),
+  },
+  {
     path: 'signup',
-    loadComponent: () => import('./pages/signup/signup.page').then( m => m.SignupPage)
+    loadComponent: () =>
+      import('./pages/signup/signup.page').then(m => m.SignupPage),
   },
   {
     path: 'profile',
-    loadComponent: () => import('./pages/profile/profile.page').then( m => m.ProfilePage)
+    loadComponent: () =>
+      import('./pages/profile/profile.page').then(m => m.ProfilePage),
   },
-
- {
-  path: 'profile',
-  loadComponent: () =>
-    import('./pages/profile/profile.page').then(m => m.ProfilePage),
-},
   {
     path: 'cv-management',
-    loadComponent: () => import('./pages/cv-management/cv-management.page').then( m => m.CvManagementPage)
+    loadComponent: () =>
+      import('./pages/cv-management/cv-management.page').then(m => m.CvManagementPage),
   },
-
-{
-  path: 'cv-management',
-  loadComponent: () =>
-    import('./pages/cv-management/cv-management.page').then(m => m.CvManagementPage),
-},
-  
-
   {
-  path: 'upgrade',
-  loadComponent: () =>
-    import('./pages/pricing/pricing.page').then(m => m.PricingPage),
-},
+    path: 'upgrade',
+    loadComponent: () =>
+      import('./pages/pricing/pricing.page').then(m => m.PricingPage),
+  },
   {
     path: 'subscription-success',
-    loadComponent: () => import('./pages/subscription-success/subscription-success.page').then( m => m.SubscriptionSuccessPage)
+    loadComponent: () =>
+      import('./pages/subscription-success/subscription-success.page').then(m => m.SubscriptionSuccessPage),
   },
-
-  {
-  path: 'subscription-success',
-  loadComponent: () =>
-    import('./pages/subscription-success/subscription-success.page')
-      .then(m => m.SubscriptionSuccessPage),
-},
-
-
-
-  
-
-
 ];
