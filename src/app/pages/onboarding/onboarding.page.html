@@ -1,0 +1,54 @@
+<div class="ion-page">
+  <ion-content [fullscreen]="true">
+    <div class="page-wrapper">
+
+      <!-- Skip Button -->
+      <button class="skip-btn" (click)="onSkip()">Skip</button>
+
+      <!-- Center Content -->
+      <div class="center-content">
+
+        <!-- Logo -->
+        <div class="logo-wrap">
+          <svg class="logo-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+          </svg>
+        </div>
+
+        <!-- Title -->
+        <div class="title-section">
+          <h1>FreelanceHub</h1>
+          <p>Connect with top freelancers or find your next project opportunity</p>
+        </div>
+
+        <!-- Features -->
+        <div class="features-list">
+          <div *ngFor="let feature of features" class="feature-item">
+            <div class="feature-icon">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  [attr.d]="feature.path" />
+              </svg>
+            </div>
+            <div class="feature-text">
+              <p class="feature-title">{{ feature.title }}</p>
+              <p class="feature-subtitle">{{ feature.subtitle }}</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Bottom CTA -->
+      <div class="bottom-section">
+        <button class="get-started-btn" (click)="onGetStarted()">
+          Get Started
+          <ion-icon name="chevron-forward"></ion-icon>
+        </button>
+        <p class="join-text">Join thousands of freelancers and clients</p>
+      </div>
+
+    </div>
+  </ion-content>
+</div>
