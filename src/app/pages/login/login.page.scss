@@ -1,0 +1,277 @@
+:host {
+  background: #ffffff;
+}
+
+ion-content {
+  --background: #ffffff;
+}
+
+// --- Page Wrapper ---
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  padding: 0 24px;
+}
+
+// --- Back Button ---
+.back-row {
+  padding: 24px 0 16px;
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  padding: 8px;
+  margin-left: -8px;
+  cursor: pointer;
+  color: #6b7280;
+
+  svg {
+    width: 24px;
+    height: 24px;
+    stroke: #6b7280;
+  }
+}
+
+// --- Form Section ---
+.form-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+  padding-bottom: 16px;
+}
+
+// --- Title ---
+.title-section {
+  h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1f2937;
+    margin: 0 0 6px;
+  }
+  p {
+    font-size: 15px;
+    color: #6b7280;
+    margin: 0;
+  }
+}
+
+// --- Form ---
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  label {
+    font-size: 14px;
+    color: #374151;
+    font-weight: 500;
+  }
+}
+
+.input {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  font-size: 15px;
+  color: #1f2937;
+  outline: none;
+  box-sizing: border-box;
+  background: #ffffff;
+  transition: border-color 0.2s, box-shadow 0.2s;
+
+  &:focus {
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+  }
+}
+
+// --- Password ---
+.password-wrap {
+  position: relative;
+}
+
+.password-wrap .input {
+  padding-right: 48px;
+}
+
+.eye-btn {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #9ca3af;
+  ion-icon { font-size: 20px; }
+}
+
+// --- Row Between ---
+.row-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.remember-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #6b7280;
+  cursor: pointer;
+
+  input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: #4f46e5;
+  }
+}
+
+.forgot-btn {
+  background: none;
+  border: none;
+  font-size: 14px;
+  color: #4f46e5;
+  cursor: pointer;
+}
+
+// --- Primary Button ---
+.primary-btn {
+  width: 100%;
+  padding: 16px;
+  border-radius: 16px;
+  border: none;
+  background: #4f46e5;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  &:active { opacity: 0.85; }
+}
+
+// --- Divider ---
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  span {
+    font-size: 13px;
+    color: #9ca3af;
+    white-space: nowrap;
+  }
+}
+
+.divider-line {
+  flex: 1;
+  height: 1px;
+  background: #e5e7eb;
+}
+
+// --- Guest Button ---
+.guest-btn {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 16px;
+  border: 2px solid #e5e7eb;
+  background: transparent;
+  color: #374151;
+  font-size: 15px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  svg {
+    width: 20px;
+    height: 20px;
+    stroke: #374151;
+  }
+
+  &:active {
+    background: #f9fafb;
+    border-color: #d1d5db;
+  }
+}
+
+// --- Guest Info ---
+.guest-info {
+  background: #eef2ff;
+  border-radius: 16px;
+  padding: 16px;
+
+  p {
+    margin: 0;
+    font-size: 13px;
+    color: #374151;
+    text-align: center;
+    line-height: 1.5;
+  }
+}
+
+.highlight { color: #4f46e5; font-weight: 500; }
+
+// --- Social Grid ---
+.social-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.social-btn {
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #374151;
+  cursor: pointer;
+  transition: background 0.2s;
+  &:active { background: #f9fafb; }
+}
+
+.social-icon {
+  width: 20px;
+  height: 20px;
+}
+
+// --- Bottom Row ---
+.bottom-row {
+  padding: 16px 0 32px;
+  text-align: center;
+
+  p {
+    margin: 0;
+    font-size: 14px;
+    color: #6b7280;
+  }
+}
+
+.signup-link {
+  background: none;
+  border: none;
+  color: #4f46e5;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}

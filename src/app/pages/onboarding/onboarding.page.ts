@@ -37,9 +37,9 @@ export class OnboardingPage {
     addIcons({ chevronForward });
   }
 
-  onGetStarted(): void {
-    this.navCtrl.navigateForward('/login');
-  }
+ onGetStarted(): void {
+  this.navCtrl.navigateForward('/login');
+}
 
   onSkip(): void {
     this.navCtrl.navigateRoot('/home');
