@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { NavController } from '@ionic/angular/standalone';
 import {
   IonHeader, IonToolbar, IonTitle, IonContent,
-  IonButton, IonIcon, IonBackButton, IonButtons, IonBadge
+  IonIcon, IonBackButton, IonButtons
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
@@ -24,7 +24,7 @@ interface CV {
   imports: [
     CommonModule,
     IonHeader, IonToolbar, IonTitle, IonContent,
-    IonButton, IonIcon, IonBackButton, IonButtons, IonBadge
+    IonIcon, IonBackButton, IonButtons
   ],
   templateUrl: './cv-management.page.html',
   styleUrls: ['./cv-management.page.scss'],

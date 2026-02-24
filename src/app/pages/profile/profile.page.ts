@@ -13,6 +13,7 @@ import {
   cash, cloudUpload, trophy, sparkles
 } from 'ionicons/icons';
 import { BottomNavigationComponent } from '../../components/bottom-navigation/bottom-navigation.component';
+import { Shared } from 'src/app/core/services/shared';
 
 export type SubscriptionStatus = 'free' | 'freelancer-pro' | 'client-pro';
 
@@ -56,6 +57,7 @@ export class ProfilePage {
 
   onLogout(): void {
     this.navCtrl.navigateRoot('/login');
+    Shared.prototype.OnchangeGuestStatus(true);
   }
 
   onCVManagement(): void {

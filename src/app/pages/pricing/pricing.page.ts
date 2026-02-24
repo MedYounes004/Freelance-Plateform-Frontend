@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { NavController } from '@ionic/angular/standalone';
 import {
   IonHeader, IonToolbar, IonTitle, IonContent,
-  IonButton, IonIcon, IonBackButton, IonButtons  // ✅ IonButtons + IonBackButton ajoutés
+  IonIcon, IonBackButton, IonButtons  // ✅ IonButtons + IonBackButton ajoutés
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
@@ -20,7 +20,7 @@ export type BillingCycle = 'monthly' | 'yearly';
   imports: [
     CommonModule,
     IonHeader, IonToolbar, IonTitle, IonContent,
-    IonButton, IonIcon, IonBackButton, IonButtons  // ✅
+    IonIcon, IonBackButton, IonButtons  // ✅
   ],
   templateUrl: './pricing.page.html',
   styleUrls: ['./pricing.page.scss'],

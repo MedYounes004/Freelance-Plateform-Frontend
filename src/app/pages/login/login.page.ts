@@ -5,6 +5,7 @@ import { NavController } from '@ionic/angular/standalone';
 import { IonContent, IonIcon } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { eyeOutline, eyeOffOutline } from 'ionicons/icons';
+import { Shared } from 'src/app/core/services/shared';
 
 @Component({
   selector: 'app-login',
@@ -30,7 +31,12 @@ export class LoginPage {
   }
 
   onLogin(): void {
-    this.navCtrl.navigateRoot('/home');
+    if (this.email === 'demo@example.com' && this.password === 'password123') {
+      this.navCtrl.navigateRoot('/home');
+      Shared.prototype.OnchangeGuestStatus(false);
+    } else {
+      console.log('Invalid credentials');
+    }
   }
 
   onSignUp(): void {
@@ -39,6 +45,7 @@ export class LoginPage {
 
   onGuestMode(): void {
     this.navCtrl.navigateRoot('/home');
+    Shared.prototype.OnchangeGuestStatus(true);
   }
 
   onForgotPassword(): void {
