@@ -1,0 +1,323 @@
+// project-details.page.scss
+
+// ─── Header ──────────────────────────────────────────────
+.project-details-header {
+  ion-toolbar {
+    --background: #ffffff;
+    --border-width: 0;
+    --padding-start: 0;
+    --padding-end: 0;
+  }
+
+  .toolbar-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 48px 16px 8px;
+
+    .back-btn, .more-btn {
+      --color: #4b5563;
+      --padding-start: 8px;
+      --padding-end: 8px;
+    }
+    .back-btn  { margin-left: -8px; }
+    .more-btn  { margin-right: -8px; }
+  }
+}
+
+// ─── Content ─────────────────────────────────────────────
+.project-details-content {
+  --background: #f9fafb;
+  --padding-bottom: 100px;
+}
+
+// ─── Generic section ─────────────────────────────────────
+.section {
+  background: #ffffff;
+  padding: 20px 24px;
+  margin-bottom: 12px;
+
+  &.section-last { margin-bottom: 0; }
+
+  h2 {
+    font-size: 1.0625rem;
+    font-weight: 600;
+    color: #111827;
+    margin: 0 0 12px;
+  }
+}
+
+// ─── Project hero ─────────────────────────────────────────
+.project-hero {
+  padding-top: 16px;
+
+  .badges {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  h1 {
+    font-size: 1.375rem;
+    font-weight: 700;
+    color: #111827;
+    margin: 0 0 16px;
+    line-height: 1.3;
+  }
+
+  .client-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 0;
+    border-top: 1px solid #f3f4f6;
+    border-bottom: 1px solid #f3f4f6;
+
+    .client-avatar {
+      width: 48px;
+      height: 48px;
+      flex-shrink: 0;
+      img { object-fit: cover; }
+    }
+
+    .client-name {
+      font-size: 0.9375rem;
+      font-weight: 500;
+      color: #111827;
+      margin: 0 0 2px;
+    }
+
+    .client-meta {
+      font-size: 0.8125rem;
+      color: #6b7280;
+      margin: 0;
+    }
+  }
+}
+
+// ─── Badges ──────────────────────────────────────────────
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+
+  &.badge-active      { background: #dcfce7; color: #15803d; }
+  &.badge-category    { background: #ede9fe; color: #7c3aed; }
+  &.badge-completed   { background: #dcfce7; color: #15803d; }
+  &.badge-in-progress { background: #e0e7ff; color: #4338ca; }
+  &.badge-pending     { background: #f3f4f6; color: #374151; }
+}
+
+// ─── Stats grid ───────────────────────────────────────────
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+
+  .stat-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .stat-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 1.125rem;
+
+    &.bg-indigo { background: #e0e7ff; }
+    &.bg-green  { background: #dcfce7; }
+    &.bg-orange { background: #ffedd5; }
+    &.bg-purple { background: #ede9fe; }
+  }
+
+  .color-indigo { color: #4f46e5; }
+  .color-green  { color: #16a34a; }
+  .color-orange { color: #ea580c; }
+  .color-purple { color: #7c3aed; }
+
+  .stat-label {
+    font-size: 0.8125rem;
+    color: #6b7280;
+    margin: 0 0 2px;
+  }
+
+  .stat-value {
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: #111827;
+    margin: 0;
+  }
+}
+
+// ─── Description ─────────────────────────────────────────
+.description-para {
+  font-size: 0.9375rem;
+  color: #6b7280;
+  line-height: 1.6;
+  margin: 0 0 12px;
+
+  &:last-child { margin-bottom: 0; }
+}
+
+// ─── Skills ──────────────────────────────────────────────
+.skills-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+
+  .skill-tag {
+    padding: 6px 14px;
+    background: #e0e7ff;
+    color: #4338ca;
+    border-radius: 10px;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+}
+
+// ─── Milestones ───────────────────────────────────────────
+.milestones-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.milestone-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding-bottom: 4px;
+}
+
+.milestone-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+
+  .milestone-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.875rem;
+
+    &.ms-icon-completed { background: #dcfce7; }
+    &.ms-icon-progress  { background: #e0e7ff; }
+    &.ms-icon-pending   { background: #f3f4f6; }
+
+    .icon-completed { color: #16a34a; font-size: 1.125rem; }
+  }
+
+  .milestone-connector {
+    width: 2px;
+    height: 32px;
+    background: #e5e7eb;
+    margin-top: 4px;
+    margin-bottom: 4px;
+  }
+}
+
+.milestone-body {
+  flex: 1;
+  padding-top: 6px;
+
+  .milestone-title {
+    font-size: 0.9375rem;
+    color: #111827;
+    margin: 0 0 2px;
+  }
+
+  .milestone-payment {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin: 0;
+  }
+}
+
+.color-indigo { color: #4f46e5; }
+.color-gray   { color: #9ca3af; }
+
+// ─── Attachments ──────────────────────────────────────────
+.attachment-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: #f9fafb;
+  border-radius: 14px;
+
+  .attachment-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: #e0e7ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.125rem;
+    color: #4f46e5;
+    flex-shrink: 0;
+  }
+
+  .attachment-meta {
+    flex: 1;
+    min-width: 0;
+
+    .file-name {
+      font-size: 0.875rem;
+      color: #111827;
+      margin: 0 0 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .file-size {
+      font-size: 0.75rem;
+      color: #6b7280;
+      margin: 0;
+    }
+  }
+
+  .view-btn {
+    --color: #4f46e5;
+    --padding-start: 8px;
+    --padding-end: 0;
+    font-size: 0.875rem;
+    font-weight: 500;
+    flex-shrink: 0;
+  }
+}
+
+// ─── Footer ──────────────────────────────────────────────
+.project-details-footer {
+  background: #ffffff;
+  border-top: 1px solid #f3f4f6;
+
+  .footer-inner {
+    padding: 16px 24px;
+    padding-bottom: calc(16px + env(safe-area-inset-bottom));
+
+    .apply-btn {
+      --background: #4f46e5;
+      --background-activated: #4338ca;
+      --color: #ffffff;
+      --border-radius: 16px;
+      height: 52px;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+  }
+}

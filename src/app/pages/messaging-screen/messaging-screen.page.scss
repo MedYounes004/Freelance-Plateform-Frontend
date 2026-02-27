@@ -1,0 +1,261 @@
+// messaging.page.scss
+
+// ─── Header ──────────────────────────────────────────────
+.messaging-header {
+  ion-toolbar {
+    --background: #ffffff;
+    --border-width: 0;
+    --padding-start: 0;
+    --padding-end: 0;
+    --min-height: 72px;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .toolbar-content {
+    display: flex;
+    align-items: center;
+    padding: 48px 16px 12px;
+    gap: 4px;
+
+    .back-btn {
+      --color: #4b5563;
+      --padding-start: 8px;
+      --padding-end: 8px;
+      margin-left: -8px;
+      flex-shrink: 0;
+    }
+
+    .contact-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+      min-width: 0;
+
+      .avatar-wrapper {
+        position: relative;
+        flex-shrink: 0;
+
+        .contact-avatar {
+          width: 40px;
+          height: 40px;
+          img { object-fit: cover; }
+        }
+
+        .online-dot {
+          position: absolute;
+          bottom: 1px;
+          right: 1px;
+          width: 11px;
+          height: 11px;
+          background: #22c55e;
+          border-radius: 50%;
+          border: 2px solid #ffffff;
+        }
+      }
+
+      .contact-meta {
+        min-width: 0;
+
+        h2 {
+          font-size: 0.9375rem;
+          font-weight: 600;
+          color: #111827;
+          margin: 0;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .status {
+          font-size: 0.75rem;
+          color: #9ca3af;
+          margin: 0;
+
+          &.online { color: #16a34a; }
+        }
+      }
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+
+      .action-btn {
+        --color: #4b5563;
+        --padding-start: 8px;
+        --padding-end: 8px;
+
+        &:last-child { margin-right: -8px; }
+      }
+    }
+  }
+}
+
+// ─── Content ─────────────────────────────────────────────
+.messaging-content {
+  --background: #f9fafb;
+
+  .messages-wrapper {
+    padding: 16px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  // Date separator
+  .date-separator {
+    display: flex;
+    justify-content: center;
+    margin: 4px 0 8px;
+
+    span {
+      background: #e5e7eb;
+      color: #6b7280;
+      font-size: 0.75rem;
+      padding: 4px 12px;
+      border-radius: 999px;
+    }
+  }
+
+  // Message rows
+  .message-row {
+    display: flex;
+
+    &.mine    { justify-content: flex-end; }
+    &.theirs  { justify-content: flex-start; }
+  }
+
+  // Bubbles
+  .bubble {
+    max-width: 75%;
+    padding: 12px 16px;
+
+    .bubble-text {
+      font-size: 0.875rem;
+      line-height: 1.5;
+      margin: 0 0 4px;
+    }
+
+    .bubble-time {
+      font-size: 0.6875rem;
+      margin: 0;
+    }
+
+    &.bubble-mine {
+      background: #4f46e5;
+      border-radius: 18px 18px 4px 18px;
+
+      .bubble-text { color: #ffffff; }
+      .bubble-time { color: #c7d2fe; }
+    }
+
+    &.bubble-theirs {
+      background: #ffffff;
+      border-radius: 18px 18px 18px 4px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+
+      .bubble-text { color: #111827; }
+      .bubble-time { color: #9ca3af; }
+    }
+  }
+
+  // Typing indicator
+  .typing-bubble {
+    padding: 14px 16px;
+
+    .typing-dots {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+
+      .dot {
+        width: 8px;
+        height: 8px;
+        background: #9ca3af;
+        border-radius: 50%;
+        animation: bounce 1.2s infinite ease-in-out;
+
+        &.dot-1 { animation-delay: 0ms; }
+        &.dot-2 { animation-delay: 150ms; }
+        &.dot-3 { animation-delay: 300ms; }
+      }
+    }
+  }
+}
+
+@keyframes bounce {
+  0%, 60%, 100% { transform: translateY(0); }
+  30%           { transform: translateY(-5px); }
+}
+
+// ─── Footer ──────────────────────────────────────────────
+.messaging-footer {
+  ion-toolbar, & {
+    --background: #ffffff;
+    border-top: 1px solid #e5e7eb;
+  }
+
+  .input-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    padding-bottom: calc(12px + env(safe-area-inset-bottom));
+
+    .attach-btn {
+      --color: #4b5563;
+      --padding-start: 8px;
+      --padding-end: 8px;
+      flex-shrink: 0;
+    }
+
+    .input-wrapper {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      background: #f3f4f6;
+      border-radius: 20px;
+      padding: 0 4px 0 4px;
+      min-height: 44px;
+
+      .message-input {
+        flex: 1;
+        --background: transparent;
+        --padding-start: 12px;
+        --padding-end: 4px;
+        --padding-top: 10px;
+        --padding-bottom: 10px;
+        --color: #111827;
+        --placeholder-color: #9ca3af;
+        font-size: 0.9375rem;
+        max-height: 120px;
+      }
+
+      .emoji-btn {
+        --padding-start: 6px;
+        --padding-end: 6px;
+        height: 36px;
+        flex-shrink: 0;
+        font-size: 1.2rem;
+      }
+    }
+
+    .send-btn {
+      --background: #4f46e5;
+      --background-activated: #4338ca;
+      --color: #ffffff;
+      --border-radius: 50%;
+      --padding-start: 0;
+      --padding-end: 0;
+      width: 44px;
+      height: 44px;
+      flex-shrink: 0;
+
+      &[disabled] {
+        --background: #c7d2fe;
+        opacity: 1;
+      }
+    }
+  }
+}

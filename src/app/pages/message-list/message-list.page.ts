@@ -112,10 +112,10 @@ export class MessagesListPage implements OnInit {
   }
 
   onMessageClick(conversation: Conversation): void {
-    // Emit event for parent component or navigate to detail page
+    // Emit event for parent component
     this.messageClicked.emit(conversation);
 
-    // If using routing, uncomment below:
-    // this.navCtrl.navigateForward(`/messages/${conversation.id}`);
+    // Navigate to messaging screen and pass the conversation via navigation state
+    this.navCtrl.navigateForward('/messaging-screen', { state: { conversation } });
   }
 }
