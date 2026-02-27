@@ -120,7 +120,8 @@ export class ProjectsPage implements OnInit {
 
   onProjectClick(project: Project): void {
     this.projectClicked.emit(project);
-    // this.navCtrl.navigateForward(`/projects/${project.id}`);
+    // navigate to details screen (similar to React state change example)
+    this.navCtrl.navigateForward('/project-details', { state: { project } });
   }
 
   onNewProject(): void {

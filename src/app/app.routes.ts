@@ -59,11 +59,11 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/messaging-screen/messaging-screen.page').then( m => m.MessagingPage)
   },
   {
-    path: 'projects-screen',
+    path: 'projects',
     loadComponent: () => import('./projects-screen/projects-screen.page').then( m => m.ProjectsPage)
   },
   {
-    path: 'project-details-screen',
+    path: 'project-details',
     loadComponent: () => import('./project-details-screen/project-details-screen.page').then( m => m.ProjectDetailsPage)
   },
 
