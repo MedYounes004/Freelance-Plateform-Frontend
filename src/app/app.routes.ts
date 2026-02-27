@@ -51,11 +51,11 @@ export const routes: Routes = [
     import('./pages/login/login.page').then(m => m.LoginPage),
 },
   {
-    path: 'message-list',
+    path: 'messages',
     loadComponent: () => import('./pages/message-list/message-list.page').then( m => m.MessagesListPage)
   },
   {
-    path: 'messaging-screen',
+    path: 'messaging',
     loadComponent: () => import('./pages/messaging-screen/messaging-screen.page').then( m => m.MessagingPage)
   },
   {
