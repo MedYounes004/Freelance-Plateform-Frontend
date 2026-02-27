@@ -50,5 +50,25 @@ export const routes: Routes = [
   loadComponent: () =>
     import('./pages/login/login.page').then(m => m.LoginPage),
 },
+  {
+    path: 'messages',
+    loadComponent: () => import('./pages/message-list/message-list.page').then( m => m.MessagesListPage)
+  },
+  {
+    path: 'messaging',
+    loadComponent: () => import('./pages/messaging-screen/messaging-screen.page').then( m => m.MessagingPage)
+  },
+  {
+    path: 'projects',
+    loadComponent: () => import('./projects-screen/projects-screen.page').then( m => m.ProjectsPage)
+  },
+  {
+    path: 'project-details',
+    loadComponent: () => import('./project-details-screen/project-details-screen.page').then( m => m.ProjectDetailsPage)
+  },
+
+
+
+
 
 ];

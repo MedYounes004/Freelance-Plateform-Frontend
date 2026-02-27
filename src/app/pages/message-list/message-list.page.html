@@ -1,0 +1,51 @@
+<ion-header class="ion-no-border messages-header">
+  <ion-toolbar>
+    <div class="header-content">
+      <div class="header-title">
+        <h1>Messages</h1>
+        <p>Stay connected with clients</p>
+      </div>
+      <div class="search-wrapper">
+        <ion-searchbar
+          placeholder="Search messages..."
+          [(ngModel)]="searchQuery"
+          (ionInput)="onSearch($event)"
+          class="custom-searchbar"
+          [debounce]="300">
+        </ion-searchbar>
+      </div>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="messages-content">
+  <ion-list lines="none" class="conversations-list">
+    <ion-item
+      *ngFor="let conversation of filteredConversations"
+      button
+      detail="false"
+      (click)="onMessageClick(conversation)"
+      class="conversation-item">
+
+      <div slot="start" class="avatar-wrapper">
+        <ion-avatar class="conversation-avatar">
+          <img [src]="conversation.avatar" [alt]="conversation.name" />
+        </ion-avatar>
+        <span *ngIf="conversation.online" class="online-indicator"></span>
+      </div>
+
+      <ion-label class="conversation-label">
+        <div class="conversation-header">
+          <h2 class="conversation-name">{{ conversation.name }}</h2>
+          <span class="conversation-time">{{ conversation.time }}</span>
+        </div>
+        <p class="conversation-message">{{ conversation.message }}</p>
+      </ion-label>
+
+      <div slot="end" *ngIf="conversation.unread > 0" class="unread-badge">
+        <ion-badge color="primary">{{ conversation.unread }}</ion-badge>
+      </div>
+
+    </ion-item>
+  </ion-list>
+</ion-content>
