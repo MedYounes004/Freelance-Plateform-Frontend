@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 import {
   IonHeader, IonToolbar, IonContent, IonFooter,
   IonButton, IonIcon, IonAvatar,
@@ -12,6 +13,18 @@ import {
   cashOutline, calendarOutline, timeOutline, personOutline,
   checkmarkCircle, documentTextOutline,
 } from 'ionicons/icons';
+
+// Import the Project interface from projects-screen
+export interface Project {
+  id: number;
+  title: string;
+  client: string;
+  status: 'in-progress' | 'completed' | 'pending';
+  budget: number;
+  deadline: string;
+  progress: number;
+  category: string;
+}  
 
 export type MilestoneStatus = 'completed' | 'in-progress' | 'pending';
 
@@ -56,6 +69,8 @@ export class ProjectDetailsPage implements OnInit {
 
   @Output() applyClicked = new EventEmitter<void>();
 
+  selectedProject?: Project;
+
   project: ProjectDetail = {
     title: 'E-commerce Website Redesign',
     clientName: 'TechStart Inc.',
@@ -83,7 +98,7 @@ export class ProjectDetailsPage implements OnInit {
     { id: 3, title: 'Final Delivery',           status: 'pending',     payment: 750 },
   ];
 
-  constructor(private navCtrl: NavController) {
+  constructor(private navCtrl: NavController, private router: Router) {
     addIcons({
       arrowBackOutline, ellipsisHorizontalOutline,
       cashOutline, calendarOutline, timeOutline, personOutline,
@@ -91,7 +106,18 @@ export class ProjectDetailsPage implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    // Get the project from navigation state
+    const navigation = this.router.getCurrentNavigation();
+    if (navigation?.extras?.state && navigation.extras.state['project']) {
+      this.selectedProject = navigation.extras.state['project'];
+      // Update project details with selected project data if needed
+      if (this.selectedProject) {
+        this.project.title = this.selectedProject.title;
+        this.project.clientName = this.selectedProject.client;
+      }
+    }
+  }
 
   onBack(): void {
     this.navCtrl.back();
