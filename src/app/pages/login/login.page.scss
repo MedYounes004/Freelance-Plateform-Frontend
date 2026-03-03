@@ -275,3 +275,16 @@ ion-content {
   font-weight: 500;
   cursor: pointer;
 }
+.error-msg {
+  background: #fef2f2;
+  color: #dc2626;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.primary-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
