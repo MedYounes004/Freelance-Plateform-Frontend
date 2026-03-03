@@ -5,6 +5,7 @@ import { NavController } from '@ionic/angular/standalone';
 import { IonContent, IonIcon } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { eyeOutline, eyeOffOutline } from 'ionicons/icons';
+import { AuthService } from '../../services/auth';
 
 @Component({
   selector: 'app-login',
@@ -16,12 +17,17 @@ import { eyeOutline, eyeOffOutline } from 'ionicons/icons';
 })
 export class LoginPage {
 
-  email = 'demo@example.com';
-  password = 'password123';
+  email = '';
+  password = '';
   rememberMe = false;
   showPassword = false;
+  errorMessage = '';
+  isLoading = false;
 
-  constructor(private navCtrl: NavController) {
+  constructor(
+    private navCtrl: NavController,
+    private authService: AuthService
+  ) {
     addIcons({ eyeOutline, eyeOffOutline });
   }
 
@@ -30,7 +36,24 @@ export class LoginPage {
   }
 
   onLogin(): void {
-    this.navCtrl.navigateRoot('/home');
+    if (!this.email || !this.password) {
+      this.errorMessage = 'Please enter your email and password';
+      return;
+    }
+
+    this.isLoading = true;
+    this.errorMessage = '';
+
+    this.authService.login(this.email, this.password).subscribe({
+      next: () => {
+        this.isLoading = false;
+        this.navCtrl.navigateRoot('/home');
+      },
+      error: (err) => {
+        this.isLoading = false;
+        this.errorMessage = err.error?.message || 'Login failed. Please try again.';
+      }
+    });
   }
 
   onSignUp(): void {

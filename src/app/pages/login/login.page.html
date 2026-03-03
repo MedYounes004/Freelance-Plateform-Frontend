@@ -63,9 +63,17 @@
               Forgot password?
             </button>
           </div>
+          <!-- Error Message -->
+<div class="error-msg" *ngIf="errorMessage">
+  {{ errorMessage }}
+</div>
 
-          <!-- Sign In Button -->
-          <button type="submit" class="primary-btn">Sign In</button>
+<!-- Sign In Button -->
+<button type="submit" class="primary-btn" [disabled]="isLoading">
+  {{ isLoading ? 'Signing in...' : 'Sign In' }}
+</button>
+
+
 
         </form>
 
