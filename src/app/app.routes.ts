@@ -60,11 +60,11 @@ export const routes: Routes = [
   },
   {
     path: 'projects',
-    loadComponent: () => import('./projects-screen/projects-screen.page').then( m => m.ProjectsPage)
+    loadComponent: () => import('./pages/projects-screen/projects-screen.page').then( m => m.ProjectsPage)
   },
   {
     path: 'project-details',
-    loadComponent: () => import('./project-details-screen/project-details-screen.page').then( m => m.ProjectDetailsPage)
+    loadComponent: () => import('./pages/project-details-screen/project-details-screen.page').then( m => m.ProjectDetailsPage)
   },
 
 
