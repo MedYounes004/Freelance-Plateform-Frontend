@@ -71,4 +71,14 @@ export const routes: Routes = [
 
 
 
+
+  {
+    path: 'projects/new',
+    loadComponent: () => import('./pages/create-project-screen/create-project-screen.page').then( m => m.CreateProjectPage)
+  },
+  {
+    path: 'proposals/new',
+    loadComponent: () => import('./pages/create-proposal-screen/create-proposal-screen.page').then( m => m.CreateProposalPage)
+  },
 ];
+

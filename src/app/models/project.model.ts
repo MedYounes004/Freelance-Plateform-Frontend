@@ -136,32 +136,3 @@ export interface ProposalListResponse {
   limit: number;
   pages?: number;
 }
-
-/**
- * Interface pour créer une proposition
- */
-export interface CreateProposalRequest {
-  project_id: string;
-  bid_amount: number;
-  message: string;
-  estimated_duration: string;
-  attachments?: string[];
-}
-
-/**
- * Interface pour la réponse de création de proposition
- */
-export interface CreateProposalResponse {
-  message: string;
-  proposal_id: string;
-}
-
-/**
- * Interface pour la liste des propositions avec pagination
- */
-export interface ProposalListResponse {
-  proposals: Proposal[];
-  total: number;
-  page: number;
-  limit: number;
-}

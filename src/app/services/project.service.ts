@@ -93,9 +93,29 @@ export class ProjectService {
   }
 
   /**
-   * Récupère les projets d'un client
+   * Récupère les projets de l'utilisateur connecté selon son rôle
    */
-  getClientProjects(clientId: string): Observable<{ projects: Project[]; total: number }> {
-    return this.http.get<{ projects: Project[]; total: number }>(`${this.apiUrl}/client/${clientId}`);
+  getMyProjects(
+    page: number = 1,
+    limit: number = 10,
+    status?: ProjectStatus,
+    category?: string,
+    skill?: string
+  ): Observable<ProjectListResponse> {
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('limit', limit.toString());
+
+    if (status) {
+      params = params.set('status', status);
+    }
+    if (category) {
+      params = params.set('category', category);
+    }
+    if (skill) {
+      params = params.set('skill', skill);
+    }
+
+    return this.http.get<ProjectListResponse>(`${this.apiUrl}/my`, { params });
   }
 }

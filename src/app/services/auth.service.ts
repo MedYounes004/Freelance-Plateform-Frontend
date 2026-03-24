@@ -13,15 +13,19 @@ export interface RegisterRequest {
   name: string;
   email: string;
   password: string;
-  user_type: 'freelancer' | 'client';
+  role: 'freelancer' | 'client';
 }
 
 export interface AuthResponse {
   message: string;
   token: string;
-  user_id: string;
-  email: string;
-  name: string;
+  user: {
+    id: string;
+    name: string;
+    email: string;
+    role: 'freelancer' | 'client';
+    subscription: string;
+  };
 }
 
 @Injectable({
@@ -32,6 +36,7 @@ export class AuthService {
   private readonly USER_ID_KEY = 'user_id';
   private readonly USER_NAME_KEY = 'user_name';
   private readonly USER_EMAIL_KEY = 'user_email';
+  private readonly USER_ROLE_KEY = 'user_role';
   private currentUserSubject: BehaviorSubject<string | null>;
   public currentUser$: Observable<string | null>;
   private currentTokenSubject: BehaviorSubject<string | null>;
@@ -56,7 +61,7 @@ export class AuthService {
     return this.http.post<AuthResponse>(`${environment.apiUrl}/auth/register`, request)
       .pipe(
         tap(response => {
-          this.setToken(response.token, response.user_id, response.email, response.name);
+          this.setToken(response.token, response.user.id, response.user.email, response.user.name, response.user.role);
         }),
         catchError(error => {
           throw error;
@@ -71,7 +76,7 @@ export class AuthService {
     return this.http.post<AuthResponse>(`${environment.apiUrl}/auth/login`, request)
       .pipe(
         tap(response => {
-          this.setToken(response.token, response.user_id, response.email, response.name);
+          this.setToken(response.token, response.user.id, response.user.email, response.user.name, response.user.role);
         }),
         catchError(error => {
           throw error;
@@ -103,11 +108,12 @@ export class AuthService {
   /**
    * Stocke le token JWT et les informations utilisateur
    */
-  setToken(token: string, userId: string, email: string, name: string): void {
+  setToken(token: string, userId: string, email: string, name: string, role: 'freelancer' | 'client'): void {
     localStorage.setItem(this.TOKEN_KEY, token);
     localStorage.setItem(this.USER_ID_KEY, userId);
     localStorage.setItem(this.USER_EMAIL_KEY, email);
     localStorage.setItem(this.USER_NAME_KEY, name);
+    localStorage.setItem(this.USER_ROLE_KEY, role);
     this.currentTokenSubject.next(token);
     this.currentUserSubject.next(userId);
   }
@@ -120,6 +126,7 @@ export class AuthService {
     localStorage.removeItem(this.USER_ID_KEY);
     localStorage.removeItem(this.USER_EMAIL_KEY);
     localStorage.removeItem(this.USER_NAME_KEY);
+    localStorage.removeItem(this.USER_ROLE_KEY);
     this.currentTokenSubject.next(null);
     this.currentUserSubject.next(null);
   }
@@ -150,6 +157,14 @@ export class AuthService {
    */
   getCurrentUserEmail(): string | null {
     return localStorage.getItem(this.USER_EMAIL_KEY);
+  }
+
+  /**
+   * Récupère le rôle d'utilisateur courant
+   */
+  getCurrentUserRole(): 'freelancer' | 'client' | null {
+    const role = localStorage.getItem(this.USER_ROLE_KEY);
+    return role as 'freelancer' | 'client' | null;
   }
 
   /**
