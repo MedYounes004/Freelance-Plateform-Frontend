@@ -212,3 +212,61 @@
     }
   }
 }
+
+// ─── Loading, Error, No Projects ─────────────────────────
+.loading-container,
+.error-container,
+.no-projects {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 24px;
+  gap: 20px;
+  text-align: center;
+  min-height: 400px;
+}
+
+.loading-container {
+  ion-spinner {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 10px;
+  }
+
+  p {
+    color: #6b7280;
+    font-size: 0.875rem;
+    margin: 0;
+  }
+}
+
+.error-container {
+  ion-text {
+    margin-bottom: 20px;
+
+    p {
+      margin: 0;
+      color: #dc2626;
+      font-weight: 500;
+    }
+  }
+
+  ion-button {
+    --background: #4f46e5;
+    --color: #ffffff;
+    --border-radius: 12px;
+    width: 100%;
+    max-width: 200px;
+  }
+}
+
+.no-projects {
+  ion-text {
+    p {
+      margin: 0;
+      color: #9ca3af;
+      font-size: 0.875rem;
+    }
+  }
+}

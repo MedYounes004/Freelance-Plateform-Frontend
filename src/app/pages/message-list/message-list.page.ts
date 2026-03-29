@@ -116,6 +116,6 @@ export class MessagesListPage implements OnInit {
     this.messageClicked.emit(conversation);
 
     // Navigate to messaging screen and pass the conversation via navigation state
-    this.navCtrl.navigateForward('/messaging-screen', { state: { conversation } });
+    this.navCtrl.navigateForward('/messaging', { state: { conversation } });
   }
 }

@@ -13,105 +13,126 @@
 
 <ion-content class="project-details-content">
 
-  <!-- Project title & badges -->
-  <div class="section project-hero">
-    <div class="badges">
-      <span class="badge badge-active">Active</span>
-      <span class="badge badge-category">Design</span>
-    </div>
-    <h1>{{ project.title }}</h1>
-
-    <!-- Client -->
-    <div class="client-row">
-      <ion-avatar class="client-avatar">
-        <img [src]="project.clientAvatar" [alt]="project.clientName" />
-      </ion-avatar>
-      <div>
-        <p class="client-name">{{ project.clientName }}</p>
-        <p class="client-meta">{{ project.postedAt }}</p>
-      </div>
-    </div>
+  <!-- Loading spinner -->
+  <div *ngIf="isLoading" class="loading-container">
+    <ion-spinner color="primary"></ion-spinner>
+    <p>Loading project details...</p>
   </div>
 
-  <!-- Stats grid -->
-  <div class="section stats-grid">
-    <div class="stat-item" *ngFor="let stat of stats">
-      <div class="stat-icon" [ngClass]="stat.bgClass">
-        <ion-icon [name]="stat.icon" [ngClass]="stat.iconClass"></ion-icon>
-      </div>
-      <div>
-        <p class="stat-label">{{ stat.label }}</p>
-        <p class="stat-value">{{ stat.value }}</p>
-      </div>
-    </div>
+  <!-- Error message -->
+  <div *ngIf="errorMessage && !isLoading" class="error-container">
+    <ion-text color="danger">
+      <p>{{ errorMessage }}</p>
+    </ion-text>
+    <ion-button (click)="onBack()">Go Back</ion-button>
   </div>
 
-  <!-- Description -->
-  <div class="section">
-    <h2>Description</h2>
-    <p *ngFor="let para of project.description" class="description-para">{{ para }}</p>
-  </div>
+  <!-- Project content -->
+  <div *ngIf="selectedProject && !isLoading && !errorMessage">
 
-  <!-- Required Skills -->
-  <div class="section">
-    <h2>Required Skills</h2>
-    <div class="skills-wrap">
-      <span *ngFor="let skill of project.skills" class="skill-tag">{{ skill }}</span>
-    </div>
-  </div>
-
-  <!-- Milestones -->
-  <div class="section">
-    <h2>Milestones</h2>
-    <div class="milestones-list">
-      <div
-        *ngFor="let milestone of milestones; let i = index; let last = last"
-        class="milestone-row">
-
-        <div class="milestone-indicator">
-          <div class="milestone-icon" [ngClass]="getMilestoneIconClass(milestone.status)">
-            <ion-icon
-              *ngIf="milestone.status === 'completed'"
-              name="checkmark-circle"
-              class="icon-completed">
-            </ion-icon>
-            <span *ngIf="milestone.status !== 'completed'" [ngClass]="getMilestoneNumberClass(milestone.status)">
-              {{ i + 1 }}
-            </span>
-          </div>
-          <div *ngIf="!last" class="milestone-connector"></div>
-        </div>
-
-        <div class="milestone-body">
-          <p class="milestone-title">{{ milestone.title }}</p>
-          <p class="milestone-payment">${{ milestone.payment }}</p>
-        </div>
-
-        <span class="badge" [ngClass]="getMilestoneStatusClass(milestone.status)">
-          {{ getMilestoneStatusLabel(milestone.status) }}
+    <!-- Project title & badges -->
+    <div class="section project-hero">
+      <div class="badges">
+        <span class="badge" [ngClass]="'badge-' + selectedProject.status">
+          {{ selectedProject.status | uppercase }}
         </span>
+        <span class="badge badge-category">{{ selectedProject.category }}</span>
       </div>
-    </div>
-  </div>
+      <h1>{{ selectedProject.title }}</h1>
 
-  <!-- Attachments -->
-  <div class="section section-last">
-    <h2>Attachments</h2>
-    <div class="attachment-item" *ngFor="let file of project.attachments">
-      <div class="attachment-icon">
-        <ion-icon name="document-text-outline"></ion-icon>
+      <!-- Client -->
+      <div class="client-row">
+        <ion-avatar class="client-avatar">
+          <img [src]="selectedProject.clientAvatar || 'assets/default-avatar.png'" [alt]="selectedProject.client" />
+        </ion-avatar>
+        <div>
+          <p class="client-name">{{ selectedProject.client }}</p>
+          <p class="client-meta">Posted on {{ selectedProject.createdAt | date: 'MMM d, yyyy' }}</p>
+        </div>
       </div>
-      <div class="attachment-meta">
-        <p class="file-name">{{ file.name }}</p>
-        <p class="file-size">{{ file.size }}</p>
-      </div>
-      <ion-button fill="clear" class="view-btn">View</ion-button>
     </div>
+
+    <!-- Stats grid -->
+    <div class="section stats-grid">
+      <div class="stat-item" *ngFor="let stat of stats">
+        <div class="stat-icon" [ngClass]="stat.bgClass">
+          <ion-icon [name]="stat.icon" [ngClass]="stat.iconClass"></ion-icon>
+        </div>
+        <div>
+          <p class="stat-label">{{ stat.label }}</p>
+          <p class="stat-value">{{ stat.value }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Description -->
+    <div class="section">
+      <h2>Description</h2>
+      <p *ngFor="let para of selectedProject.description" class="description-para">{{ para }}</p>
+    </div>
+
+    <!-- Required Skills -->
+    <div class="section" *ngIf="selectedProject.skills && selectedProject.skills.length > 0">
+      <h2>Required Skills</h2>
+      <div class="skills-wrap">
+        <span *ngFor="let skill of selectedProject.skills" class="skill-tag">{{ skill }}</span>
+      </div>
+    </div>
+
+    <!-- Milestones -->
+    <div class="section" *ngIf="selectedProject.milestones && selectedProject.milestones.length > 0">
+      <h2>Milestones</h2>
+      <div class="milestones-list">
+        <div
+          *ngFor="let milestone of selectedProject.milestones; let i = index; let last = last"
+          class="milestone-row">
+
+          <div class="milestone-indicator">
+            <div class="milestone-icon" [ngClass]="getMilestoneIconClass(milestone.status)">
+              <ion-icon
+                *ngIf="milestone.status === 'completed'"
+                name="checkmark-circle"
+                class="icon-completed">
+              </ion-icon>
+              <span *ngIf="milestone.status !== 'completed'" [ngClass]="getMilestoneNumberClass(milestone.status)">
+                {{ i + 1 }}
+              </span>
+            </div>
+            <div *ngIf="!last" class="milestone-connector"></div>
+          </div>
+
+          <div class="milestone-body">
+            <p class="milestone-title">{{ milestone.title }}</p>
+            <p class="milestone-payment">${{ milestone.payment }}</p>
+          </div>
+
+          <span class="badge" [ngClass]="getMilestoneStatusClass(milestone.status)">
+            {{ getMilestoneStatusLabel(milestone.status) }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Attachments -->
+    <div class="section section-last" *ngIf="selectedProject.attachments && selectedProject.attachments.length > 0">
+      <h2>Attachments</h2>
+      <div class="attachment-item" *ngFor="let file of selectedProject.attachments">
+        <div class="attachment-icon">
+          <ion-icon name="document-text-outline"></ion-icon>
+        </div>
+        <div class="attachment-meta">
+          <p class="file-name">{{ file.name }}</p>
+          <p class="file-size">{{ file.size }}</p>
+        </div>
+        <ion-button fill="clear" class="view-btn">View</ion-button>
+      </div>
+    </div>
+
   </div>
 
 </ion-content>
 
-<ion-footer class="ion-no-border project-details-footer">
+<ion-footer class="ion-no-border project-details-footer" *ngIf="selectedProject && !isLoading && !errorMessage">
   <div class="footer-inner">
     <ion-button expand="block" class="apply-btn" (click)="onApply()">
       Submit Proposal

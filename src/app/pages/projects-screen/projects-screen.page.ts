@@ -5,28 +5,12 @@ import { RouterModule } from '@angular/router';
 import {
   IonHeader, IonToolbar, IonContent,
   IonButton, IonIcon, IonSearchbar,
-  NavController,
+  NavController, IonSpinner, IonText,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { cashOutline, calendarOutline } from 'ionicons/icons';
-
-export type ProjectStatus = 'in-progress' | 'completed' | 'pending';
-
-export interface Project {
-  id: number;
-  title: string;
-  client: string;
-  status: ProjectStatus;
-  budget: number;
-  deadline: string;
-  progress: number;
-  category: string;
-}
-
-interface FilterTab {
-  label: string;
-  value: ProjectStatus | 'all';
-}
+import { ProjectService } from '../../core/services/projects/project.service';
+import { Project, ProjectStatus } from '../../models/project.model';
 
 @Component({
   selector: 'app-projects',
@@ -38,7 +22,7 @@ interface FilterTab {
     FormsModule,
     RouterModule,
     IonHeader, IonToolbar, IonContent,
-    IonButton, IonIcon, IonSearchbar,
+    IonButton, IonIcon, IonSearchbar, IonSpinner, IonText,
   ],
 })
 export class ProjectsPage implements OnInit {
@@ -47,86 +31,97 @@ export class ProjectsPage implements OnInit {
 
   searchQuery = '';
   activeFilter: ProjectStatus | 'all' = 'all';
+  isLoading = false;
+  errorMessage = '';
+  currentPage = 1;
+  pageSize = 10;
 
-  filterTabs: FilterTab[] = [
+  filterTabs: Array<{ label: string; value: ProjectStatus | 'all' }> = [
     { label: 'All',         value: 'all' },
     { label: 'In Progress', value: 'in-progress' },
     { label: 'Completed',   value: 'completed' },
     { label: 'Pending',     value: 'pending' },
   ];
 
-  projects: Project[] = [
-    {
-      id: 1,
-      title: 'E-commerce Website Redesign',
-      client: 'TechStart Inc.',
-      status: 'in-progress',
-      budget: 2000,
-      deadline: 'Mar 15, 2026',
-      progress: 60,
-      category: 'Design',
-    },
-    {
-      id: 2,
-      title: 'Mobile App UI Design',
-      client: 'Startup Co.',
-      status: 'in-progress',
-      budget: 3500,
-      deadline: 'Mar 20, 2026',
-      progress: 35,
-      category: 'Design',
-    },
-    {
-      id: 3,
-      title: 'Brand Identity Package',
-      client: 'Creative Agency',
-      status: 'completed',
-      budget: 1500,
-      deadline: 'Feb 28, 2026',
-      progress: 100,
-      category: 'Design',
-    },
-    {
-      id: 4,
-      title: 'Landing Page Design',
-      client: 'Marketing Firm',
-      status: 'pending',
-      budget: 800,
-      deadline: 'Mar 30, 2026',
-      progress: 0,
-      category: 'Design',
-    },
-  ];
-
+  projects: Project[] = [];
   filteredProjects: Project[] = [];
 
-  constructor(private navCtrl: NavController) {
+  constructor(
+    private navCtrl: NavController,
+    private projectService: ProjectService
+  ) {
     addIcons({ cashOutline, calendarOutline });
   }
 
   ngOnInit(): void {
-    this.applyFilters();
+    this.loadProjects();
+  }
+
+  /**
+   * Charge les projets du backend
+   */
+  loadProjects(): void {
+    this.isLoading = true;
+    this.errorMessage = '';
+
+    const status = this.activeFilter !== 'all' ? this.activeFilter : undefined;
+
+    this.projectService
+      .getProjects(this.currentPage, this.pageSize, status as ProjectStatus | undefined)
+      .subscribe({
+        next: (response) => {
+          this.projects = response.projects || [];
+          this.applyFilters();
+          this.isLoading = false;
+        },
+        error: (err) => {
+          console.error('Error loading projects:', err);
+          this.errorMessage = 'Failed to load projects. Please try again.';
+          this.isLoading = false;
+        },
+      });
   }
 
   onSearch(event: CustomEvent): void {
     this.searchQuery = (event.detail.value as string) ?? '';
-    this.applyFilters();
+
+    // Si la recherche est vide, recharger depuis le backend
+    if (!this.searchQuery.trim()) {
+      this.currentPage = 1;
+      this.loadProjects();
+    } else {
+      // Sinon, utiliser la recherche du backend
+      this.isLoading = true;
+      this.projectService
+        .searchProjects(this.searchQuery, this.currentPage, this.pageSize)
+        .subscribe({
+          next: (response) => {
+            this.projects = response.projects || [];
+            this.applyFilters();
+            this.isLoading = false;
+          },
+          error: (err) => {
+            console.error('Error searching projects:', err);
+            this.errorMessage = 'Failed to search projects.';
+            this.isLoading = false;
+          },
+        });
+    }
   }
 
   setFilter(filter: ProjectStatus | 'all'): void {
     this.activeFilter = filter;
-    this.applyFilters();
+    this.currentPage = 1;
+    this.loadProjects();
   }
 
   onProjectClick(project: Project): void {
     this.projectClicked.emit(project);
-    // navigate to details screen (similar to React state change example)
     this.navCtrl.navigateForward('/project-details', { state: { project } });
   }
 
   onNewProject(): void {
-    // this.navCtrl.navigateForward('/projects/new');
-    console.log('New project');
+    this.navCtrl.navigateForward('/projects/new');
   }
 
   getStatusLabel(status: ProjectStatus): string {

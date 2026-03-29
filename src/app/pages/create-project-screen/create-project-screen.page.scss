@@ -1,0 +1,244 @@
+// create-project-screen.page.scss
+
+// ─── Header ──────────────────────────────────────────────
+.create-project-header {
+  ion-toolbar {
+    --background: #ffffff;
+    --border-width: 0;
+    --padding-start: 0;
+    --padding-end: 0;
+  }
+
+  .toolbar-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 48px 16px 8px;
+
+    h1 {
+      flex: 1;
+      text-align: center;
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: #111827;
+      margin: 0;
+    }
+
+    .back-btn {
+      --color: #4b5563;
+      --padding-start: 8px;
+      --padding-end: 8px;
+      margin-left: -8px;
+    }
+  }
+}
+
+// ─── Content ─────────────────────────────────────────────
+.create-project-content {
+  --background: #f9fafb;
+  --padding-bottom: 100px;
+
+  .error-banner {
+    background: #fee2e2;
+    border-left: 4px solid #dc2626;
+    padding: 12px 16px;
+    margin: 16px;
+    border-radius: 8px;
+
+    ion-text p {
+      margin: 0;
+      color: #991b1b;
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+  }
+}
+
+// ─── Form ────────────────────────────────────────────────
+.project-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.form-section {
+  background: #ffffff;
+  padding: 20px;
+  margin-bottom: 12px;
+  border-radius: 12px;
+
+  h2 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #111827;
+    margin: 0 0 16px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+
+    h2 {
+      margin: 0;
+    }
+
+    ion-button {
+      --background: transparent;
+      --color: #4f46e5;
+      --padding-start: 6px;
+      --padding-end: 6px;
+      font-size: 0.875rem;
+      height: 32px;
+    }
+  }
+}
+
+// ─── Form Items ──────────────────────────────────────────
+ion-item {
+  --background: transparent;
+  --border-width: 0;
+  --padding-start: 0;
+  --padding-end: 0;
+  --inner-border-width: 0;
+  margin-bottom: 16px;
+
+  ion-label {
+    font-size: 0.875rem;
+    color: #6b7280;
+    --color: #6b7280;
+  }
+
+  ion-input,
+  ion-textarea,
+  ion-select {
+    --padding-start: 0;
+    --padding-end: 0;
+    font-size: 0.9375rem;
+    color: #111827 !important;
+    --color: #111827 !important;
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 8px;
+
+    &::placeholder {
+      color: #d1d5db;
+    }
+  }
+
+  ion-textarea {
+    --color: #111827 !important;
+    --placeholder-color: #d1d5db !important;
+    color: #111827 !important;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+// ─── Form Arrays ─────────────────────────────────────────
+.form-array {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.array-item {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+
+  ion-textarea,
+  ion-input {
+    flex: 1;
+  }
+
+  ion-button {
+    --color: #dc2626;
+    --padding-start: 0;
+    --padding-end: 0;
+    height: 32px;
+    font-size: 1.2rem;
+  }
+}
+
+.form-input {
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 8px;
+  --padding-start: 0 !important;
+  --padding-end: 0 !important;
+  --color: #111827 !important;
+  color: #111827 !important;
+}
+
+ion-textarea.form-input {
+  --color: #111827 !important;
+  --placeholder-color: #d1d5db !important;
+  color: #111827 !important;
+}
+
+// ─── Milestones ──────────────────────────────────────────
+.milestone-item {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px;
+  background: #f9fafb;
+  border-radius: 10px;
+  border-left: 4px solid #e0e7ff;
+
+  ion-item {
+    margin-bottom: 0;
+  }
+
+  .remove-milestone {
+    align-self: flex-end;
+  }
+}
+
+// ─── Error Text ──────────────────────────────────────────
+.error-text {
+  color: #dc2626;
+  font-size: 0.75rem;
+  margin-top: -12px;
+  margin-bottom: 8px;
+}
+
+// ─── Footer ──────────────────────────────────────────────
+.create-project-footer {
+  background: #ffffff;
+  border-top: 1px solid #f3f4f6;
+
+  .footer-inner {
+    padding: 16px;
+    padding-bottom: calc(16px + env(safe-area-inset-bottom));
+    display: flex;
+    gap: 12px;
+
+    ion-button {
+      font-weight: 600;
+      --border-radius: 12px;
+      height: 48px;
+    }
+
+    .cancel-btn {
+      --background: #f3f4f6;
+      --color: #374151;
+    }
+
+    .submit-btn {
+      --background: #4f46e5;
+      --background-activated: #4338ca;
+      --color: #ffffff;
+
+      ion-spinner {
+        width: 16px;
+        height: 16px;
+        margin-right: 8px;
+      }
+    }
+  }
+}

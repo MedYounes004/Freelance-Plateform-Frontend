@@ -44,12 +44,7 @@ export const routes: Routes = [
   {
     path: 'login',
     loadComponent: () => import('./pages/login/login.page').then( m => m.LoginPage)
-  },
-  {
-  path: 'login',
-  loadComponent: () =>
-    import('./pages/login/login.page').then(m => m.LoginPage),
-},
+  }, 
   {
     path: 'messages',
     loadComponent: () => import('./pages/message-list/message-list.page').then( m => m.MessagesListPage)
@@ -66,9 +61,13 @@ export const routes: Routes = [
     path: 'project-details',
     loadComponent: () => import('./pages/project-details-screen/project-details-screen.page').then( m => m.ProjectDetailsPage)
   },
-
-
-
-
-
+  {
+    path: 'projects/new',
+    loadComponent: () => import('./pages/create-project-screen/create-project-screen.page').then( m => m.CreateProjectPage)
+  },
+  {
+    path: 'proposals/new',
+    loadComponent: () => import('./pages/create-proposal-screen/create-proposal-screen.page').then( m => m.CreateProposalPage)
+  },
 ];
+

@@ -1,0 +1,288 @@
+<ion-header class="ion-no-border create-project-header">
+  <ion-toolbar>
+    <div class="toolbar-row">
+      <ion-button fill="clear" class="back-btn" (click)="onBack()">
+        <ion-icon name="arrow-back-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+      <h1>Create Project</h1>
+      <div></div>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="create-project-content">
+
+  <!-- Error message -->
+  <div *ngIf="errorMessage" class="error-banner">
+    <ion-text color="danger">
+      <p>{{ errorMessage }}</p>
+    </ion-text>
+  </div>
+
+  <!-- Form -->
+  <form [formGroup]="projectForm" (ngSubmit)="onSubmit()" class="project-form">
+
+    <!-- Basic Information Section -->
+    <div class="form-section">
+      <h2>Basic Information</h2>
+
+      <!-- Project Title -->
+      <ion-item>
+        <ion-label position="floating">Project Title</ion-label>
+        <ion-input
+          type="text"
+          formControlName="title"
+          placeholder="Enter project title"
+          class="form-input">
+        </ion-input>
+      </ion-item>
+      <div class="error-text" *ngIf="projectForm.get('title')?.invalid && projectForm.get('title')?.touched">
+        Title must be at least 5 characters
+      </div>
+
+      <!-- Client Name -->
+      <ion-item>
+        <ion-label position="floating">Client Name</ion-label>
+        <ion-input
+          type="text"
+          formControlName="client"
+          placeholder="Enter client name"
+          class="form-input">
+        </ion-input>
+      </ion-item>
+      <div class="error-text" *ngIf="projectForm.get('client')?.invalid && projectForm.get('client')?.touched">
+        Client name must be at least 3 characters
+      </div>
+
+      <!-- Budget -->
+      <ion-item>
+        <ion-label position="floating">Budget ($)</ion-label>
+        <ion-input
+          type="number"
+          formControlName="budget"
+          placeholder="Enter budget"
+          class="form-input">
+        </ion-input>
+      </ion-item>
+      <div class="error-text" *ngIf="projectForm.get('budget')?.invalid && projectForm.get('budget')?.touched">
+        Budget must be greater than 0
+      </div>
+
+      <!-- Deadline -->
+      <ion-item>
+        <ion-label position="floating">Deadline</ion-label>
+        <ion-input
+          type="date"
+          formControlName="deadline"
+          class="form-input">
+        </ion-input>
+      </ion-item>
+
+      <!-- Category -->
+      <ion-item>
+        <ion-label position="floating">Category</ion-label>
+        <ion-select formControlName="category" class="form-input">
+          <ion-select-option value="">Select Category</ion-select-option>
+          <ion-select-option value="Web Development">Web Development</ion-select-option>
+          <ion-select-option value="Mobile Development">Mobile Development</ion-select-option>
+          <ion-select-option value="Design">Design</ion-select-option>
+          <ion-select-option value="Writing">Writing</ion-select-option>
+          <ion-select-option value="Marketing">Marketing</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <!-- Status -->
+      <ion-item>
+        <ion-label position="floating">Status</ion-label>
+        <ion-select formControlName="status" class="form-input">
+          <ion-select-option value="pending">Pending</ion-select-option>
+          <ion-select-option value="in-progress">In Progress</ion-select-option>
+          <ion-select-option value="completed">Completed</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <!-- Duration -->
+      <ion-item>
+        <ion-label position="floating">Duration</ion-label>
+        <ion-input
+          type="text"
+          formControlName="duration"
+          placeholder="e.g., 4 weeks"
+          class="form-input">
+        </ion-input>
+      </ion-item>
+
+      <!-- Client Avatar URL -->
+      <ion-item>
+        <ion-label position="floating">Client Avatar URL (optional)</ion-label>
+        <ion-input
+          type="url"
+          formControlName="clientAvatar"
+          placeholder="https://..."
+          class="form-input">
+        </ion-input>
+      </ion-item>
+
+    </div>
+
+    <!-- Description Section -->
+    <div class="form-section">
+      <div class="section-header">
+        <h2>Description</h2>
+        <ion-button
+          fill="clear"
+          size="small"
+          type="button"
+          (click)="addDescription()">
+          <ion-icon name="add-circle-outline" slot="start"></ion-icon>
+          Add
+        </ion-button>
+      </div>
+
+      <div formArrayName="description" class="form-array">
+        <div *ngFor="let desc of descriptionArray.controls; let i = index" class="array-item">
+          <ion-textarea
+            [formControlName]="i"
+            placeholder="Enter description..."
+            rows="3"
+            class="form-input">
+          </ion-textarea>
+          <ion-button
+            *ngIf="descriptionArray.length > 1"
+            fill="clear"
+            size="small"
+            type="button"
+            color="danger"
+            (click)="removeDescription(i)">
+            <ion-icon name="remove-circle-outline"></ion-icon>
+          </ion-button>
+        </div>
+      </div>
+      <div class="error-text" *ngIf="descriptionArray.invalid && descriptionArray.touched">
+        At least one description is required
+      </div>
+    </div>
+
+    <!-- Skills Section -->
+    <div class="form-section">
+      <div class="section-header">
+        <h2>Required Skills</h2>
+        <ion-button
+          fill="clear"
+          size="small"
+          type="button"
+          (click)="addSkill()">
+          <ion-icon name="add-circle-outline" slot="start"></ion-icon>
+          Add
+        </ion-button>
+      </div>
+
+      <div formArrayName="skills" class="form-array">
+        <div *ngFor="let skill of skillsArray.controls; let i = index" class="array-item">
+          <ion-item>
+            <ion-input
+              [formControlName]="i"
+              placeholder="Enter skill (e.g., Flutter, React)"
+              class="form-input">
+            </ion-input>
+          </ion-item>
+          <ion-button
+            *ngIf="skillsArray.length > 1"
+            fill="clear"
+            size="small"
+            type="button"
+            color="danger"
+            (click)="removeSkill(i)">
+            <ion-icon name="remove-circle-outline"></ion-icon>
+          </ion-button>
+        </div>
+      </div>
+      <div class="error-text" *ngIf="skillsArray.invalid && skillsArray.touched">
+        At least one skill is required
+      </div>
+    </div>
+
+    <!-- Milestones Section (Optional) -->
+    <div class="form-section">
+      <div class="section-header">
+        <h2>Milestones (Optional)</h2>
+        <ion-button
+          fill="clear"
+          size="small"
+          type="button"
+          (click)="addMilestone()">
+          <ion-icon name="add-circle-outline" slot="start"></ion-icon>
+          Add
+        </ion-button>
+      </div>
+
+      <div formArrayName="milestones" class="form-array">
+        <div *ngFor="let milestone of milestonesArray.controls; let i = index" 
+             [formGroupName]="i"
+             class="milestone-item">
+          <ion-item>
+            <ion-label position="floating">Milestone Title</ion-label>
+            <ion-input
+              type="text"
+              formControlName="title"
+              placeholder="e.g., Design Phase"
+              class="form-input">
+            </ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating">Payment ($)</ion-label>
+            <ion-input
+              type="number"
+              formControlName="payment"
+              placeholder="0"
+              class="form-input">
+            </ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating">Status</ion-label>
+            <ion-select formControlName="status" class="form-input">
+              <ion-select-option value="pending">Pending</ion-select-option>
+              <ion-select-option value="in-progress">In Progress</ion-select-option>
+              <ion-select-option value="completed">Completed</ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-button
+            fill="clear"
+            size="small"
+            type="button"
+            color="danger"
+            (click)="removeMilestone(i)"
+            class="remove-milestone">
+            <ion-icon name="remove-circle-outline"></ion-icon>
+          </ion-button>
+        </div>
+      </div>
+    </div>
+
+  </form>
+
+</ion-content>
+
+<ion-footer class="ion-no-border create-project-footer">
+  <div class="footer-inner">
+    <ion-button
+      expand="block"
+      class="cancel-btn"
+      (click)="onBack()"
+      [disabled]="isLoading">
+      Cancel
+    </ion-button>
+    <ion-button
+      expand="block"
+      class="submit-btn"
+      type="button"
+      (click)="onSubmit()"
+      [disabled]="isLoading || projectForm.invalid">
+      <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
+      {{ isLoading ? 'Creating...' : 'Create Project' }}
+    </ion-button>
+  </div>
+</ion-footer>

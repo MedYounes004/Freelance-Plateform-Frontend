@@ -13,6 +13,7 @@ import {
   cash, cloudUpload, trophy, sparkles
 } from 'ionicons/icons';
 import { BottomNavigationComponent } from '../../components/bottom-navigation/bottom-navigation.component';
+import { Shared } from 'src/app/core/services/shared/shared';
 
 export type SubscriptionStatus = 'free' | 'freelancer-pro' | 'client-pro';
 
@@ -42,7 +43,7 @@ export class ProfilePage {
     return this.subscriptionStatus === 'freelancer-pro' ? 'Freelancer Pro' : 'Client Pro';
   }
 
-  constructor(private navCtrl: NavController) {
+  constructor(private navCtrl: NavController, private shared: Shared) {
     addIcons({
       chevronForward, person, notifications, card, shield,
       helpCircle, documentText, logOut, star, briefcase,
@@ -56,6 +57,7 @@ export class ProfilePage {
 
   onLogout(): void {
     this.navCtrl.navigateRoot('/login');
+    this.shared.OnchangeGuestStatus(true);
   }
 
   onCVManagement(): void {

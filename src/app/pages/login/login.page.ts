@@ -5,7 +5,8 @@ import { NavController } from '@ionic/angular/standalone';
 import { IonContent, IonIcon } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { eyeOutline, eyeOffOutline } from 'ionicons/icons';
-import { AuthService } from '../../core/services/auth';
+import { AuthService } from '../../core/services/auth/auth';
+import { Shared } from 'src/app/core/services/shared/shared';
 
 @Component({
   selector: 'app-login',
@@ -17,8 +18,8 @@ import { AuthService } from '../../core/services/auth';
 })
 export class LoginPage {
 
-  email = '';
-  password = '';
+  email = 'demo@example.com';
+  password = 'password123';
   rememberMe = false;
   showPassword = false;
   errorMessage = '';
@@ -26,7 +27,8 @@ export class LoginPage {
 
   constructor(
     private navCtrl: NavController,
-    private authService: AuthService
+    private authService: AuthService,
+    private shared: Shared
   ) {
     addIcons({ eyeOutline, eyeOffOutline });
   }
@@ -36,24 +38,12 @@ export class LoginPage {
   }
 
   onLogin(): void {
-    if (!this.email || !this.password) {
-      this.errorMessage = 'Please enter your email and password';
-      return;
+    if (this.email === 'demo@example.com' && this.password === 'password123') {
+      this.navCtrl.navigateRoot('/home');
+      this.shared.OnchangeGuestStatus(false);
+    } else {
+      console.log('Invalid credentials');
     }
-
-    this.isLoading = true;
-    this.errorMessage = '';
-
-    this.authService.login(this.email, this.password).subscribe({
-      next: () => {
-        this.isLoading = false;
-        this.navCtrl.navigateRoot('/home');
-      },
-      error: (err) => {
-        this.isLoading = false;
-        this.errorMessage = err.error?.message || 'Login failed. Please try again.';
-      }
-    });
   }
 
   onSignUp(): void {
@@ -62,6 +52,7 @@ export class LoginPage {
 
   onGuestMode(): void {
     this.navCtrl.navigateRoot('/home');
+    this.shared.OnchangeGuestStatus(true);
   }
 
   onForgotPassword(): void {
