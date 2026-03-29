@@ -5,7 +5,8 @@ import { NavController } from '@ionic/angular/standalone';
 import { IonContent, IonIcon } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { eyeOutline, eyeOffOutline } from 'ionicons/icons';
-import { Shared } from 'src/app/core/services/shared';
+import { AuthService } from '../../core/services/auth/auth';
+import { Shared } from 'src/app/core/services/shared/shared';
 
 @Component({
   selector: 'app-login',
@@ -21,8 +22,14 @@ export class LoginPage {
   password = 'password123';
   rememberMe = false;
   showPassword = false;
+  errorMessage = '';
+  isLoading = false;
 
-  constructor(private navCtrl: NavController) {
+  constructor(
+    private navCtrl: NavController,
+    private authService: AuthService,
+    private shared: Shared
+  ) {
     addIcons({ eyeOutline, eyeOffOutline });
   }
 
@@ -33,7 +40,7 @@ export class LoginPage {
   onLogin(): void {
     if (this.email === 'demo@example.com' && this.password === 'password123') {
       this.navCtrl.navigateRoot('/home');
-      Shared.prototype.OnchangeGuestStatus(false);
+      this.shared.OnchangeGuestStatus(false);
     } else {
       console.log('Invalid credentials');
     }
@@ -45,7 +52,7 @@ export class LoginPage {
 
   onGuestMode(): void {
     this.navCtrl.navigateRoot('/home');
-    Shared.prototype.OnchangeGuestStatus(true);
+    this.shared.OnchangeGuestStatus(true);
   }
 
   onForgotPassword(): void {

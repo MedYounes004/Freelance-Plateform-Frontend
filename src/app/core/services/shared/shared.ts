@@ -5,10 +5,11 @@ import { HomePage } from 'src/app/pages/home/home.page';
   providedIn: 'root',
 })
 export class Shared {
+  private static isGuest: boolean = true;
   OnchangeGuestStatus(isGuest: boolean) {
-    HomePage.prototype.isGuest = isGuest;
+    Shared.isGuest = isGuest;
   }
   getGuestStatus(): boolean {
-    return HomePage.prototype.isGuest;
+    return Shared.isGuest;
   }
 }

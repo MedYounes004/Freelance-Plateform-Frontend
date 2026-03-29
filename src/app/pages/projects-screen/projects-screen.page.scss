@@ -1,0 +1,272 @@
+// projects.page.scss
+
+// ─── Header ──────────────────────────────────────────────
+.projects-header {
+  ion-toolbar {
+    --background: #ffffff;
+    --border-width: 0;
+    --padding-start: 0;
+    --padding-end: 0;
+  }
+
+  .header-content {
+    padding: 48px 24px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    .header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      h1 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #111827;
+        margin: 0 0 2px;
+      }
+
+      p {
+        font-size: 0.875rem;
+        color: #6b7280;
+        margin: 0;
+      }
+
+      .new-btn {
+        --background: #4f46e5;
+        --background-activated: #4338ca;
+        --color: #ffffff;
+        --border-radius: 12px;
+        --padding-start: 16px;
+        --padding-end: 16px;
+        height: 36px;
+        font-size: 0.875rem;
+        font-weight: 500;
+      }
+    }
+
+    // Searchbar
+    ion-searchbar.custom-searchbar {
+      --background: #f9fafb;
+      --border-radius: 16px;
+      --box-shadow: none;
+      --color: #111827;
+      --placeholder-color: #9ca3af;
+      --icon-color: #9ca3af;
+      --cancel-button-color: #4f46e5;
+      padding: 0;
+      height: 48px;
+    }
+
+    // Filter tabs
+    .filter-tabs {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      &::-webkit-scrollbar { display: none; }
+
+      .tab-btn {
+        padding: 8px 16px;
+        border-radius: 10px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        white-space: nowrap;
+        border: none;
+        cursor: pointer;
+        background: #f3f4f6;
+        color: #4b5563;
+        transition: background 0.15s, color 0.15s;
+
+        &.active {
+          background: #4f46e5;
+          color: #ffffff;
+        }
+      }
+    }
+  }
+}
+
+// ─── Content ─────────────────────────────────────────────
+.projects-content {
+  --background: #f9fafb;
+  --padding-bottom: 80px;
+
+  .projects-list {
+    padding: 16px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+}
+
+// ─── Project card ─────────────────────────────────────────
+.project-card {
+  width: 100%;
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 16px;
+  text-align: left;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+
+  &:active {
+    transform: scale(0.97);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+  }
+
+  // ── Card header ─────────────────────────────────────
+  .card-header {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    .badges {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 500;
+
+      &.badge-in-progress { background: #dbeafe; color: #1d4ed8; }
+      &.badge-completed   { background: #dcfce7; color: #15803d; }
+      &.badge-pending     { background: #f3f4f6; color: #374151; }
+      &.badge-category    { background: #ede9fe; color: #7c3aed; }
+    }
+
+    .project-title {
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: #111827;
+      margin: 0;
+    }
+
+    .project-client {
+      font-size: 0.875rem;
+      color: #6b7280;
+      margin: 0;
+    }
+  }
+
+  // ── Progress ─────────────────────────────────────────
+  .progress-section {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: #6b7280;
+
+      span:last-child { color: #111827; font-weight: 500; }
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 8px;
+      background: #f3f4f6;
+      border-radius: 999px;
+      overflow: hidden;
+
+      .progress-fill {
+        height: 100%;
+        border-radius: 999px;
+        background: #4f46e5;
+        transition: width 0.4s ease;
+
+        &.completed { background: #22c55e; }
+      }
+    }
+  }
+
+  // ── Footer ───────────────────────────────────────────
+  .card-footer {
+    display: flex;
+    justify-content: space-between;
+
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      color: #6b7280;
+      font-size: 0.875rem;
+
+      ion-icon {
+        font-size: 1rem;
+        flex-shrink: 0;
+      }
+    }
+  }
+}
+
+// ─── Loading, Error, No Projects ─────────────────────────
+.loading-container,
+.error-container,
+.no-projects {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 24px;
+  gap: 20px;
+  text-align: center;
+  min-height: 400px;
+}
+
+.loading-container {
+  ion-spinner {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 10px;
+  }
+
+  p {
+    color: #6b7280;
+    font-size: 0.875rem;
+    margin: 0;
+  }
+}
+
+.error-container {
+  ion-text {
+    margin-bottom: 20px;
+
+    p {
+      margin: 0;
+      color: #dc2626;
+      font-weight: 500;
+    }
+  }
+
+  ion-button {
+    --background: #4f46e5;
+    --color: #ffffff;
+    --border-radius: 12px;
+    width: 100%;
+    max-width: 200px;
+  }
+}
+
+.no-projects {
+  ion-text {
+    p {
+      margin: 0;
+      color: #9ca3af;
+      font-size: 0.875rem;
+    }
+  }
+}

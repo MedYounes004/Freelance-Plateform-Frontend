@@ -1,0 +1,99 @@
+<ion-header class="ion-no-border messaging-header">
+  <ion-toolbar>
+    <div class="toolbar-content">
+      <ion-button fill="clear" class="back-btn" (click)="onBack()">
+        <ion-icon name="arrow-back-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+
+      <div class="contact-info">
+        <div class="avatar-wrapper">
+          <ion-avatar class="contact-avatar">
+            <img [src]="contact.avatar" [alt]="contact.name" />
+          </ion-avatar>
+          <span *ngIf="contact.online" class="online-dot"></span>
+        </div>
+        <div class="contact-meta">
+          <h2>{{ contact.name }}</h2>
+          <p class="status" [class.online]="contact.online">
+            {{ contact.online ? 'Online' : 'Offline' }}
+          </p>
+        </div>
+      </div>
+
+      <div class="actions">
+        <ion-button fill="clear" class="action-btn">
+          <ion-icon name="call-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+        <ion-button fill="clear" class="action-btn">
+          <ion-icon name="videocam-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+        <ion-button fill="clear" class="action-btn">
+          <ion-icon name="ellipsis-vertical-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+      </div>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content #scrollContent class="messaging-content" [scrollEvents]="true">
+  <div class="messages-wrapper">
+
+    <!-- Date separator -->
+    <div class="date-separator">
+      <span>Today, 10:30 AM</span>
+    </div>
+
+    <!-- Messages -->
+    <div
+      *ngFor="let message of messages"
+      class="message-row"
+      [class.mine]="message.sender === 'me'"
+      [class.theirs]="message.sender === 'other'">
+      <div class="bubble" [class.bubble-mine]="message.sender === 'me'" [class.bubble-theirs]="message.sender === 'other'">
+        <p class="bubble-text">{{ message.text }}</p>
+        <p class="bubble-time">{{ message.time }}</p>
+      </div>
+    </div>
+
+    <!-- Typing indicator -->
+    <div class="message-row theirs">
+      <div class="bubble bubble-theirs typing-bubble">
+        <div class="typing-dots">
+          <span class="dot dot-1"></span>
+          <span class="dot dot-2"></span>
+          <span class="dot dot-3"></span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</ion-content>
+
+<ion-footer class="messaging-footer ion-no-border">
+  <div class="input-bar">
+    <ion-button fill="clear" class="attach-btn" (click)="onAttach()">
+      <ion-icon name="attach-outline" slot="icon-only"></ion-icon>
+    </ion-button>
+
+    <div class="input-wrapper">
+      <ion-textarea
+        [(ngModel)]="messageText"
+        placeholder="Type a message..."
+        [autoGrow]="true"
+        [rows]="1"
+        class="message-input"
+        (keydown.enter)="onSend($any($event))">
+      </ion-textarea>
+      <ion-button fill="clear" class="emoji-btn">
+        <span>😊</span>
+      </ion-button>
+    </div>
+
+    <ion-button
+      class="send-btn"
+      (click)="onSend()"
+      [disabled]="!messageText.trim()">
+      <ion-icon name="send" slot="icon-only"></ion-icon>
+    </ion-button>
+  </div>
+</ion-footer>

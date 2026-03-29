@@ -1,0 +1,103 @@
+<ion-header class="ion-no-border create-proposal-header">
+  <ion-toolbar>
+    <div class="toolbar-row">
+      <ion-button fill="clear" class="back-btn" (click)="onBack()">
+        <ion-icon name="arrow-back-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+      <h1>Submit Proposal</h1>
+      <div></div>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="create-proposal-content">
+
+  <!-- Error message -->
+  <div *ngIf="errorMessage" class="error-banner">
+    <ion-text color="danger">
+      <p>{{ errorMessage }}</p>
+    </ion-text>
+  </div>
+
+  <!-- Form -->
+  <form [formGroup]="proposalForm" (ngSubmit)="onSubmit()" class="proposal-form">
+
+    <!-- Cover Letter Section -->
+    <div class="form-section">
+      <h2>Your Proposal</h2>
+
+      <!-- Cover Letter -->
+      <ion-item class="cover-letter-item">
+        <ion-label position="floating">Cover Letter</ion-label>
+        <ion-textarea
+          formControlName="coverLetter"
+          placeholder="Explain why you're the best fit for this project..."
+          rows="6"
+          class="form-input">
+        </ion-textarea>
+      </ion-item>
+      <div class="error-text" *ngIf="proposalForm.get('coverLetter')?.invalid && proposalForm.get('coverLetter')?.touched">
+        <span *ngIf="proposalForm.get('coverLetter')?.hasError('required')">Cover letter is required</span>
+        <span *ngIf="proposalForm.get('coverLetter')?.hasError('minlength')">Cover letter must be at least 20 characters</span>
+      </div>
+
+    </div>
+
+    <!-- Bid Information Section -->
+    <div class="form-section">
+      <h2>Bid Information</h2>
+
+      <!-- Bid Amount -->
+      <ion-item>
+        <ion-label position="floating">Your Bid ($)</ion-label>
+        <ion-input
+          type="number"
+          formControlName="bidAmount"
+          placeholder="0"
+          class="form-input">
+        </ion-input>
+      </ion-item>
+      <div class="error-text" *ngIf="proposalForm.get('bidAmount')?.invalid && proposalForm.get('bidAmount')?.touched">
+        Your bid must be greater than 0
+      </div>
+
+      <!-- Delivery Time -->
+      <ion-item>
+        <ion-label position="floating">Estimated Delivery Time</ion-label>
+        <ion-input
+          type="text"
+          formControlName="deliveryTime"
+          placeholder="e.g., 2 weeks, 30 days"
+          class="form-input">
+        </ion-input>
+      </ion-item>
+      <div class="error-text" *ngIf="proposalForm.get('deliveryTime')?.invalid && proposalForm.get('deliveryTime')?.touched">
+        Delivery time is required
+      </div>
+
+    </div>
+
+  </form>
+
+</ion-content>
+
+<ion-footer class="ion-no-border create-proposal-footer">
+  <div class="footer-inner">
+    <ion-button
+      expand="block"
+      class="cancel-btn"
+      (click)="onBack()"
+      [disabled]="isLoading">
+      Cancel
+    </ion-button>
+    <ion-button
+      expand="block"
+      class="submit-btn"
+      type="button"
+      (click)="onSubmit()"
+      [disabled]="isLoading || proposalForm.invalid">
+      <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
+      {{ isLoading ? 'Submitting...' : 'Submit Proposal' }}
+    </ion-button>
+  </div>
+</ion-footer>

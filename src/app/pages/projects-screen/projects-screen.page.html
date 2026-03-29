@@ -1,0 +1,112 @@
+<ion-header class="ion-no-border projects-header">
+  <ion-toolbar>
+    <div class="header-content">
+
+      <div class="header-top">
+        <div>
+          <h1>Projects</h1>
+          <p>Manage your work</p>
+        </div>
+        <ion-button class="new-btn" (click)="onNewProject()">+ New</ion-button>
+      </div>
+
+      <!-- Search -->
+      <ion-searchbar
+        placeholder="Search projects..."
+        [(ngModel)]="searchQuery"
+        (ionInput)="onSearch($event)"
+        class="custom-searchbar"
+        [debounce]="300">
+      </ion-searchbar>
+
+      <!-- Filter tabs -->
+      <div class="filter-tabs">
+        <button
+          *ngFor="let tab of filterTabs"
+          class="tab-btn"
+          [class.active]="activeFilter === tab.value"
+          (click)="setFilter(tab.value)">
+          {{ tab.label }}
+        </button>
+      </div>
+
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="projects-content">
+
+  <!-- Loading spinner -->
+  <div *ngIf="isLoading" class="loading-container">
+    <ion-spinner color="primary"></ion-spinner>
+    <p>Loading projects...</p>
+  </div>
+
+  <!-- Error message -->
+  <div *ngIf="errorMessage && !isLoading" class="error-container">
+    <ion-text color="danger">
+      <p>{{ errorMessage }}</p>
+    </ion-text>
+    <ion-button (click)="loadProjects()">Retry</ion-button>
+  </div>
+
+  <!-- Projects list -->
+  <div class="projects-list" *ngIf="!isLoading && !errorMessage">
+
+    <!-- No projects message -->
+    <div *ngIf="filteredProjects.length === 0" class="no-projects">
+      <ion-text color="medium">
+        <p>No projects found</p>
+      </ion-text>
+    </div>
+
+    <!-- Projects -->
+    <button
+      *ngFor="let project of filteredProjects"
+      class="project-card"
+      (click)="onProjectClick(project)">
+
+      <!-- Card header -->
+      <div class="card-header">
+        <div class="badges">
+          <span class="badge" [ngClass]="getStatusClass(project.status)">
+            {{ getStatusLabel(project.status) }}
+          </span>
+          <span class="badge badge-category">{{ project.category }}</span>
+        </div>
+        <h3 class="project-title">{{ project.title }}</h3>
+        <p class="project-client">{{ project.client }}</p>
+      </div>
+
+      <!-- Progress bar -->
+      <div class="progress-section" *ngIf="project.status !== 'pending'">
+        <div class="progress-header">
+          <span>Progress</span>
+          <span>{{ project.progress }}%</span>
+        </div>
+        <div class="progress-track">
+          <div
+            class="progress-fill"
+            [class.completed]="project.status === 'completed'"
+            [style.width.%]="project.progress">
+          </div>
+        </div>
+      </div>
+
+      <!-- Budget & deadline -->
+      <div class="card-footer">
+        <div class="meta-item">
+          <ion-icon name="cash-outline"></ion-icon>
+          <span>${{ project.budget }}</span>
+        </div>
+        <div class="meta-item">
+          <ion-icon name="calendar-outline"></ion-icon>
+          <span>{{ project.deadline }}</span>
+        </div>
+      </div>
+
+    </button>
+
+  </div>
+
+</ion-content>
