@@ -69,5 +69,14 @@ export const routes: Routes = [
     path: 'proposals/new',
     loadComponent: () => import('./pages/create-proposal-screen/create-proposal-screen.page').then( m => m.CreateProposalPage)
   },
+  
+  {
+    path: 'edit-profile',
+    loadComponent: () => import('./pages/edit-profile/edit-profile.page').then( m => m.EditProfilePage)
+  },
+
+
+
+  
 ];
 
