@@ -13,6 +13,8 @@ import {
   cash, cloudUpload, trophy, sparkles
 } from 'ionicons/icons';
 import { BottomNavigationComponent } from '../../components/bottom-navigation/bottom-navigation.component';
+import { Shared } from 'src/app/core/services/shared/shared';
+import { AuthService } from '../../core/services/auth/auth';  // ← added
 
 export type SubscriptionStatus = 'free' | 'freelancer-pro' | 'client-pro';
 
@@ -34,6 +36,8 @@ export class ProfilePage {
 
   @Input() subscriptionStatus: SubscriptionStatus = 'free';
 
+  currentUser: any = null;  // ← added
+
   get isPro(): boolean {
     return this.subscriptionStatus !== 'free';
   }
@@ -42,59 +46,36 @@ export class ProfilePage {
     return this.subscriptionStatus === 'freelancer-pro' ? 'Freelancer Pro' : 'Client Pro';
   }
 
-  constructor(private navCtrl: NavController) {
+  constructor(
+    private navCtrl: NavController,
+    private shared: Shared,
+    private authService: AuthService  // ← added
+  ) {
     addIcons({
       chevronForward, person, notifications, card, shield,
       helpCircle, documentText, logOut, star, briefcase,
       cash, cloudUpload, trophy, sparkles
     });
+
+    this.currentUser = this.authService.getUser();  // ← added
   }
 
-  onTabChange(tabId: string): void {
-    // routing géré dans BottomNavigationComponent
-  }
+  onTabChange(tabId: string): void {}
 
   onLogout(): void {
+    this.authService.logout();                    // ← clears localStorage too
     this.navCtrl.navigateRoot('/login');
+    this.shared.OnchangeGuestStatus(true);
   }
 
-  onCVManagement(): void {
-    this.navCtrl.navigateForward('/cv-management');
-  }
-
-  onManageSubscription(): void {
-    this.navCtrl.navigateForward('/subscription');
-  }
-
-  onUpgradeToPro(): void {
-    this.navCtrl.navigateForward('/upgrade');
-  }
-
-  onEditProfile(): void {
-    this.navCtrl.navigateForward('/edit-profile');
-  }
-
-  onNotifications(): void {
-    this.navCtrl.navigateForward('/notifications');
-  }
-
-  onPaymentMethods(): void {
-    this.navCtrl.navigateForward('/payment-methods');
-  }
-
-  onEarnings(): void {
-    this.navCtrl.navigateForward('/earnings');
-  }
-
-  onPrivacySecurity(): void {
-    this.navCtrl.navigateForward('/privacy-security');
-  }
-
-  onHelpSupport(): void {
-    this.navCtrl.navigateForward('/help');
-  }
-
-  onTerms(): void {
-    this.navCtrl.navigateForward('/terms');
-  }
+  onCVManagement(): void { this.navCtrl.navigateForward('/cv-management'); }
+  onManageSubscription(): void { this.navCtrl.navigateForward('/subscription'); }
+  onUpgradeToPro(): void { this.navCtrl.navigateForward('/upgrade'); }
+  onEditProfile(): void { this.navCtrl.navigateForward('/edit-profile'); }
+  onNotifications(): void { this.navCtrl.navigateForward('/notifications'); }
+  onPaymentMethods(): void { this.navCtrl.navigateForward('/payment-methods'); }
+  onEarnings(): void { this.navCtrl.navigateForward('/earnings'); }
+  onPrivacySecurity(): void { this.navCtrl.navigateForward('/privacy-security'); }
+  onHelpSupport(): void { this.navCtrl.navigateForward('/help'); }
+  onTerms(): void { this.navCtrl.navigateForward('/terms'); }
 }

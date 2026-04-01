@@ -6,6 +6,8 @@ import { GuestBannerComponent } from '../../components/guest-banner/guest-banner
 import { BottomNavigationComponent } from 'src/app/components/bottom-navigation/bottom-navigation.component';
 import { star, notifications } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
+import { NavController } from '@ionic/angular/standalone';
+import { Shared } from 'src/app/core/services/shared/shared';
 interface Category {
   name: string;
   icon: string;
@@ -31,7 +33,6 @@ interface Freelancer {
   imports: [GuestBannerComponent,CommonModule,FormsModule,IonicModule, BottomNavigationComponent]
 })
 export class HomePage {
-  @Input() isGuest: boolean = true;
   @Output() freelancerClick = new EventEmitter<number>();
   @Output() categoryClick = new EventEmitter<string>();
   @Output() signIn = new EventEmitter<void>();
@@ -92,10 +93,9 @@ export class HomePage {
     }
   ];
   
-  constructor() {
+  constructor(private navCtrl: NavController, private shared: Shared) {
     addIcons({ star, notifications });
   }
-
   activeTab = 'home';
   onTabChange(tab: string): void {
     this.activeTab = tab;
@@ -109,6 +109,19 @@ export class HomePage {
   }
 
   onSignInClick(): void {
+    this.navCtrl.navigateForward('/login');
     this.signIn.emit();
+  }
+
+  get isGuest(): boolean {
+    return this.shared.getGuestStatus();
+  }
+
+  set isGuest(value: boolean) {
+    this.shared.OnchangeGuestStatus(value);
+  }
+
+  ngOnInit(): void {
+   this.isGuest = this.shared.getGuestStatus();
   }
 }

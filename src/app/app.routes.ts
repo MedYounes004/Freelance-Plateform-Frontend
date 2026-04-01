@@ -44,12 +44,7 @@ export const routes: Routes = [
   {
     path: 'login',
     loadComponent: () => import('./pages/login/login.page').then( m => m.LoginPage)
-  },
-  {
-  path: 'login',
-  loadComponent: () =>
-    import('./pages/login/login.page').then(m => m.LoginPage),
-},
+  }, 
   {
     path: 'messages',
     loadComponent: () => import('./pages/message-list/message-list.page').then( m => m.MessagesListPage)
@@ -60,15 +55,28 @@ export const routes: Routes = [
   },
   {
     path: 'projects',
-    loadComponent: () => import('./projects-screen/projects-screen.page').then( m => m.ProjectsPage)
+    loadComponent: () => import('./pages/projects-screen/projects-screen.page').then( m => m.ProjectsPage)
   },
   {
     path: 'project-details',
-    loadComponent: () => import('./project-details-screen/project-details-screen.page').then( m => m.ProjectDetailsPage)
+    loadComponent: () => import('./pages/project-details-screen/project-details-screen.page').then( m => m.ProjectDetailsPage)
+  },
+  {
+    path: 'projects/new',
+    loadComponent: () => import('./pages/create-project-screen/create-project-screen.page').then( m => m.CreateProjectPage)
+  },
+  {
+    path: 'proposals/new',
+    loadComponent: () => import('./pages/create-proposal-screen/create-proposal-screen.page').then( m => m.CreateProposalPage)
+  },
+  
+  {
+    path: 'edit-profile',
+    loadComponent: () => import('./pages/edit-profile/edit-profile.page').then( m => m.EditProfilePage)
   },
 
 
 
-
-
+  
 ];
+

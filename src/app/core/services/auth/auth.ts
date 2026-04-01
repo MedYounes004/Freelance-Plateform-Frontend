@@ -27,6 +27,16 @@ export class AuthService {
     );
   }
 
+  updateProfile(data: { name?: string; role?: string; bio?: string; password?: string }): Observable<any> {
+    return this.http.put(`${API_URL}/api/auth/update`, data, {
+      headers: this.getHeaders()
+    }).pipe(
+      tap((res: any) => {
+        localStorage.setItem('user', JSON.stringify(res));
+      })
+    );
+  }
+
   logout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('user');

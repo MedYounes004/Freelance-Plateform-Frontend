@@ -5,7 +5,8 @@ import { NavController } from '@ionic/angular/standalone';
 import { IonContent, IonIcon } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { eyeOutline, eyeOffOutline } from 'ionicons/icons';
-import { AuthService } from '../../services/auth';
+import { AuthService } from '../../core/services/auth/auth';
+import { Shared } from 'src/app/core/services/shared/shared';
 
 @Component({
   selector: 'app-login',
@@ -26,7 +27,8 @@ export class LoginPage {
 
   constructor(
     private navCtrl: NavController,
-    private authService: AuthService
+    private authService: AuthService,
+    private shared: Shared
   ) {
     addIcons({ eyeOutline, eyeOffOutline });
   }
@@ -36,22 +38,25 @@ export class LoginPage {
   }
 
   onLogin(): void {
+    // Basic validation
     if (!this.email || !this.password) {
-      this.errorMessage = 'Please enter your email and password';
+      this.errorMessage = 'Please enter your email and password.';
       return;
     }
 
-    this.isLoading = true;
     this.errorMessage = '';
+    this.isLoading = true;
 
     this.authService.login(this.email, this.password).subscribe({
-      next: () => {
+      next: (res: any) => {
         this.isLoading = false;
-        this.navCtrl.navigateRoot('/home');
+        this.shared.OnchangeGuestStatus(false);
+        this.navCtrl.navigateRoot('/home');  // ✅ Redirect after login
       },
       error: (err) => {
         this.isLoading = false;
         this.errorMessage = err.error?.message || 'Login failed. Please try again.';
+        console.error('Login error:', err);
       }
     });
   }
@@ -62,6 +67,7 @@ export class LoginPage {
 
   onGuestMode(): void {
     this.navCtrl.navigateRoot('/home');
+    this.shared.OnchangeGuestStatus(true);
   }
 
   onForgotPassword(): void {

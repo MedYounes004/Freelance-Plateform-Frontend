@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import {
   IonHeader, IonToolbar, IonContent, IonFooter,
   IonButton, IonIcon, IonAvatar, IonTextarea,
@@ -27,6 +27,16 @@ export interface Contact {
   avatar: string;
 }
 
+export interface Conversation {
+  id: number;
+  name: string;
+  message: string;
+  time: string;
+  unread: number;
+  online: boolean;
+  avatar: string;
+}
+
 @Component({
   selector: 'app-messaging',
   templateUrl: './messaging-screen.page.html',
@@ -41,6 +51,7 @@ export interface Contact {
   ],
 })
 export class MessagingPage implements OnInit, AfterViewInit {
+  selectedConversation?: Conversation;
 
   @ViewChild('scrollContent') scrollContent!: IonContentType;
 
@@ -92,14 +103,26 @@ export class MessagingPage implements OnInit, AfterViewInit {
     },
   ];
 
-  constructor(private navCtrl: NavController) {
+  constructor(private navCtrl: NavController, private router: Router) {
     addIcons({
       arrowBackOutline, callOutline, videocamOutline,
       ellipsisVerticalOutline, attachOutline, send,
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    // read conversation from navigation state if provided
+    const navigation = this.router.getCurrentNavigation();
+    if (navigation?.extras?.state && navigation.extras.state['conversation']) {
+      this.selectedConversation = navigation.extras.state['conversation'];
+      // update contact info based on conversation
+      if (this.selectedConversation) {
+        this.contact.name = this.selectedConversation.name;
+        this.contact.online = this.selectedConversation.online;
+        this.contact.avatar = this.selectedConversation.avatar;
+      }
+    }
+  }
 
   ngAfterViewInit(): void {
     this.scrollToBottom();

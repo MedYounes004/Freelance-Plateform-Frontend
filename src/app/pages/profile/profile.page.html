@@ -12,16 +12,16 @@
       <ion-card-content>
         <div class="profile-header">
           <img
-            src="https://images.unsplash.com/photo-1765648684604-fd0accdbe617?w=400"
-            alt="Sarah Johnson"
+            [src]="currentUser?.avatar || 'assets/default-avatar.png'"
+            [alt]="currentUser?.name"
             class="profile-avatar"
           />
           <div class="profile-info">
             <div class="name-row">
-              <h2>Sarah Johnson</h2>
+              <h2>{{ currentUser?.name || 'Unknown User' }}</h2>
               <ion-icon name="trophy" class="pro-badge" *ngIf="isPro"></ion-icon>
             </div>
-            <p class="profile-title">UI/UX Designer</p>
+            <p class="profile-title">{{ currentUser?.role || 'No role set' }}</p>
             <div class="rating-row">
               <ion-icon name="star" class="star-icon"></ion-icon>
               <span>4.9 Rating</span>
