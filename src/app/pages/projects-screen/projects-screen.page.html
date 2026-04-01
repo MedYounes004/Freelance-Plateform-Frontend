@@ -108,5 +108,8 @@
     </button>
 
   </div>
-
 </ion-content>
+<app-bottom-navigation
+  [currentTab]="activeTab"
+  (tabChange)="onTabChange($event)"
+></app-bottom-navigation>

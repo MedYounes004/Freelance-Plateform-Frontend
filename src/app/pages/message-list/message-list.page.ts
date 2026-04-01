@@ -7,6 +7,7 @@ import {
   IonLabel, IonAvatar, IonBadge, IonSearchbar,
   NavController,
 } from '@ionic/angular/standalone';
+import { BottomNavigationComponent } from 'src/app/components/bottom-navigation/bottom-navigation.component';
 
 export interface Conversation {
   id: number;
@@ -24,6 +25,7 @@ export interface Conversation {
   styleUrls: ['./message-list.page.scss'],
   standalone: true,
   imports: [
+    BottomNavigationComponent,
     CommonModule,
     FormsModule,
     RouterModule,
@@ -35,6 +37,10 @@ export class MessagesListPage implements OnInit {
 
   @Output() messageClicked = new EventEmitter<Conversation>();
 
+  activeTab = 'messages';
+  onTabChange(tab: string): void {
+    this.activeTab = tab;
+  }
   searchQuery: string = '';
 
   conversations: Conversation[] = [

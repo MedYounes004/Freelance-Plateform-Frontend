@@ -18,8 +18,8 @@ import { Shared } from 'src/app/core/services/shared/shared';
 })
 export class LoginPage {
 
-  email = 'demo@example.com';
-  password = 'password123';
+  email = '';
+  password = '';
   rememberMe = false;
   showPassword = false;
   errorMessage = '';
@@ -38,12 +38,19 @@ export class LoginPage {
   }
 
   onLogin(): void {
-    if (this.email === 'demo@example.com' && this.password === 'password123') {
-      this.navCtrl.navigateRoot('/home');
-      this.shared.OnchangeGuestStatus(false);
-    } else {
-      console.log('Invalid credentials');
-    }
+    this.isLoading = true;
+    this.authService.login(this.email, this.password).subscribe({
+      next: (res) => {
+        this.isLoading = false;
+        this.navCtrl.navigateRoot('/home');
+        this.shared.OnchangeGuestStatus(false);
+        console.log('Login successful', res);
+      },
+      error: (err) => {
+        this.isLoading = false;
+        console.error('Login failed', err);
+      }
+    });
   }
 
   onSignUp(): void {

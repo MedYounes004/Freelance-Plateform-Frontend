@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { GuestBannerComponent } from '../../components/guest-banner/guest-banner.component';
 import { BottomNavigationComponent } from 'src/app/components/bottom-navigation/bottom-navigation.component';
-import { star, notifications } from 'ionicons/icons';
+import { star, notifications, locationOutline, chevronForwardOutline } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
 import { NavController } from '@ionic/angular/standalone';
 import { Shared } from 'src/app/core/services/shared/shared';
@@ -94,7 +94,7 @@ export class HomePage {
   ];
   
   constructor(private navCtrl: NavController, private shared: Shared) {
-    addIcons({ star, notifications });
+    addIcons({ star, notifications, locationOutline, chevronForwardOutline });
   }
   activeTab = 'home';
   onTabChange(tab: string): void {
@@ -122,6 +122,6 @@ export class HomePage {
   }
 
   ngOnInit(): void {
-   this.isGuest = this.shared.getGuestStatus();
+    console.log('Guest status:', this.shared.getGuestStatus());
   }
 }
