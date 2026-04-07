@@ -56,6 +56,12 @@ ion-header ion-toolbar {
   font-weight: 400;
 }
 
+.field-error {
+  margin: 2px 0 0;
+  font-size: 13px;
+  color: #dc2626;
+}
+
 .input-wrapper {
   .custom-input {
     --background: #ffffff;
@@ -156,6 +162,16 @@ ion-header ion-toolbar {
   }
 }
 
+// ── Error Message ────────────────────────────────────────
+.error-msg {
+  background: #fef2f2;
+  color: #dc2626;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  text-align: center;
+}
+
 // ── Submit Button ────────────────────────────────────────
 .submit-btn {
   --background: #4f46e5;
@@ -171,7 +187,7 @@ ion-header ion-toolbar {
   margin-top: 8px;
 
   &[disabled] {
-    --background: #a5b4fc;
+    --background: #4338ca;
     opacity: 1;
   }
 }

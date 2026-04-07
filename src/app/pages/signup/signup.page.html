@@ -30,6 +30,12 @@
             class="custom-input"
           ></ion-input>
         </div>
+        <p class="field-error" *ngIf="form.get('fullName')?.touched && form.get('fullName')?.hasError('required')">
+          Full name is required.
+        </p>
+        <p class="field-error" *ngIf="form.get('fullName')?.touched && form.get('fullName')?.hasError('minlength')">
+          Full name must be at least 3 characters.
+        </p>
       </div>
 
       <!-- Email -->
@@ -44,6 +50,12 @@
             class="custom-input"
           ></ion-input>
         </div>
+        <p class="field-error" *ngIf="form.get('email')?.touched && form.get('email')?.hasError('required')">
+          Email is required.
+        </p>
+        <p class="field-error" *ngIf="form.get('email')?.touched && form.get('email')?.hasError('email')">
+          Enter a valid email address.
+        </p>
       </div>
 
       <!-- Password -->
@@ -58,6 +70,12 @@
             class="custom-input"
           ></ion-input>
         </div>
+        <p class="field-error" *ngIf="form.get('password')?.touched && form.get('password')?.hasError('required')">
+          Password is required.
+        </p>
+        <p class="field-error" *ngIf="form.get('password')?.touched && form.get('password')?.hasError('minlength')">
+          Password must be at least 6 characters.
+        </p>
       </div>
 
       <!-- User Type Selection -->
@@ -108,7 +126,15 @@
           </ion-text>
         </span>
       </div>
+      <p class="field-error" *ngIf="form.get('agreeToTerms')?.touched && form.get('agreeToTerms')?.hasError('required')">
+        You must agree to the Terms of Service and Privacy Policy.
+      </p>
 
+      <!-- ErrorMessage -->
+      <div class="error-msg" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+      
       <!-- Submit Button -->
       <ion-button
         type="submit"

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/core/services/auth/auth';
 import { Shared } from 'src/app/core/services/shared/shared';
 import {
@@ -20,7 +20,7 @@ import {
   NavController,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { briefcaseOutline, ribbonOutline } from 'ionicons/icons';
+import { briefcaseOutline, ribbonOutline, arrowBack } from 'ionicons/icons';
 
 @Component({
   selector: 'app-sign-up',
@@ -47,19 +47,25 @@ import { briefcaseOutline, ribbonOutline } from 'ionicons/icons';
 })
 export class SignupPage {
   @Output() signUp = new EventEmitter<void>();
-  @Output() login  = new EventEmitter<void>();
+  @Output() login = new EventEmitter<void>();
 
   form: FormGroup;
   userType: 'hire' | 'work' = 'hire';
+  errorMessage = '';
 
-  constructor(private fb: FormBuilder, private navCtrl: NavController, private authService: AuthService, private shared: Shared) {
-    addIcons({ briefcaseOutline, ribbonOutline });
+  constructor(
+    private fb: FormBuilder,
+    private navCtrl: NavController,
+    private authService: AuthService,
+    private shared: Shared
+  ) {
+    addIcons({ briefcaseOutline, ribbonOutline, arrowBack });
 
     this.form = this.fb.group({
-      fullName:     [''],
-      email:        [''],
-      password:     [''],
-      agreeToTerms: [false],
+      fullName: ['', [Validators.required, Validators.minLength(3)]],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      agreeToTerms: [false, Validators.requiredTrue],
     });
   }
 
@@ -68,7 +74,11 @@ export class SignupPage {
   }
 
   onSignUp() {
-    if (!this.agreeToTerms) return;
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+
     this.signUp.emit();
     this.authService.register(
       this.form.value.fullName,
@@ -83,12 +93,13 @@ export class SignupPage {
       },
       error: (err) => {
         console.error('Registration failed', err);
+        this.errorMessage = err.error?.message || 'Registration failed. Please try again.';
       }
     });
   }
 
-  onBack()         { this.navCtrl.back();   }
-  onLogin()        { this.login.emit();     }
-  onTermsClick()   { /* open terms */       }
-  onPrivacyClick() { /* open privacy */     }
+  onBack() { this.navCtrl.back(); }
+  onLogin() { this.navCtrl.navigateForward('/login'); }
+  onTermsClick() { /* open terms */ }
+  onPrivacyClick() { /* open privacy */ }
 }
