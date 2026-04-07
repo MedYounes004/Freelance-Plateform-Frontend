@@ -19,6 +19,17 @@
 </ion-header>
 
 <ion-content class="messages-content">
+  <div class="status-box" *ngIf="isLoading">Loading messages...</div>
+
+  <div class="status-box error" *ngIf="!isLoading && errorMessage">
+    <p>{{ errorMessage }}</p>
+    <button type="button" class="retry-btn" (click)="loadConversations()">Retry</button>
+  </div>
+
+  <div class="status-box" *ngIf="!isLoading && !errorMessage && filteredConversations.length === 0">
+    No messages found.
+  </div>
+
   <ion-list lines="none" class="conversations-list">
     <ion-item
       *ngFor="let conversation of filteredConversations"
@@ -49,3 +60,7 @@
     </ion-item>
   </ion-list>
 </ion-content>
+<app-bottom-navigation
+  [currentTab]="activeTab"
+  (tabChange)="onTabChange($event)"
+></app-bottom-navigation>

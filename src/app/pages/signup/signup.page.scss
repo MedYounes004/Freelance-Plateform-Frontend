@@ -56,7 +56,12 @@ ion-header ion-toolbar {
   font-weight: 400;
 }
 
-// ── Input ────────────────────────────────────────────────
+.field-error {
+  margin: 2px 0 0;
+  font-size: 13px;
+  color: #dc2626;
+}
+
 .input-wrapper {
   .custom-input {
     --background: #ffffff;
@@ -72,65 +77,6 @@ ion-header ion-toolbar {
     --placeholder-color: #9ca3af;
     font-size: 15px;
   }
-
-  &.has-error .custom-input {
-    --border-color: #ef4444;
-    --highlight-color-focused: #ef4444;
-  }
-}
-
-// ── Error message ────────────────────────────────────────
-.error-msg {
-  font-size: 12px;
-  color: #ef4444;
-  margin: 2px 4px 0;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-
-  &::before {
-    content: '⚠';
-    font-size: 11px;
-  }
-}
-
-// ── Password strength bar ────────────────────────────────
-.strength-bar-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 2px;
-}
-
-.strength-bar {
-  flex: 1;
-  height: 4px;
-  background-color: #e5e7eb;
-  border-radius: 99px;
-  overflow: hidden;
-
-  .strength-fill {
-    height: 100%;
-    border-radius: 99px;
-    transition: width 0.3s ease, background-color 0.3s ease;
-
-    &.strength-weak   { background-color: #ef4444; }
-    &.strength-fair   { background-color: #f97316; }
-    &.strength-good   { background-color: #eab308; }
-    &.strength-strong { background-color: #22c55e; }
-  }
-}
-
-.strength-label {
-  font-size: 12px;
-  font-weight: 500;
-  min-width: 40px;
-  text-align: right;
-
-  &.strength-weak   { color: #ef4444; }
-  &.strength-fair   { color: #f97316; }
-  &.strength-good   { color: #eab308; }
-  &.strength-strong { color: #22c55e; }
 }
 
 // ── User Type Cards ──────────────────────────────────────
@@ -164,7 +110,10 @@ ion-header ion-toolbar {
     border-color: #4f46e5;
     background-color: #eef2ff;
 
-    .type-icon,
+    .type-icon {
+      color: #4f46e5;
+    }
+
     .type-label {
       color: #4f46e5;
     }
@@ -213,6 +162,16 @@ ion-header ion-toolbar {
   }
 }
 
+// ── Error Message ────────────────────────────────────────
+.error-msg {
+  background: #fef2f2;
+  color: #dc2626;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  text-align: center;
+}
+
 // ── Submit Button ────────────────────────────────────────
 .submit-btn {
   --background: #4f46e5;
@@ -226,7 +185,11 @@ ion-header ion-toolbar {
   font-weight: 500;
   height: 56px;
   margin-top: 8px;
-  color: white;
+
+  &[disabled] {
+    --background: #4338ca;
+    opacity: 1;
+  }
 }
 
 // ── Footer ───────────────────────────────────────────────

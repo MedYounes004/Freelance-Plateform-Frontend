@@ -13,6 +13,8 @@ import {
   arrowBackOutline, callOutline, videocamOutline,
   ellipsisVerticalOutline, attachOutline, send,
 } from 'ionicons/icons';
+import { MessageService } from 'src/app/core/services/messages/message.service';
+import { AuthService } from 'src/app/core/services/auth/auth';
 
 export interface Message {
   id: number;
@@ -56,6 +58,11 @@ export class MessagingPage implements OnInit, AfterViewInit {
   @ViewChild('scrollContent') scrollContent!: IonContentType;
 
   messageText: string = '';
+  isLoading = false;
+  isSending = false;
+  errorMessage = '';
+
+  private currentUserSender = 'me';
 
   contact: Contact = {
     name: 'TechStart Inc.',
@@ -64,46 +71,14 @@ export class MessagingPage implements OnInit, AfterViewInit {
       'https://images.unsplash.com/photo-1629507208649-70919ca33793?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxidXNpbmVzcyUyMHByb2Zlc3Npb25hbCUyMHBvcnRyYWl0fGVufDF8fHx8MTc3MDExMTAyN3ww&ixlib=rb-4.1.0&q=80&w=400',
   };
 
-  messages: Message[] = [
-    {
-      id: 1,
-      sender: 'other',
-      text: "Hi! I saw your proposal and I'm interested in working with you.",
-      time: '10:30 AM',
-    },
-    {
-      id: 2,
-      sender: 'me',
-      text: "Great! I'd love to discuss the project details with you.",
-      time: '10:32 AM',
-    },
-    {
-      id: 3,
-      sender: 'other',
-      text: 'Perfect. I need a complete redesign of our e-commerce platform. Do you have experience with similar projects?',
-      time: '10:33 AM',
-    },
-    {
-      id: 4,
-      sender: 'me',
-      text: "Yes, I've worked on several e-commerce redesigns. I can share some examples from my portfolio.",
-      time: '10:35 AM',
-    },
-    {
-      id: 5,
-      sender: 'me',
-      text: 'When would be a good time for a quick call to discuss the requirements?',
-      time: '10:35 AM',
-    },
-    {
-      id: 6,
-      sender: 'other',
-      text: "That would be great! I'm available tomorrow afternoon around 2 PM. Does that work for you?",
-      time: '10:38 AM',
-    },
-  ];
+  messages: Message[] = [];
 
-  constructor(private navCtrl: NavController, private router: Router) {
+  constructor(
+    private navCtrl: NavController,
+    private router: Router,
+    private messageService: MessageService,
+    private authService: AuthService,
+  ) {
     addIcons({
       arrowBackOutline, callOutline, videocamOutline,
       ellipsisVerticalOutline, attachOutline, send,
@@ -111,6 +86,9 @@ export class MessagingPage implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    const user = this.authService.getUser();
+    this.currentUserSender = user?.name || user?.email || 'me';
+
     // read conversation from navigation state if provided
     const navigation = this.router.getCurrentNavigation();
     if (navigation?.extras?.state && navigation.extras.state['conversation']) {
@@ -122,6 +100,8 @@ export class MessagingPage implements OnInit, AfterViewInit {
         this.contact.avatar = this.selectedConversation.avatar;
       }
     }
+
+    void this.loadMessages();
   }
 
   ngAfterViewInit(): void {
@@ -132,7 +112,7 @@ export class MessagingPage implements OnInit, AfterViewInit {
     this.navCtrl.back();
   }
 
-  onSend(event?: KeyboardEvent): void {
+  async onSend(event?: KeyboardEvent): Promise<void> {
     // Prevent newline on Enter (without Shift)
     if (event) {
       if (event.shiftKey) return;
@@ -140,18 +120,33 @@ export class MessagingPage implements OnInit, AfterViewInit {
     }
 
     const text = this.messageText.trim();
-    if (!text) return;
+    if (!text || this.isSending) return;
 
-    const newMessage: Message = {
-      id: this.messages.length + 1,
-      sender: 'me',
-      text,
-      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-    };
+    this.isSending = true;
+    this.errorMessage = '';
 
-    this.messages = [...this.messages, newMessage];
-    this.messageText = '';
-    setTimeout(() => this.scrollToBottom(), 100);
+    try {
+      const savedMessage = await this.messageService.sendMessage({
+        text,
+        sender: this.currentUserSender,
+      });
+
+      this.messages = [
+        ...this.messages,
+        {
+          id: savedMessage.id,
+          sender: this.toDisplaySender(savedMessage.sender),
+          text: savedMessage.text,
+          time: this.formatTime(savedMessage.timestamp),
+        }
+      ];
+      this.messageText = '';
+      setTimeout(() => this.scrollToBottom(), 100);
+    } catch {
+      this.errorMessage = 'Unable to send message. Please try again.';
+    } finally {
+      this.isSending = false;
+    }
   }
 
   onAttach(): void {
@@ -161,5 +156,46 @@ export class MessagingPage implements OnInit, AfterViewInit {
 
   private scrollToBottom(): void {
     this.scrollContent?.scrollToBottom(300);
+  }
+
+  async loadMessages(): Promise<void> {
+    this.isLoading = true;
+    this.errorMessage = '';
+
+    try {
+      const apiMessages = await this.messageService.getMessages();
+      if (!apiMessages.length) {
+        this.messages = [];
+        return;
+      }
+
+      this.messages = apiMessages
+        .sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime())
+        .map((msg) => ({
+          id: msg.id,
+          sender: this.toDisplaySender(msg.sender),
+          text: msg.text,
+          time: this.formatTime(msg.timestamp),
+        }));
+    } catch {
+      this.errorMessage = 'Unable to load messages. Please try again.';
+      this.messages = [];
+    } finally {
+      this.isLoading = false;
+      setTimeout(() => this.scrollToBottom(), 100);
+    }
+  }
+
+  private toDisplaySender(sender: string): 'me' | 'other' {
+    return sender === this.currentUserSender ? 'me' : 'other';
+  }
+
+  private formatTime(timestamp: string): string {
+    const date = new Date(timestamp);
+    if (Number.isNaN(date.getTime())) {
+      return '';
+    }
+
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   }
 }

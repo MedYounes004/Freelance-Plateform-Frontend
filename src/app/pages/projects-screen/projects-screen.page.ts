@@ -11,6 +11,7 @@ import { addIcons } from 'ionicons';
 import { cashOutline, calendarOutline } from 'ionicons/icons';
 import { ProjectService } from '../../core/services/projects/project.service';
 import { Project, ProjectStatus } from '../../models/project.model';
+import { BottomNavigationComponent } from 'src/app/components/bottom-navigation/bottom-navigation.component';
 
 @Component({
   selector: 'app-projects',
@@ -18,6 +19,7 @@ import { Project, ProjectStatus } from '../../models/project.model';
   styleUrls: ['./projects-screen.page.scss'],
   standalone: true,
   imports: [
+    BottomNavigationComponent,
     CommonModule,
     FormsModule,
     RouterModule,
@@ -35,6 +37,11 @@ export class ProjectsPage implements OnInit {
   errorMessage = '';
   currentPage = 1;
   pageSize = 10;
+
+  activeTab = 'projects';
+  onTabChange(tab: string): void {
+    this.activeTab = tab;
+  }
 
   filterTabs: Array<{ label: string; value: ProjectStatus | 'all' }> = [
     { label: 'All',         value: 'all' },

@@ -16,12 +16,12 @@
     </div>
 
     <!-- Form -->
-    <form [formGroup]="form" (ngSubmit)="onSignUp()" class="sign-up-form" novalidate>
+    <form [formGroup]="form" (ngSubmit)="onSignUp()" class="sign-up-form">
 
       <!-- Full Name -->
       <div class="field-group">
         <label class="field-label">Full Name</label>
-        <div class="input-wrapper" [class.has-error]="showError(fullName)">
+        <div class="input-wrapper">
           <ion-input
             type="text"
             placeholder="Enter your full name"
@@ -30,13 +30,18 @@
             class="custom-input"
           ></ion-input>
         </div>
-        <p class="error-msg" *ngIf="showError(fullName)">{{ fullNameError }}</p>
+        <p class="field-error" *ngIf="form.get('fullName')?.touched && form.get('fullName')?.hasError('required')">
+          Full name is required.
+        </p>
+        <p class="field-error" *ngIf="form.get('fullName')?.touched && form.get('fullName')?.hasError('minlength')">
+          Full name must be at least 3 characters.
+        </p>
       </div>
 
       <!-- Email -->
       <div class="field-group">
         <label class="field-label">Email</label>
-        <div class="input-wrapper" [class.has-error]="showError(email)">
+        <div class="input-wrapper">
           <ion-input
             type="email"
             placeholder="Enter your email"
@@ -45,13 +50,18 @@
             class="custom-input"
           ></ion-input>
         </div>
-        <p class="error-msg" *ngIf="showError(email)">{{ emailError }}</p>
+        <p class="field-error" *ngIf="form.get('email')?.touched && form.get('email')?.hasError('required')">
+          Email is required.
+        </p>
+        <p class="field-error" *ngIf="form.get('email')?.touched && form.get('email')?.hasError('email')">
+          Enter a valid email address.
+        </p>
       </div>
 
       <!-- Password -->
       <div class="field-group">
         <label class="field-label">Password</label>
-        <div class="input-wrapper" [class.has-error]="showError(password)">
+        <div class="input-wrapper">
           <ion-input
             type="password"
             placeholder="Create a password"
@@ -60,22 +70,12 @@
             class="custom-input"
           ></ion-input>
         </div>
-
-        <!-- Password strength bar -->
-        <div class="strength-bar-wrapper" *ngIf="password.value">
-          <div class="strength-bar">
-            <div
-              class="strength-fill"
-              [class]="passwordStrengthClass"
-              [style.width.%]="passwordStrength * 25"
-            ></div>
-          </div>
-          <span class="strength-label" [class]="passwordStrengthClass">
-            {{ passwordStrengthLabel }}
-          </span>
-        </div>
-
-        <p class="error-msg" *ngIf="showError(password)">{{ passwordError }}</p>
+        <p class="field-error" *ngIf="form.get('password')?.touched && form.get('password')?.hasError('required')">
+          Password is required.
+        </p>
+        <p class="field-error" *ngIf="form.get('password')?.touched && form.get('password')?.hasError('minlength')">
+          Password must be at least 6 characters.
+        </p>
       </div>
 
       <!-- User Type Selection -->
@@ -83,6 +83,7 @@
         <label class="field-label">I want to</label>
         <ion-grid class="user-type-grid">
           <ion-row>
+            <!-- Hire -->
             <ion-col size="6">
               <div
                 class="user-type-card"
@@ -93,6 +94,7 @@
                 <p class="type-label">Hire</p>
               </div>
             </ion-col>
+            <!-- Work -->
             <ion-col size="6">
               <div
                 class="user-type-card"
@@ -108,33 +110,37 @@
       </div>
 
       <!-- Terms & Privacy -->
-      <div class="field-group">
-        <div class="terms-row">
-          <ion-checkbox
-            formControlName="agreeToTerms"
-            class="terms-checkbox"
-          ></ion-checkbox>
-          <span class="terms-text">
-            I agree to the
-            <ion-text color="primary">
-              <span class="link" (click)="onTermsClick()">Terms of Service</span>
-            </ion-text>
-            and
-            <ion-text color="primary">
-              <span class="link" (click)="onPrivacyClick()">Privacy Policy</span>
-            </ion-text>
-          </span>
-        </div>
-        <p class="error-msg" *ngIf="showError(agreeToTerms)">
-          You must accept the terms to continue.
-        </p>
+      <div class="terms-row">
+        <ion-checkbox
+          formControlName="agreeToTerms"
+          class="terms-checkbox"
+        ></ion-checkbox>
+        <span class="terms-text">
+          I agree to the
+          <ion-text color="primary">
+            <span class="link" (click)="onTermsClick()">Terms of Service</span>
+          </ion-text>
+          and
+          <ion-text color="primary">
+            <span class="link" (click)="onPrivacyClick()">Privacy Policy</span>
+          </ion-text>
+        </span>
       </div>
+      <p class="field-error" *ngIf="form.get('agreeToTerms')?.touched && form.get('agreeToTerms')?.hasError('required')">
+        You must agree to the Terms of Service and Privacy Policy.
+      </p>
 
+      <!-- ErrorMessage -->
+      <div class="error-msg" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+      
       <!-- Submit Button -->
       <ion-button
         type="submit"
         expand="block"
         class="submit-btn"
+        [disabled]="!agreeToTerms"
       >
         Create Account
       </ion-button>
