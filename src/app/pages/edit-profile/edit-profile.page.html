@@ -1,0 +1,111 @@
+<div class="ion-page">
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-back-button defaultHref="/profile" text=""></ion-back-button>
+      </ion-buttons>
+      <ion-title>Edit Profile</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content class="edit-content">
+    <div class="content-wrapper">
+
+      <!-- Header -->
+      <div class="header-section">
+        <h1 class="title">Edit Profile</h1>
+        <p class="subtitle">Update your personal information</p>
+      </div>
+
+      <!-- Form -->
+      <div class="sign-up-form">
+
+        <!-- Name -->
+        <div class="field-group">
+          <label class="field-label">Full Name</label>
+          <div class="input-wrapper">
+            <input
+              type="text"
+              class="native-input"
+              placeholder="Enter your name"
+              [(ngModel)]="name"
+            />
+          </div>
+        </div>
+
+        <!-- Role -->
+        <div class="field-group">
+          <label class="field-label">Role</label>
+          <div class="input-wrapper">
+            <input
+              type="text"
+              class="native-input"
+              placeholder="e.g. UI/UX Designer"
+              [(ngModel)]="role"
+            />
+          </div>
+        </div>
+
+        <!-- Bio -->
+        <div class="field-group">
+          <label class="field-label">Bio</label>
+          <div class="input-wrapper">
+            <textarea
+              class="native-input textarea"
+              placeholder="Tell us about yourself..."
+              [(ngModel)]="bio"
+              rows="4"
+            ></textarea>
+          </div>
+        </div>
+
+        <!-- New Password -->
+        <div class="field-group">
+          <label class="field-label">New Password</label>
+          <div class="input-wrapper password-wrap">
+            <input
+              [type]="showPassword ? 'text' : 'password'"
+              class="native-input"
+              placeholder="Leave empty to keep current"
+              [(ngModel)]="password"
+            />
+            <button type="button" class="eye-btn" (click)="togglePassword()">
+              <ion-icon [name]="showPassword ? 'eye-outline' : 'eye-off-outline'"></ion-icon>
+            </button>
+          </div>
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="field-group">
+          <label class="field-label">Confirm Password</label>
+          <div class="input-wrapper password-wrap">
+            <input
+              [type]="showConfirmPassword ? 'text' : 'password'"
+              class="native-input"
+              placeholder="Repeat new password"
+              [(ngModel)]="confirmPassword"
+            />
+            <button type="button" class="eye-btn" (click)="toggleConfirmPassword()">
+              <ion-icon [name]="showConfirmPassword ? 'eye-outline' : 'eye-off-outline'"></ion-icon>
+            </button>
+          </div>
+        </div>
+
+        <!-- Error / Success -->
+        <p class="error-msg"   *ngIf="errorMessage">{{ errorMessage }}</p>
+        <p class="success-msg" *ngIf="successMessage">✓ {{ successMessage }}</p>
+
+        <!-- Save Button -->
+        <ion-button
+          expand="block"
+          class="submit-btn"
+          [disabled]="isLoading"
+          (click)="onSave()"
+        >
+          {{ isLoading ? 'Saving...' : 'Save Changes' }}
+        </ion-button>
+
+      </div>
+    </div>
+  </ion-content>
+</div>

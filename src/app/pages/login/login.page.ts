@@ -38,17 +38,25 @@ export class LoginPage {
   }
 
   onLogin(): void {
+    // Basic validation
+    if (!this.email || !this.password) {
+      this.errorMessage = 'Please enter your email and password.';
+      return;
+    }
+
+    this.errorMessage = '';
     this.isLoading = true;
+
     this.authService.login(this.email, this.password).subscribe({
-      next: (res) => {
+      next: (res: any) => {
         this.isLoading = false;
-        this.navCtrl.navigateRoot('/home');
         this.shared.OnchangeGuestStatus(false);
-        console.log('Login successful', res);
+        this.navCtrl.navigateRoot('/home');  // ✅ Redirect after login
       },
       error: (err) => {
         this.isLoading = false;
-        console.error('Login failed', err);
+        this.errorMessage = err.error?.message || 'Login failed. Please try again.';
+        console.error('Login error:', err);
       }
     });
   }
