@@ -8,6 +8,7 @@ import {
   NavController,
 } from '@ionic/angular/standalone';
 import { BottomNavigationComponent } from 'src/app/components/bottom-navigation/bottom-navigation.component';
+import { ApiMessage, MessageService } from 'src/app/core/services/messages/message.service';
 
 export interface Conversation {
   id: number;
@@ -42,66 +43,76 @@ export class MessagesListPage implements OnInit {
     this.activeTab = tab;
   }
   searchQuery: string = '';
+  isLoading = false;
+  errorMessage = '';
 
-  conversations: Conversation[] = [
-    {
-      id: 1,
-      name: 'TechStart Inc.',
-      message: "That would be great! I'm available tomorrow...",
-      time: '10:38 AM',
-      unread: 2,
-      online: true,
-      avatar:
-        'https://images.unsplash.com/photo-1629507208649-70919ca33793?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxidXNpbmVzcyUyMHByb2Zlc3Npb25hbCUyMHBvcnRyYWl0fGVufDF8fHx8MTc3MDExMTAyN3ww&ixlib=rb-4.1.0&q=80&w=400',
-    },
-    {
-      id: 2,
-      name: 'Michael Chen',
-      message: 'Thanks for the update! Looking forward to it.',
-      time: 'Yesterday',
-      unread: 0,
-      online: false,
-      avatar:
-        'https://images.unsplash.com/photo-1752170080622-18196de87763?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjBtYW4lMjBkZXZlbG9wZXJ8ZW58MXx8fHwxNzcwMTQ4NjM1fDA&ixlib=rb-4.1.0&q=80&w=400',
-    },
-    {
-      id: 3,
-      name: 'Emma Davis',
-      message: 'Can you send me the files?',
-      time: '2 days ago',
-      unread: 0,
-      online: true,
-      avatar:
-        'https://images.unsplash.com/photo-1769694609721-98f8bab9735a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjB3b21hbiUyMHdyaXRlcnxlbnwxfHx8fDE3NzAxOTk0OTR8MA&ixlib=rb-4.1.0&q=80&w=400',
-    },
-    {
-      id: 4,
-      name: 'Design Studio Co.',
-      message: "Perfect! Let's schedule a call.",
-      time: '3 days ago',
-      unread: 0,
-      online: false,
-      avatar:
-        'https://images.unsplash.com/photo-1753162658653-d33c53910d9e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjBkZXNpZ25lciUyMHdvbWFufGVufDF8fHx8MTc3MDE1NjkzOXww&ixlib=rb-4.1.0&q=80&w=400',
-    },
-    {
-      id: 5,
-      name: 'James Wilson',
-      message: 'Great work on the last project!',
-      time: '1 week ago',
-      unread: 0,
-      online: false,
-      avatar:
-        'https://images.unsplash.com/photo-1629507208649-70919ca33793?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxidXNpbmVzcyUyMHByb2Zlc3Npb25hbCUyMHBvcnRyYWl0fGVufDF8fHx8MTc3MDExMTAyN3ww&ixlib=rb-4.1.0&q=80&w=400',
-    },
-  ];
+  conversations: Conversation[] = [];
 
   filteredConversations: Conversation[] = [];
 
-  constructor(private navCtrl: NavController) {}
+  constructor(
+    private navCtrl: NavController,
+    private messageService: MessageService,
+  ) {}
 
   ngOnInit(): void {
-    this.filteredConversations = [...this.conversations];
+    void this.loadConversations();
+  }
+
+  async loadConversations(): Promise<void> {
+    this.isLoading = true;
+    this.errorMessage = '';
+
+    try {
+      const messages = await this.messageService.getMessages();
+      if (!messages.length) {
+        this.conversations = [];
+        this.filteredConversations = [];
+        return;
+      }
+
+      this.conversations = this.toConversations(messages);
+      this.filteredConversations = [...this.conversations];
+    } catch {
+      this.errorMessage = 'Unable to load messages. Please try again.';
+      this.conversations = [];
+      this.filteredConversations = [];
+    } finally {
+      this.isLoading = false;
+    }
+  }
+
+  private toConversations(messages: ApiMessage[]): Conversation[] {
+    const grouped = new Map<string, ApiMessage>();
+
+    for (const msg of messages) {
+      const previous = grouped.get(msg.sender);
+      if (!previous || new Date(msg.timestamp).getTime() > new Date(previous.timestamp).getTime()) {
+        grouped.set(msg.sender, msg);
+      }
+    }
+
+    return Array.from(grouped.entries())
+      .sort(([, left], [, right]) => new Date(right.timestamp).getTime() - new Date(left.timestamp).getTime())
+      .map(([sender, msg], index) => ({
+        id: index + 1,
+        name: sender,
+        message: msg.text,
+        time: this.formatTime(msg.timestamp),
+        unread: 0,
+        online: false,
+        avatar: 'https://images.unsplash.com/photo-1629507208649-70919ca33793?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400'
+      }))
+      .sort((a, b) => b.id - a.id);
+  }
+
+  private formatTime(timestamp: string): string {
+    const date = new Date(timestamp);
+    if (Number.isNaN(date.getTime())) {
+      return '';
+    }
+
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   }
 
   onSearch(event: CustomEvent): void {

@@ -37,9 +37,19 @@
 
 <ion-content #scrollContent class="messaging-content" [scrollEvents]="true">
   <div class="messages-wrapper">
+    <div class="status-box" *ngIf="isLoading">Loading messages...</div>
+
+    <div class="status-box error" *ngIf="!isLoading && errorMessage">
+      <p>{{ errorMessage }}</p>
+      <button type="button" class="retry-btn" (click)="loadMessages()">Retry</button>
+    </div>
+
+    <div class="status-box" *ngIf="!isLoading && !errorMessage && messages.length === 0">
+      No messages yet.
+    </div>
 
     <!-- Date separator -->
-    <div class="date-separator">
+    <div class="date-separator" *ngIf="messages.length > 0">
       <span>Today, 10:30 AM</span>
     </div>
 
@@ -52,17 +62,6 @@
       <div class="bubble" [class.bubble-mine]="message.sender === 'me'" [class.bubble-theirs]="message.sender === 'other'">
         <p class="bubble-text">{{ message.text }}</p>
         <p class="bubble-time">{{ message.time }}</p>
-      </div>
-    </div>
-
-    <!-- Typing indicator -->
-    <div class="message-row theirs">
-      <div class="bubble bubble-theirs typing-bubble">
-        <div class="typing-dots">
-          <span class="dot dot-1"></span>
-          <span class="dot dot-2"></span>
-          <span class="dot dot-3"></span>
-        </div>
       </div>
     </div>
 
@@ -92,7 +91,7 @@
     <ion-button
       class="send-btn"
       (click)="onSend()"
-      [disabled]="!messageText.trim()">
+      [disabled]="!messageText.trim() || isSending">
       <ion-icon name="send" slot="icon-only"></ion-icon>
     </ion-button>
   </div>
