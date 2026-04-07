@@ -11,6 +11,7 @@ import { addIcons } from 'ionicons';
 import { cashOutline, calendarOutline } from 'ionicons/icons';
 import { ProjectService } from '../../services/project.service';
 import { Project, ProjectStatus } from '../../models/project.model';
+import { AuthService } from '../../core/services/auth';
 
 @Component({
   selector: 'app-projects',
@@ -45,30 +46,39 @@ export class ProjectsPage implements OnInit {
 
   projects: Project[] = [];
   filteredProjects: Project[] = [];
+  currentUserRole: 'client' | 'freelancer' | null = null;
 
   constructor(
-    private navCtrl: NavController,
-    private projectService: ProjectService
+    private navCtrl: NavController, //  Navigation entre pages
+    private projectService: ProjectService,  //  Communication avec backend
+    private authService: AuthService
   ) {
     addIcons({ cashOutline, calendarOutline });
   }
 
   ngOnInit(): void {
+    this.currentUserRole = this.authService.getUser()?.role || null;
     this.loadProjects();
+  }
+
+  get canCreateProject(): boolean {
+    return this.currentUserRole === 'client';
   }
 
   /**
    * Charge les projets du backend
    */
-  loadProjects(): void {
+  loadProjects(): void { // Appel backend pour afficher les projets
     this.isLoading = true;
     this.errorMessage = '';
 
     const status = this.activeFilter !== 'all' ? this.activeFilter : undefined;
 
-    this.projectService
-      .getProjects(this.currentPage, this.pageSize, status as ProjectStatus | undefined)
-      .subscribe({
+    const request$ = this.currentUserRole === 'client'
+      ? this.projectService.getMyProjects(this.currentPage, this.pageSize, status as ProjectStatus | undefined)
+      : this.projectService.getProjects(this.currentPage, this.pageSize, status as ProjectStatus | undefined);
+
+    request$.subscribe({
         next: (response) => {
           this.projects = response.projects || [];
           this.applyFilters();
@@ -82,8 +92,14 @@ export class ProjectsPage implements OnInit {
       });
   }
 
-  onSearch(event: CustomEvent): void {
+  onSearch(event: CustomEvent): void { //  Recherche des projets (backend ou reset)
     this.searchQuery = (event.detail.value as string) ?? '';
+
+    if (this.currentUserRole === 'client') {
+      // Clients already load only their own projects; apply local filter only.
+      this.applyFilters();
+      return;
+    }
 
     // Si la recherche est vide, recharger depuis le backend
     if (!this.searchQuery.trim()) {
@@ -109,18 +125,18 @@ export class ProjectsPage implements OnInit {
     }
   }
 
-  setFilter(filter: ProjectStatus | 'all'): void {
+  setFilter(filter: ProjectStatus | 'all'): void {  // Filtrer les projets par statut
     this.activeFilter = filter;
     this.currentPage = 1;
     this.loadProjects();
   }
 
-  onProjectClick(project: Project): void {
+  onProjectClick(project: Project): void { //  Naviguer vers la page détails + envoyer au parent
     this.projectClicked.emit(project);
     this.navCtrl.navigateForward('/project-details', { state: { project } });
   }
 
-  onNewProject(): void {
+  onNewProject(): void { //  Naviguer vers la page création de projet
     this.navCtrl.navigateForward('/projects/new');
   }
 
@@ -142,7 +158,7 @@ export class ProjectsPage implements OnInit {
     return map[status];
   }
 
-  private applyFilters(): void {
+  private applyFilters(): void { // Filtrage local (recherche + statut)
     const query = this.searchQuery.toLowerCase().trim();
 
     this.filteredProjects = this.projects.filter((p) => {

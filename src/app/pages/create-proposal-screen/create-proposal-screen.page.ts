@@ -11,6 +11,7 @@ import { addIcons } from 'ionicons';
 import { arrowBackOutline } from 'ionicons/icons';
 import { ProposalService } from '../../services/proposal.service';
 import { CreateProposalRequest } from '../../models/project.model';
+import { AuthService } from '../../core/services/auth';
 
 @Component({
   selector: 'app-create-proposal',
@@ -37,7 +38,8 @@ export class CreateProposalPage implements OnInit {
     private navCtrl: NavController,
     private router: Router,
     private proposalService: ProposalService,
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
+    private authService: AuthService
   ) {
     addIcons({ arrowBackOutline });
     this.proposalForm = this.fb.group({});
@@ -67,6 +69,12 @@ export class CreateProposalPage implements OnInit {
    * Submit the proposal form
    */
   onSubmit(): void {
+    const currentUser = this.authService.getUser();
+    if (!currentUser || currentUser.role !== 'freelancer') {
+      this.errorMessage = 'Only freelancer accounts can submit proposals';
+      return;
+    }
+
     if (!this.projectId) {
       this.errorMessage = 'Project ID is missing';
       return;

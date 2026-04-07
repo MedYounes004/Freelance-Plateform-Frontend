@@ -7,7 +7,7 @@
           <h1>Projects</h1>
           <p>Manage your work</p>
         </div>
-        <ion-button class="new-btn" (click)="onNewProject()">+ New</ion-button>
+        <ion-button *ngIf="canCreateProject" class="new-btn" (click)="onNewProject()">+ New</ion-button>
       </div>
 
       <!-- Search -->

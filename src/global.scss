@@ -34,4 +34,211 @@
 
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
-@import '@ionic/angular/css/palettes/dark.system.css';
+/* @import '@ionic/angular/css/palettes/dark.system.css'; */
+
+// ========================================
+// PALETTE GLOBALE - COULEURS CLAIRES ET DOUCES
+// ========================================
+:root {
+  // Palette principale - Bleu ciel doux
+  --proposal-primary: linear-gradient(135deg, #a5d8ff 0%, #c4b5fd 100%);
+  --proposal-primary-solid: #a5d8ff;
+  --proposal-primary-light: #e0f2fe;
+  --proposal-primary-dark: #5b9cff;
+
+  // Palette secondaire - Rose et pêche soft
+  --proposal-secondary: linear-gradient(135deg, #ffc0d9 0%, #fdbf9a 100%);
+  --proposal-secondary-solid: #ffc0d9;
+  --proposal-secondary-light: #ffe8f1;
+  --proposal-secondary-dark: #ff9bb5;
+
+  // Couleurs d'accent - Vert menthe clair
+  --proposal-accent: linear-gradient(135deg, #a5f3b8 0%, #b3e5fc 100%);
+  --proposal-accent-solid: #a5f3b8;
+  --proposal-accent-light: #d4f8e5;
+  --proposal-accent-dark: #73eb92;
+
+  // États de succès - Vert pastel
+  --proposal-success: linear-gradient(135deg, #a5f3b8 0%, #bfffe0 100%);
+  --proposal-success-solid: #a5f3b8;
+  --proposal-success-light: #e0fce7;
+  --proposal-success-dark: #68e89c;
+
+  // États d'avertissement - Orange doux
+  --proposal-warning: linear-gradient(135deg, #fdbf9a 0%, #ffe8b6 100%);
+  --proposal-warning-solid: #fdbf9a;
+  --proposal-warning-light: #fff3e0;
+  --proposal-warning-dark: #ffb366;
+
+  // États d'erreur - Rose clair
+  --proposal-error: linear-gradient(135deg, #ffb3d9 0%, #ffcce5 100%);
+  --proposal-error-solid: #ffb3d9;
+  --proposal-error-light: #ffe8f1;
+  --proposal-error-dark: #ff8fc9;
+
+  // États d'information - Bleu très clair
+  --proposal-info: linear-gradient(135deg, #b3e5fc 0%, #d0ebff 100%);
+  --proposal-info-solid: #b3e5fc;
+  --proposal-info-light: #e1f5fe;
+  --proposal-info-dark: #79c3ff;
+
+  // Couleurs neutres claires et douces
+  --proposal-gray-50: #fafbfc;
+  --proposal-gray-100: #f5f7fa;
+  --proposal-gray-200: #e8ecf1;
+  --proposal-gray-300: #d9e0e8;
+  --proposal-gray-400: #bac4d4;
+  --proposal-gray-500: #8b94a8;
+  --proposal-gray-600: #6b7788;
+  --proposal-gray-700: #556176;
+  --proposal-gray-800: #3a4450;
+  --proposal-gray-900: #2a3142;
+
+  // Couleurs de texte douces (plus claires)
+  --proposal-text-primary: #556176;
+  --proposal-text-secondary: #6b7788;
+  --proposal-text-muted: #8b94a8;
+  --proposal-text-inverse: #fafbfc;
+
+  // Couleurs de fond très claires
+  --proposal-bg-primary: #ffffff;
+  --proposal-bg-secondary: #f9fafc;
+  --proposal-bg-tertiary: #f5f7fa;
+  --proposal-bg-overlay: rgba(255, 255, 255, 0.95);
+
+  // Ombres douces
+  --proposal-shadow: 0 4px 20px rgba(165, 216, 255, 0.2);
+  --proposal-shadow-light: 0 2px 8px rgba(165, 216, 255, 0.08);
+  --proposal-shadow-medium: 0 4px 16px rgba(165, 216, 255, 0.12);
+  --proposal-shadow-strong: 0 8px 32px rgba(165, 216, 255, 0.18);
+
+  // Bordures et rayons
+  --proposal-border-radius: 20px;
+  --proposal-border-radius-sm: 12px;
+  --proposal-border-radius-lg: 28px;
+  
+  // Transition smooth
+  --proposal-transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  // Couleurs de validation
+  --proposal-success-text: var(--proposal-success-dark);
+  --proposal-error-text: var(--proposal-error-dark);
+  --proposal-warning-text: var(--proposal-warning-dark);
+  --proposal-info-text: var(--proposal-info-dark);
+
+  // Couleurs d'interaction douces
+  --proposal-hover-bg: rgba(165, 216, 255, 0.12);
+  --proposal-focus-shadow: 0 0 0 4px rgba(165, 216, 255, 0.25);
+  --proposal-active-shadow: 0 0 0 8px rgba(165, 216, 255, 0.35);
+}
+
+// Force le thème clair pour Ionic
+body {
+  background: #ffffff;
+  color: #556176;
+}
+
+// Variables Ionic standard - Thème clair global
+:root {
+  // Couleurs générales Ionic
+  --ion-background-color: #ffffff;
+  --ion-background-color-rgb: 255, 255, 255;
+  --ion-text-color: #556176;
+  --ion-text-color-rgb: 85, 97, 118;
+  --ion-border-color: #e8ecf1;
+  
+  // iOS
+  --ios-background-color: #ffffff;
+  --ios-text-color: #556176;
+  --ios-background-ios: #fafbfc;
+  
+  // Android (Material Design)
+  --md-background-color: #ffffff;
+  --md-text-color: #556176;
+  
+  // Header et toolbar
+  --ion-toolbar-background: linear-gradient(135deg, #a5d8ff 0%, #c4b5fd 100%);
+  --ion-toolbar-color: #fafbfc;
+  
+  // Content
+  --ion-content-background: linear-gradient(180deg, #f9fafc 0%, #f5f7fa 100%);
+  --ion-content-color: #556176;
+}
+
+// Surdéfinir les couleurs des éléments Ionic
+ion-header,
+ion-content,
+ion-footer {
+  --background: transparent !important;
+  --color: #556176 !important;
+}
+
+ion-header {
+  --background: linear-gradient(135deg, #a5d8ff 0%, #c4b5fd 100%) !important;
+  
+  ion-toolbar {
+    --background: transparent !important;
+    --color: #fafbfc !important;
+  }
+}
+
+ion-content {
+  --background: linear-gradient(180deg, #f9fafc 0%, #f5f7fa 100%) !important;
+  --color: #556176 !important;
+  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+ion-footer {
+  --background: linear-gradient(135deg, #ffffff 0%, #f9fafc 100%) !important;
+  --color: #556176 !important;
+}
+
+// Items et inputs
+ion-item {
+  --color: #556176 !important;
+  --background: transparent !important;
+  --ion-text-color: #556176 !important;
+}
+
+ion-label {
+  --color: #6b7788 !important;
+}
+
+ion-input,
+ion-textarea {
+  --color: #556176 !important;
+  --placeholder-color: #bac4d4 !important;
+}
+
+// Boutons
+ion-button {
+  --color: #556176 !important;
+  
+  &.primary-btn {
+    --background: linear-gradient(135deg, #a5d8ff 0%, #c4b5fd 100%) !important;
+    --color: #fafbfc !important;
+  }
+}
+
+// Text styling
+h1, h2, h3, h4, h5, h6 {
+  color: #556176 !important;
+}
+
+p {
+  color: #8b94a8 !important;
+}
+
+// Animations
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+body {
+  animation: fadeIn 0.3s ease-in;
+}

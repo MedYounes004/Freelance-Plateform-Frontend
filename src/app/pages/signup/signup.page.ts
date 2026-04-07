@@ -26,6 +26,7 @@ import {
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { briefcaseOutline, ribbonOutline, arrowBack } from 'ionicons/icons';
+import { AuthService } from '../../core/services/auth';
 
 // ── Custom validator: password strength ──────────────────────────────────────
 function strongPasswordValidator(control: AbstractControl): ValidationErrors | null {
@@ -70,8 +71,14 @@ export class SignupPage {
   form: FormGroup;
   submitted = false;
   userType: 'hire' | 'work' = 'hire';
+  isLoading = false;
+  errorMessage = '';
 
-  constructor(private fb: FormBuilder, private navCtrl: NavController) {
+  constructor(
+    private fb: FormBuilder,
+    private navCtrl: NavController,
+    private authService: AuthService
+  ) {
     addIcons({ briefcaseOutline, ribbonOutline, arrowBack });
 
     this.form = this.fb.group({
@@ -175,8 +182,23 @@ export class SignupPage {
     this.form.markAllAsTouched();
     if (this.form.invalid) return;
 
-    this.signUp.emit();
-    this.navCtrl.navigateRoot('/home');
+    this.isLoading = true;
+    this.errorMessage = '';
+
+    const role = this.userType === 'hire' ? 'client' : 'freelancer';
+    const { fullName, email, password } = this.form.value;
+
+    this.authService.register(fullName, email, password, role).subscribe({
+      next: () => {
+        this.isLoading = false;
+        this.signUp.emit();
+        this.navCtrl.navigateRoot('/home');
+      },
+      error: (err) => {
+        this.isLoading = false;
+        this.errorMessage = err.error?.message || 'Sign up failed. Please try again.';
+      }
+    });
   }
 
   onBack()         { this.navCtrl.back();    }

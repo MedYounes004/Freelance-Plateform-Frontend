@@ -1,9 +1,9 @@
 :host {
-  background: #ffffff;
+  background: linear-gradient(135deg, #ffffff 0%, #f9fafc 100%);
 }
 
 ion-content {
-  --background: #ffffff;
+  --background: linear-gradient(135deg, #ffffff 0%, #f9fafc 100%);
 }
 
 // --- Page Wrapper ---
@@ -25,12 +25,12 @@ ion-content {
   padding: 8px;
   margin-left: -8px;
   cursor: pointer;
-  color: #6b7280;
+  color: #8b94a8;
 
   svg {
     width: 24px;
     height: 24px;
-    stroke: #6b7280;
+    stroke: #8b94a8;
   }
 }
 
@@ -49,12 +49,12 @@ ion-content {
   h1 {
     font-size: 28px;
     font-weight: 700;
-    color: #1f2937;
+    color: #556176;
     margin: 0 0 6px;
   }
   p {
     font-size: 15px;
-    color: #6b7280;
+    color: #8b94a8;
     margin: 0;
   }
 }
@@ -73,7 +73,7 @@ ion-content {
 
   label {
     font-size: 14px;
-    color: #374151;
+    color: #556176;
     font-weight: 500;
   }
 }
@@ -82,17 +82,18 @@ ion-content {
   width: 100%;
   padding: 14px 16px;
   border-radius: 12px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid #e8ecf1;
   font-size: 15px;
-  color: #1f2937;
+  color: #556176;
   outline: none;
   box-sizing: border-box;
-  background: #ffffff;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(245, 247, 250, 0.95) 100%);
   transition: border-color 0.2s, box-shadow 0.2s;
+  backdrop-filter: blur(10px);
 
   &:focus {
-    border-color: #4f46e5;
-    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    border-color: #a5d8ff;
+    box-shadow: 0 0 0 3px rgba(165, 216, 255, 0.2);
   }
 }
 

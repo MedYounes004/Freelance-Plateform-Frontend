@@ -131,12 +131,15 @@
       </div>
 
       <!-- Submit Button -->
+      <p class="error-msg" *ngIf="errorMessage">{{ errorMessage }}</p>
+
       <ion-button
         type="submit"
         expand="block"
         class="submit-btn"
+        [disabled]="isLoading"
       >
-        Create Account
+        {{ isLoading ? 'Creating account...' : 'Create Account' }}
       </ion-button>
 
     </form>

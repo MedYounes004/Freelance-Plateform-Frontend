@@ -3,12 +3,13 @@
 // ─── Header ──────────────────────────────────────────────
 .messaging-header {
   ion-toolbar {
-    --background: #ffffff;
+    --background: linear-gradient(135deg, #ffffff 0%, #f9fafc 100%);
     --border-width: 0;
     --padding-start: 0;
     --padding-end: 0;
     --min-height: 72px;
-    border-bottom: 1px solid #e5e7eb;
+    border-bottom: 1px solid #e8ecf1;
+    box-shadow: 0 2px 8px rgba(165, 216, 255, 0.08);
   }
 
   .toolbar-content {
@@ -18,7 +19,7 @@
     gap: 4px;
 
     .back-btn {
-      --color: #4b5563;
+      --color: #6b7788;
       --padding-start: 8px;
       --padding-end: 8px;
       margin-left: -8px;
@@ -60,7 +61,7 @@
         h2 {
           font-size: 0.9375rem;
           font-weight: 600;
-          color: #111827;
+          color: #556176;
           margin: 0;
           white-space: nowrap;
           overflow: hidden;
@@ -69,10 +70,10 @@
 
         .status {
           font-size: 0.75rem;
-          color: #9ca3af;
+          color: #8b94a8;
           margin: 0;
 
-          &.online { color: #16a34a; }
+          &.online { color: #68e89c; }
         }
       }
     }
@@ -82,7 +83,7 @@
       align-items: center;
 
       .action-btn {
-        --color: #4b5563;
+        --color: #6b7788;
         --padding-start: 8px;
         --padding-end: 8px;
 
@@ -94,7 +95,7 @@
 
 // ─── Content ─────────────────────────────────────────────
 .messaging-content {
-  --background: #f9fafb;
+  --background: linear-gradient(180deg, #f9fafc 0%, #f5f7fa 100%);
 
   .messages-wrapper {
     padding: 16px 24px;
@@ -110,8 +111,8 @@
     margin: 4px 0 8px;
 
     span {
-      background: #e5e7eb;
-      color: #6b7280;
+      background: linear-gradient(135deg, #e8ecf1 0%, #d9e0e8 100%);
+      color: #8b94a8;
       font-size: 0.75rem;
       padding: 4px 12px;
       border-radius: 999px;
@@ -143,20 +144,20 @@
     }
 
     &.bubble-mine {
-      background: #4f46e5;
+      background: linear-gradient(135deg, #a5d8ff 0%, #b3e5fc 100%);
       border-radius: 18px 18px 4px 18px;
 
-      .bubble-text { color: #ffffff; }
-      .bubble-time { color: #c7d2fe; }
+      .bubble-text { color: #556176; }
+      .bubble-time { color: #79c3ff; }
     }
 
     &.bubble-theirs {
-      background: #ffffff;
+      background: rgba(255, 255, 255, 0.95);
       border-radius: 18px 18px 18px 4px;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+      box-shadow: 0 2px 8px rgba(165, 216, 255, 0.1);
 
-      .bubble-text { color: #111827; }
-      .bubble-time { color: #9ca3af; }
+      .bubble-text { color: #556176; }
+      .bubble-time { color: #8b94a8; }
     }
   }
 
@@ -172,7 +173,7 @@
       .dot {
         width: 8px;
         height: 8px;
-        background: #9ca3af;
+        background: #bac4d4;
         border-radius: 50%;
         animation: bounce 1.2s infinite ease-in-out;
 
@@ -192,8 +193,9 @@
 // ─── Footer ──────────────────────────────────────────────
 .messaging-footer {
   ion-toolbar, & {
-    --background: #ffffff;
-    border-top: 1px solid #e5e7eb;
+    --background: linear-gradient(135deg, #ffffff 0%, #f9fafc 100%);
+    border-top: 1px solid #e8ecf1;
+    box-shadow: 0 -2px 8px rgba(165, 216, 255, 0.08);
   }
 
   .input-bar {
@@ -204,7 +206,7 @@
     padding-bottom: calc(12px + env(safe-area-inset-bottom));
 
     .attach-btn {
-      --color: #4b5563;
+      --color: #6b7788;
       --padding-start: 8px;
       --padding-end: 8px;
       flex-shrink: 0;
@@ -214,10 +216,11 @@
       flex: 1;
       display: flex;
       align-items: center;
-      background: #f3f4f6;
+      background: linear-gradient(135deg, #f5f7fa 0%, #f0f2f7 100%);
       border-radius: 20px;
       padding: 0 4px 0 4px;
       min-height: 44px;
+      border: 1px solid #e8ecf1;
 
       .message-input {
         flex: 1;
@@ -226,8 +229,8 @@
         --padding-end: 4px;
         --padding-top: 10px;
         --padding-bottom: 10px;
-        --color: #111827;
-        --placeholder-color: #9ca3af;
+        --color: #556176;
+        --placeholder-color: #bac4d4;
         font-size: 0.9375rem;
         max-height: 120px;
       }
@@ -242,19 +245,20 @@
     }
 
     .send-btn {
-      --background: #4f46e5;
-      --background-activated: #4338ca;
-      --color: #ffffff;
+      --background: linear-gradient(135deg, #a5d8ff 0%, #b3e5fc 100%);
+      --background-activated: #79c3ff;
+      --color: #556176;
       --border-radius: 50%;
       --padding-start: 0;
       --padding-end: 0;
       width: 44px;
       height: 44px;
       flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(165, 216, 255, 0.3);
 
       &[disabled] {
-        --background: #c7d2fe;
-        opacity: 1;
+        --background: #d9e0e8;
+        opacity: 0.6;
       }
     }
   }

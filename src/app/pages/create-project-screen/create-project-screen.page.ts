@@ -13,6 +13,7 @@ import { arrowBackOutline, addCircleOutline, removeCircleOutline } from 'ionicon
 import { ProjectService } from '../../services/project.service';
 import { CreateProjectRequest } from '../../models/project.model';
 import { ToastController } from '@ionic/angular';
+import { AuthService } from '../../core/services/auth';
 
 interface MilestoneForm {
   title: string;
@@ -36,31 +37,35 @@ interface MilestoneForm {
   ],
 })
 export class CreateProjectPage implements OnInit {
-
+   // Formulaire principal 
   projectForm!: FormGroup;
   isLoading = false;
   errorMessage = '';
 
   constructor(
-    private fb: FormBuilder,
-    private navCtrl: NavController,
-    private projectService: ProjectService,
-    private toastCtrl: ToastController
+    private fb: FormBuilder, //  Créer le formulaire
+    private navCtrl: NavController, //  Navigation
+    private projectService: ProjectService,  // Backend API
+    private toastCtrl: ToastController,  //  Messages utilisateur
+    private authService: AuthService
   ) {
     addIcons({ arrowBackOutline, addCircleOutline, removeCircleOutline });
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void {    //  Initialiser le formulaire au démarrage
     this.initializeForm();
   }
 
   /**
    * Initialise le formulaire réactif
+   * → Définit tous les champs du projet + validations
    */
   private initializeForm(): void {
+    const currentUser = this.authService.getUser();
+
     this.projectForm = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(5)]],
-      client: ['', [Validators.required, Validators.minLength(3)]],
+      client: [currentUser?.name || '', [Validators.required, Validators.minLength(3)]],
       clientAvatar: [''],
       status: ['pending', Validators.required],
       budget: [0, [Validators.required, Validators.min(1)]],
@@ -71,14 +76,18 @@ export class CreateProjectPage implements OnInit {
       skills: this.fb.array([], Validators.required),
       milestones: this.fb.array([]),
     });
+
+    // Add one default row for required arrays so the form is usable immediately.
+    this.addDescription();
+    this.addSkill();
   }
 
   /* --- Getters --- */
-
+ // Liste des descriptions
   get descriptionArray(): FormArray {
     return this.projectForm.get('description') as FormArray;
   }
-
+//  Liste des skills
   get skillsArray(): FormArray {
     return this.projectForm.get('skills') as FormArray;
   }
@@ -129,8 +138,23 @@ export class CreateProjectPage implements OnInit {
   /* --- Form Submission --- */
 
   onSubmit(): void {
+    if (!this.authService.isLoggedIn()) {
+      this.errorMessage = 'Please log in before creating a project';
+      this.presentToast(this.errorMessage, 'danger');
+      this.navCtrl.navigateForward('/login');
+      return;
+    }
+
+    const currentUser = this.authService.getUser();
+    if (!currentUser || currentUser.role !== 'client') {
+      this.errorMessage = 'Only client accounts can create projects';
+      this.presentToast(this.errorMessage, 'danger');
+      return;
+    }
+
     // Valider le formulaire
     if (!this.projectForm.valid) {
+      this.projectForm.markAllAsTouched();
       this.errorMessage = 'Please fill in all required fields correctly';
       return;
     }
@@ -163,7 +187,17 @@ export class CreateProjectPage implements OnInit {
       error: async (err) => {
         this.isLoading = false;
         console.error('Error creating project:', err);
-        this.errorMessage = err.error?.message || 'Failed to create project';
+
+        if (err.status === 401) {
+          this.errorMessage = 'Your session has expired. Please log in again.';
+        } else if (err.status === 403) {
+          this.errorMessage = err.error?.message || 'Only client accounts can create projects';
+        } else if (err.status === 422) {
+          this.errorMessage = err.error?.message || 'Invalid project data. Please check required fields.';
+        } else {
+          this.errorMessage = err.error?.message || 'Failed to create project';
+        }
+
         await this.presentToast(this.errorMessage, 'danger');
       },
     });

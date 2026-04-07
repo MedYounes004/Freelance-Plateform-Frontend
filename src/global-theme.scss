@@ -1,0 +1,144 @@
+// ========================================
+// THÈME CLAIR GLOBAL - IONIC
+// ========================================
+
+// FORCE THÈME CLAIR
+:root {
+  color-scheme: light;
+
+  // ===== VARIABLES IONIC CORE (BLANC & CLAIR) =====
+  --ion-color-primary: #a5d8ff;
+  --ion-color-secondary: #ffc0d9;
+  --ion-color-tertiary: #a5f3b8;
+  --ion-color-success: #a5f3b8;
+  --ion-color-warning: #fdbf9a;
+  --ion-color-danger: #ffb3d9;
+  --ion-color-light: #f9fafc;
+  --ion-color-medium: #d9e0e8;
+  --ion-color-dark: #556176;
+
+  // BACKGROUNDS (BLANC PUR)
+  --ion-background-color: #ffffff;
+  --ion-background-color-rgb: 255, 255, 255;
+  
+  // TEXTE (GRIS CLAIR)
+  --ion-text-color: #556176;
+  --ion-text-color-rgb: 85, 97, 118;
+  
+  // BORDURES (GRIS TRÈS CLAIR)
+  --ion-border-color: #e8ecf1;
+
+  // TOOLBAR (BLEU GRADIENT + TEXTE BLANC)
+  --ion-toolbar-background: linear-gradient(135deg, #a5d8ff 0%, #c4b5fd 100%);
+  --ion-toolbar-color: #fafbfc;
+  --ion-toolbar-text-color: #fafbfc;
+
+  // CONTENT (BLANC AVEC GRADIENT SUBTIL)
+  --ion-content-background: linear-gradient(180deg, #f9fafc 0%, #f5f7fa 100%);
+  --ion-content-color: #556176;
+  --ion-content-text-color: #556176;
+
+  // iOS
+  --ios-background-color: #ffffff;
+  --ios-text-color: #556176;
+  
+  // Android
+  --md-background-color: #ffffff;
+  --md-text-color: #556176;
+
+  // INPUTS & ITEMS
+  --ion-item-background: #ffffff;
+  --ion-item-border-color: #e8ecf1;
+  --ion-input-background: rgba(255, 255, 255, 0.8);
+  --ion-input-border-color: #e8ecf1;
+  --ion-input-color: #556176;
+  --ion-input-placeholder-color: #bac4d4;
+}
+
+html {
+  background: #ffffff !important;
+  color: #556176 !important;
+}
+
+body {
+  background: #ffffff !important;
+  color: #556176 !important;
+  --ion-background-color: #ffffff;
+}
+
+// HEADER
+ion-header {
+  --background: linear-gradient(135deg, #a5d8ff 0%, #c4b5fd 100%) !important;
+  --ion-background-color: linear-gradient(135deg, #a5d8ff 0%, #c4b5fd 100%) !important;
+  
+  ion-toolbar {
+    --background: transparent !important;
+    --color: #fafbfc !important;
+    --ion-color: #fafbfc !important;
+    
+    ion-title {
+      color: #fafbfc !important;
+    }
+  }
+}
+
+// CONTENT
+ion-content {
+  --background: linear-gradient(180deg, #f9fafc 0%, #f5f7fa 100%) !important;
+  --color: #556176 !important;
+  --ion-text-color: #556176 !important;
+}
+
+// FOOTER
+ion-footer {
+  --background: linear-gradient(135deg, #ffffff 0%, #f9fafc 100%) !important;
+  --color: #556176 !important;
+}
+
+// ITEMS
+ion-item {
+  --color: #556176 !important;
+  --background: transparent !important;
+  --ion-text-color: #556176 !important;
+  --ion-background-color: transparent !important;
+  --padding-start: 0 !important;
+  --padding-end: 0 !important;
+  
+  ion-label {
+    color: #6b7788 !important;
+  }
+}
+
+// INPUTS & TEXTAREAS
+ion-input,
+ion-textarea {
+  --color: #556176 !important;
+  --placeholder-color: #bac4d4 !important;
+  --background: rgba(255, 255, 255, 0.8) !important;
+  --border-color: #e8ecf1 !important;
+}
+
+// BOUTONS
+ion-button {
+  --color: #556176 !important;
+}
+
+// TEXTE
+h1, h2, h3, h4, h5, h6 {
+  color: #556176 !important;
+}
+
+p, span {
+  color: #8b94a8 !important;
+}
+
+// TAB BAR
+ion-tab-bar {
+  --background: linear-gradient(135deg, #ffffff 0%, #f9fafc 100%) !important;
+  --border-color: #e8ecf1 !important;
+  --color: #bac4d4 !important;
+  
+  ion-tab-button[aria-selected="true"] {
+    --color: #a5d8ff !important;
+  }
+}
