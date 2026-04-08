@@ -1,94 +1,3 @@
-// Variables CSS personnalisées - Palette de couleurs claires et douces
-:root {
-  // Palette principale - Tons bleus clairs et pastels
-  --proposal-primary: linear-gradient(135deg, #93c5fd 0%, #c4b5fd 100%);
-  --proposal-primary-solid: #93c5fd;
-  --proposal-primary-light: #dbeafe;
-  --proposal-primary-dark: #3b82f6;
-
-  // Palette secondaire - Tons roses clairs
-  --proposal-secondary: linear-gradient(135deg, #f9a8d4 0%, #fdba74 100%);
-  --proposal-secondary-solid: #f9a8d4;
-  --proposal-secondary-light: #fce7f3;
-  --proposal-secondary-dark: #ec4899;
-
-  // Couleurs d'accent - Tons turquoise clairs
-  --proposal-accent: linear-gradient(135deg, #67e8f9 0%, #a5f3fc 100%);
-  --proposal-accent-solid: #67e8f9;
-  --proposal-accent-light: #cffafe;
-  --proposal-accent-dark: #06b6d4;
-
-  // États de succès - Tons verts clairs
-  --proposal-success: linear-gradient(135deg, #86efac 0%, #bbf7d0 100%);
-  --proposal-success-solid: #86efac;
-  --proposal-success-light: #dcfce7;
-  --proposal-success-dark: #16a34a;
-
-  // États d'avertissement - Tons oranges clairs
-  --proposal-warning: linear-gradient(135deg, #fcd34d 0%, #fde68a 100%);
-  --proposal-warning-solid: #fcd34d;
-  --proposal-warning-light: #fef3c7;
-  --proposal-warning-dark: #d97706;
-
-  // États d'erreur - Tons rouges clairs
-  --proposal-error: linear-gradient(135deg, #fca5a5 0%, #fecaca 100%);
-  --proposal-error-solid: #fca5a5;
-  --proposal-error-light: #fef2f2;
-  --proposal-error-dark: #dc2626;
-
-  // États d'information - Tons bleus très clairs
-  --proposal-info: linear-gradient(135deg, #bfdbfe 0%, #dbeafe 100%);
-  --proposal-info-solid: #bfdbfe;
-  --proposal-info-light: #eff6ff;
-  --proposal-info-dark: #2563eb;
-
-  // Couleurs neutres claires et douces
-  --proposal-gray-50: #fafafa;
-  --proposal-gray-100: #f4f4f5;
-  --proposal-gray-200: #e4e4e7;
-  --proposal-gray-300: #d4d4d8;
-  --proposal-gray-400: #a1a1aa;
-  --proposal-gray-500: #71717a;
-  --proposal-gray-600: #52525b;
-  --proposal-gray-700: #3f3f46;
-  --proposal-gray-800: #27272a;
-  --proposal-gray-900: #18181b;
-
-  // Couleurs de texte douces
-  --proposal-text-primary: #18181b;
-  --proposal-text-secondary: #3f3f46;
-  --proposal-text-muted: #71717a;
-  --proposal-text-inverse: #fafafa;
-
-  // Couleurs de fond très claires
-  --proposal-bg-primary: #ffffff;
-  --proposal-bg-secondary: #fafafa;
-  --proposal-bg-tertiary: #f4f4f5;
-  --proposal-bg-overlay: rgba(255, 255, 255, 0.9);
-
-  // Ombres douces et légères
-  --proposal-shadow: 0 4px 20px rgba(147, 197, 253, 0.15);
-  --proposal-shadow-light: 0 2px 8px rgba(0, 0, 0, 0.06);
-  --proposal-shadow-medium: 0 4px 16px rgba(0, 0, 0, 0.08);
-  --proposal-shadow-strong: 0 8px 32px rgba(0, 0, 0, 0.12);
-
-  // Bordures et rayons
-  --proposal-border-radius: 20px;
-  --proposal-border-radius-sm: 12px;
-  --proposal-border-radius-lg: 28px;
-
-  // Couleurs de validation
-  --proposal-success-text: var(--proposal-success-dark);
-  --proposal-error-text: var(--proposal-error-dark);
-  --proposal-warning-text: var(--proposal-warning-dark);
-  --proposal-info-text: var(--proposal-info-dark);
-
-  // Couleurs d'interaction douces
-  --proposal-hover-bg: rgba(147, 197, 253, 0.08);
-  --proposal-focus-shadow: 0 0 0 4px rgba(147, 197, 253, 0.2);
-  --proposal-active-shadow: 0 0 0 8px rgba(147, 197, 253, 0.3);
-}
-
 // Animations keyframes
 @keyframes slideInUp {
   from {
@@ -130,11 +39,24 @@
   }
 }
 
+:host {
+  display: block;
+  background: #f8fafc;
+  color-scheme: light;
+  color: #1c86d2;
+}
+
 // Header avec design moderne
 .create-proposal-header {
-  --background: var(--proposal-primary);
+  --background: linear-gradient(135deg, #dff0ff 0%, #efe5ff 100%);
   position: relative;
   overflow: hidden;
+  border-bottom: 1px solid #e8ecf1;
+
+  ion-toolbar {
+    --background: transparent;
+    --color: #5991f1;
+  }
 
   &::before {
     content: '';
@@ -160,30 +82,29 @@
     h1 {
       font-size: 22px;
       font-weight: 700;
-      color: var(--proposal-text-inverse);
+      color: #556176;
       margin: 0;
       flex: 1;
       text-align: center;
-      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
       letter-spacing: -0.5px;
     }
 
     .back-btn {
-      --color: var(--proposal-text-inverse);
-      --background: rgba(255, 255, 255, 0.15);
-      --background-hover: rgba(255, 255, 255, 0.25);
-      --background-activated: rgba(255, 255, 255, 0.35);
+      --color: #556176;
+      --background: rgba(255, 255, 255, 0.85);
+      --background-hover: rgba(255, 255, 255, 0.95);
+      --background-activated: rgba(255, 255, 255, 1);
       border-radius: 50%;
       width: 44px;
       height: 44px;
       margin: 0;
       backdrop-filter: blur(12px);
       transition: var(--proposal-transition);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      border: 1px solid #dbe5ee;
 
       &:hover {
         transform: scale(1.08);
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 6px 20px rgba(165, 216, 255, 0.14);
       }
     }
 
@@ -195,7 +116,8 @@
 
 // Contenu principal avec fond dégradé subtil
 .create-proposal-content {
-  --background: linear-gradient(180deg, var(--proposal-bg-secondary) 0%, var(--proposal-bg-tertiary) 100%);
+  --background: linear-gradient(180deg, #f8fafc 0%, #eef3f8 100%);
+  --color: #556176;
   padding: 20px;
   min-height: calc(100vh - 140px);
   animation: slideInUp 0.6s ease-out;
@@ -240,12 +162,12 @@
 
 // Sections du formulaire avec design moderne
 .form-section {
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.97);
   backdrop-filter: blur(20px);
   border-radius: var(--proposal-border-radius);
   padding: 24px;
   box-shadow: var(--proposal-shadow-light);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid #e8ecf1;
   position: relative;
   overflow: hidden;
   transition: var(--proposal-transition);
@@ -272,16 +194,16 @@
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 12px 40px rgba(165, 216, 255, 0.2);
   }
 
   h2 {
     font-size: 18px;
     font-weight: 700;
-    color: var(--proposal-text-primary);
+    color: #556176;
     margin: 0 0 20px 0;
     padding-bottom: 12px;
-    border-bottom: 2px solid #e2e8f0;
+    border-bottom: 2px solid #dde5ee;
     position: relative;
     display: flex;
     align-items: center;
@@ -313,7 +235,7 @@
     }
 
     ion-label {
-      --color: var(--proposal-text-secondary);
+      --color: #6b7788;
       font-weight: 600;
       font-size: 14px;
       margin-bottom: 6px;
@@ -323,9 +245,9 @@
 
     &.cover-letter-item {
       ion-textarea {
-      --color: var(--proposal-text-primary) !important;
-      color: var(--proposal-text-primary) !important;
-        --background: rgba(255, 255, 255, 0.8);
+        --color: #556176 !important;
+        color: #556176 !important;
+        --background: #ffffff;
         --border-radius: 12px;
         min-height: 120px;
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -335,11 +257,11 @@
     }
 
     .form-input {
-      --color: var(--proposal-text-primary);
-      --placeholder-color: var(--proposal-gray-400);
-      --background: rgba(255, 255, 255, 0.8);
+      --color: #556176;
+      --placeholder-color: #c0c8d4;
+      --background: #ffffff;
       --border-radius: 12px;
-      border: 2px solid transparent;
+      border: 2px solid #e8ecf1;
       padding: 12px 16px;
       margin-top: 6px;
       font-size: 16px;
@@ -348,24 +270,24 @@
       backdrop-filter: blur(10px);
 
       &:focus {
-        border-color: #93c5fd;
+        border-color: #a5d8ff;
         box-shadow: var(--proposal-focus-shadow);
         transform: translateY(-1px);
       }
 
       &:hover:not(:focus) {
-        border-color: rgba(147, 197, 253, 0.3);
-        box-shadow: 0 4px 12px rgba(147, 197, 253, 0.1);
+        border-color: rgba(165, 216, 255, 0.4);
+        box-shadow: 0 4px 12px rgba(165, 216, 255, 0.1);
       }
     }
   }
 
   ion-textarea {
-    --color: #1e293b !important;
-    color: #1e293b !important;
-    --background: rgba(255, 255, 255, 0.8);
+    --color: #556176 !important;
+    color: #556176 !important;
+    --background: #ffffff;
     --border-radius: 12px;
-    border: 2px solid transparent;
+    border: 2px solid #e8ecf1;
     padding: 12px 16px;
     margin-top: 6px;
     min-height: 120px;
@@ -376,19 +298,19 @@
     backdrop-filter: blur(10px);
 
     &:focus {
-      border-color: #93c5fd;
+      border-color: #a5d8ff;
       box-shadow: var(--proposal-focus-shadow);
       transform: translateY(-1px);
     }
 
     &:hover:not(:focus) {
-      border-color: rgba(147, 197, 253, 0.3);
-      box-shadow: 0 4px 12px rgba(147, 197, 253, 0.1);
+      border-color: rgba(165, 216, 255, 0.4);
+      box-shadow: 0 4px 12px rgba(165, 216, 255, 0.1);
     }
   }
 
   .error-text {
-    color: var(--proposal-error-dark);
+    color: #d9779b;
     font-size: 13px;
     margin-top: 6px;
     font-weight: 500;
@@ -415,11 +337,11 @@
 
 // Footer avec boutons améliorés
 .create-proposal-footer {
-  --background: rgba(255, 255, 255, 0.95);
+  --background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(245, 247, 250, 0.98) 100%);
   backdrop-filter: blur(20px);
-  border-top: 1px solid rgba(226, 232, 240, 0.5);
+  border-top: 1px solid rgba(217, 224, 232, 0.5);
   padding: 16px 20px;
-  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 -4px 20px rgba(165, 216, 255, 0.1);
 
   .footer-inner {
     display: flex;
@@ -452,16 +374,16 @@
       }
 
       &.cancel-btn {
-        --background: rgba(148, 163, 184, 0.1);
-        --color: var(--proposal-gray-500);
-        --background-hover: rgba(148, 163, 184, 0.2);
-        --background-activated: rgba(148, 163, 184, 0.3);
-        border: 2px solid var(--proposal-gray-300);
+        --background: #eef3f8;
+        --color: #556176;
+        --background-hover: #e6edf5;
+        --background-activated: #dde7f2;
+        border: 2px solid #dde5ee;
         backdrop-filter: blur(10px);
 
         &:hover {
           transform: translateY(-2px);
-          box-shadow: 0 8px 25px rgba(148, 163, 184, 0.3);
+          box-shadow: 0 8px 25px rgba(165, 216, 255, 0.16);
         }
       }
 
@@ -470,12 +392,12 @@
         --color: var(--proposal-text-inverse);
         --background-hover: var(--proposal-primary);
         --background-activated: var(--proposal-primary);
-        box-shadow: 0 4px 16px rgba(147, 197, 253, 0.4);
+        box-shadow: 0 4px 16px rgba(165, 216, 255, 0.45);
         border: none;
 
         &:hover:not([disabled]) {
           transform: translateY(-2px);
-          box-shadow: 0 8px 25px rgba(147, 197, 253, 0.6);
+          box-shadow: 0 8px 25px rgba(165, 216, 255, 0.65);
         }
 
         &:active:not([disabled]) {
