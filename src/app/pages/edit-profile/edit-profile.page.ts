@@ -32,6 +32,11 @@ export class EditProfilePage {
   password = '';
   confirmPassword = '';
 
+  // ── Photo ────────────────────────────────────
+  currentAvatar = '';       // loaded from localStorage
+  avatarPreview = '';       // shown after user picks a photo
+  avatarBase64  = '';       // sent to Flask
+
   // ── UI state ─────────────────────────────────
   showPassword = false;
   showConfirmPassword = false;
@@ -48,16 +53,33 @@ export class EditProfilePage {
     // Pre-fill with current user data
     const user = this.authService.getUser();
     if (user) {
-      this.name = user.name || '';
-      this.role = user.role || '';
-      this.bio  = user.bio  || '';
+      this.name          = user.name   || '';
+      this.role          = user.role   || '';
+      this.bio           = user.bio    || '';
+      this.currentAvatar = user.avatar || '';
     }
   }
 
-  onBack(): void {
-    this.navCtrl.back();
+  // ── Photo picker ─────────────────────────────
+  onPhotoSelected(event: any): void {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    // Validate size (max 2MB)
+    if (file.size > 2 * 1024 * 1024) {
+      this.errorMessage = 'Image must be smaller than 2MB.';
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      this.avatarPreview = e.target.result;  // shows preview immediately
+      this.avatarBase64  = e.target.result;  // sent to Flask as base64
+    };
+    reader.readAsDataURL(file);  // converts to base64
   }
 
+  // ── Toggle password visibility ────────────────
   togglePassword(): void {
     this.showPassword = !this.showPassword;
   }
@@ -66,8 +88,8 @@ export class EditProfilePage {
     this.showConfirmPassword = !this.showConfirmPassword;
   }
 
+  // ── Save ─────────────────────────────────────
   onSave(): void {
-    // Validation
     if (!this.name) {
       this.errorMessage = 'Name is required.';
       return;
@@ -91,14 +113,18 @@ export class EditProfilePage {
       payload.password = this.password;
     }
 
+    // Only send avatar if user picked a new one
+    if (this.avatarBase64) {
+      payload.avatar = this.avatarBase64;
+    }
+
     this.authService.updateProfile(payload).subscribe({
       next: () => {
         this.isLoading = false;
         this.successMessage = 'Profile updated successfully!';
         setTimeout(() => this.navCtrl.back(), 1500);
       },
-      // ✅ After
-error: (err: any) => {
+      error: (err: any) => {
         this.isLoading = false;
         this.errorMessage = err.error?.message || 'Update failed. Try again.';
       }
