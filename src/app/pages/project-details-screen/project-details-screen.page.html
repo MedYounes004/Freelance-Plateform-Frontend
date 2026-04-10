@@ -128,14 +128,55 @@
       </div>
     </div>
 
+    <!-- Proposals list for client -->
+    <div class="section section-last" *ngIf="isClient && showProposals">
+      <h2>Project Proposals</h2>
+
+      <div *ngIf="isLoadingProposals" class="loading-container">
+        <ion-spinner color="primary"></ion-spinner>
+        <p>Loading proposals...</p>
+      </div>
+
+      <div *ngIf="proposalsErrorMessage && !isLoadingProposals" class="error-container">
+        <ion-text color="danger">
+          <p>{{ proposalsErrorMessage }}</p>
+        </ion-text>
+        <ion-button (click)="onViewProposals()">Retry</ion-button>
+      </div>
+
+      <div *ngIf="!isLoadingProposals && !proposalsErrorMessage && proposals.length === 0">
+        <ion-text color="medium">
+          <p>No proposals submitted for this project yet.</p>
+        </ion-text>
+      </div>
+
+      <div class="milestones-list" *ngIf="!isLoadingProposals && !proposalsErrorMessage && proposals.length > 0">
+        <div class="milestone-row" *ngFor="let proposal of proposals">
+          <div class="milestone-body">
+            <p class="milestone-title">${{ proposal.bidAmount }}</p>
+            <p class="milestone-payment">Delivery: {{ proposal.deliveryTime }}</p>
+            <p class="description-para">{{ proposal.coverLetter }}</p>
+          </div>
+
+          <span class="badge" [ngClass]="getProposalStatusClass(proposal.status)">
+            {{ getProposalStatusLabel(proposal.status) }}
+          </span>
+        </div>
+      </div>
+    </div>
+
   </div>
 
 </ion-content>
 
 <ion-footer class="ion-no-border project-details-footer" *ngIf="selectedProject && !isLoading && !errorMessage">
   <div class="footer-inner">
-    <ion-button expand="block" class="apply-btn" (click)="onApply()">
+    <ion-button *ngIf="isFreelancer" expand="block" class="apply-btn" (click)="onApply()">
       Submit Proposal
+    </ion-button>
+
+    <ion-button *ngIf="canViewProposals" expand="block" class="apply-btn" (click)="onViewProposals()">
+      View Proposals
     </ion-button>
   </div>
 </ion-footer>

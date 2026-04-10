@@ -20,6 +20,30 @@
       <!-- Form -->
       <div class="sign-up-form">
 
+        <!-- Profile Photo -->
+        <div class="field-group">
+          <label class="field-label">Profile Photo</label>
+          <div class="photo-section">
+            <div class="avatar-wrapper">
+              <img
+                [src]="avatarPreview || currentAvatar || 'assets/default-avatar.png'"
+                alt="Profile Photo"
+                class="avatar-preview"
+              />
+            </div>
+            <label class="photo-btn" for="photoInput">
+              Choose Photo
+            </label>
+            <input
+              id="photoInput"
+              type="file"
+              accept="image/*"
+              class="hidden-input"
+              (change)="onPhotoSelected($event)"
+            />
+          </div>
+        </div>
+
         <!-- Name -->
         <div class="field-group">
           <label class="field-label">Full Name</label>
