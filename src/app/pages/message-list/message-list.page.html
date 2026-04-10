@@ -1,9 +1,14 @@
 <ion-header class="ion-no-border messages-header">
   <ion-toolbar>
     <div class="header-content">
-      <div class="header-title">
-        <h1>Messages</h1>
-        <p>Stay connected with clients</p>
+      <div class="header-top-row">
+        <div class="header-title">
+          <h1>Messages</h1>
+          <p>Stay connected with clients</p>
+        </div>
+        <button type="button" class="new-message-btn" (click)="openRecipients()">
+          New message
+        </button>
       </div>
       <div class="search-wrapper">
         <ion-searchbar

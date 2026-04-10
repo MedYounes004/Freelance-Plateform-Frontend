@@ -14,7 +14,9 @@ import {
   checkmarkCircle, documentTextOutline,
 } from 'ionicons/icons';
 import { ProjectService } from '../../core/services/projects/project.service';
-import { Project, Milestone, MilestoneStatus } from '../../models/project.model';
+import { Project, MilestoneStatus, Proposal } from '../../models/project.model';
+import { ProposalService } from '../../core/services/proposal/proposal.service';
+import { AuthService } from '../../core/services/auth/auth';
 
 @Component({
   selector: 'app-project-details',
@@ -29,19 +31,26 @@ import { Project, Milestone, MilestoneStatus } from '../../models/project.model'
   ],
 })
 export class ProjectDetailsPage implements OnInit {
-
+ // Communication avec le parent
   @Output() applyClicked = new EventEmitter<void>();
 
   selectedProject?: Project;
   isLoading = false;
   errorMessage = '';
-
+  currentUserRole: 'client' | 'freelancer' | null = null;
+  proposals: Proposal[] = [];
+  isLoadingProposals = false;
+  proposalsErrorMessage = '';
+  showProposals = false;
+  // Statistiques affichées (budget, deadline…)
   stats: Array<{ label: string; value: string; icon: string; bgClass: string; iconClass: string }> = [];
 
   constructor(
     private navCtrl: NavController,
     private router: Router,
-    private projectService: ProjectService
+    private projectService: ProjectService,
+    private proposalService: ProposalService,
+    private authService: AuthService
   ) {
     addIcons({
       arrowBackOutline, ellipsisHorizontalOutline,
@@ -51,26 +60,42 @@ export class ProjectDetailsPage implements OnInit {
   }
 
   ngOnInit(): void {
+    this.currentUserRole = this.authService.getUser()?.role || null;
+     //  Charger les détails du projet au démarrage
     this.loadProjectDetails();
+  }
+
+  get isClient(): boolean {
+    return this.currentUserRole === 'client';
+  }
+
+  get isFreelancer(): boolean {
+    return this.currentUserRole === 'freelancer';
+  }
+
+  get canViewProposals(): boolean {
+    const currentUserId = this.authService.getUser()?.id;
+    return this.isClient && !!this.selectedProject && !!currentUserId && this.selectedProject.clientId === currentUserId;
   }
 
   /**
    * Charge les détails du projet
    */
   private loadProjectDetails(): void {
-    // Get the project from navigation state
+ //  Récupérer l’ID du projet depuis la navigation
+//  Appeler le backend pour afficher les détails    
     const navigation = this.router.getCurrentNavigation();
     if (navigation?.extras?.state && navigation.extras.state['project']) {
       const projectId = navigation.extras.state['project'].id;
       
       this.isLoading = true;
       this.projectService.getProject(projectId).subscribe({
-        next: (project) => {
+        next: (project) => { // Projet sélectionné (détails)
           this.selectedProject = project;
           this.updateStats();
           this.isLoading = false;
         },
-        error: (err) => {
+        error: (err) => { // Gestion du loading et des erreurs
           console.error('Error loading project:', err);
           this.errorMessage = 'Failed to load project details';
           this.isLoading = false;
@@ -83,6 +108,7 @@ export class ProjectDetailsPage implements OnInit {
    * Met à jour les statistiques du projet
    */
   private updateStats(): void {
+     // Construire les statistiques à afficher (budget, deadline, etc.)
     if (!this.selectedProject) return;
 
     this.stats = [
@@ -118,14 +144,75 @@ export class ProjectDetailsPage implements OnInit {
   }
 
   onBack(): void {
+     //  Retour à la page précédente
     this.navCtrl.back();
   }
 
   onApply(): void {
+    // Envoyer événement au parent
+    //  Naviguer vers page de proposition
     this.applyClicked.emit();
     if (this.selectedProject) {
       this.navCtrl.navigateForward('/proposals/new', { state: { projectId: this.selectedProject.id } });
     }
+  }
+
+  onViewProposals(): void {
+    if (!this.selectedProject) return;
+
+    if (!this.canViewProposals) {
+      this.proposalsErrorMessage = 'You can only view proposals for your own projects';
+      this.showProposals = true;
+      return;
+    }
+
+    this.showProposals = true;
+    this.loadProposalsForProject(this.selectedProject.id);
+  }
+
+  private loadProposalsForProject(projectId: string): void {
+    this.isLoadingProposals = true;
+    this.proposalsErrorMessage = '';
+
+    this.proposalService.getProposals(projectId).subscribe({
+      next: (response) => {
+        this.proposals = response.proposals || [];
+        this.isLoadingProposals = false;
+      },
+      error: (err) => {
+        console.error('Error loading proposals:', err);
+        if (err.status === 403) {
+          this.proposalsErrorMessage = 'Access denied. You can only view proposals for your own projects';
+        } else if (err.status === 401) {
+          this.proposalsErrorMessage = 'Session expired. Please log in again';
+        } else {
+          this.proposalsErrorMessage = 'Failed to load proposals for this project';
+        }
+        this.isLoadingProposals = false;
+      },
+    });
+  }
+
+  getProposalStatusClass(status: string): string {
+    const map: Record<string, string> = {
+      pending: 'badge-pending',
+      accepted: 'badge-completed',
+      rejected: 'badge-rejected',
+      withdrawn: 'badge-withdrawn',
+    };
+
+    return map[status] || 'badge-pending';
+  }
+
+  getProposalStatusLabel(status: string): string {
+    const map: Record<string, string> = {
+      pending: 'Pending',
+      accepted: 'Accepted',
+      rejected: 'Rejected',
+      withdrawn: 'Withdrawn',
+    };
+
+    return map[status] || status;
   }
 
   /* Milestone helpers */

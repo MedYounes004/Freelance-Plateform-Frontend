@@ -136,6 +136,8 @@
       </div>
       
       <!-- Submit Button -->
+      <p class="error-msg" *ngIf="errorMessage">{{ errorMessage }}</p>
+
       <ion-button
         type="submit"
         expand="block"
