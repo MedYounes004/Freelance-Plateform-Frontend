@@ -21,6 +21,9 @@
       </div>
 
       <div class="actions">
+        <ion-button fill="clear" class="action-btn" (click)="openRecipients()">
+          <ion-icon name="person-outline" slot="icon-only"></ion-icon>
+        </ion-button>
         <ion-button fill="clear" class="action-btn">
           <ion-icon name="call-outline" slot="icon-only"></ion-icon>
         </ion-button>
@@ -46,6 +49,10 @@
 
     <div class="status-box" *ngIf="!isLoading && !errorMessage && messages.length === 0">
       No messages yet.
+    </div>
+
+    <div class="status-box info" *ngIf="!isLoading && !recipientUserId">
+      Select a freelancer or client to start chatting.
     </div>
 
     <!-- Date separator -->

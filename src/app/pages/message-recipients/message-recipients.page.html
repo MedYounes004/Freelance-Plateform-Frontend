@@ -1,0 +1,71 @@
+<ion-header class="ion-no-border recipients-header">
+  <ion-toolbar>
+    <div class="header-content">
+      <ion-buttons class="back-btn-wrap">
+        <ion-button fill="clear" class="back-btn" (click)="onBack()">
+          <ion-icon name="arrow-back-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <div class="header-title">
+        <h1>Select Recipient</h1>
+        <p>Choose a freelancer or a client</p>
+      </div>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="recipients-content">
+  <div class="status-box" *ngIf="isLoading">Loading users...</div>
+  <div class="status-box error" *ngIf="!isLoading && errorMessage">{{ errorMessage }}</div>
+
+  <ng-container *ngIf="!isLoading && !errorMessage">
+    <section class="group" *ngIf="freelancers.length">
+      <h2>Freelancers</h2>
+      <ion-list lines="none" class="recipients-list">
+        <ion-item button detail="false" *ngFor="let user of freelancers" (click)="selectRecipient(user)" class="recipient-item">
+          <ion-avatar slot="start" class="recipient-avatar">
+            <img [src]="avatarUrl(user.name, '4f46e5')" [alt]="user.name" />
+          </ion-avatar>
+          <ion-label class="recipient-label">
+            <h3>{{ user.name }}</h3>
+            <p>{{ user.email }}</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </section>
+
+    <section class="group" *ngIf="clients.length">
+      <h2>Clients</h2>
+      <ion-list lines="none" class="recipients-list">
+        <ion-item button detail="false" *ngFor="let user of clients" (click)="selectRecipient(user)" class="recipient-item">
+          <ion-avatar slot="start" class="recipient-avatar">
+            <img [src]="avatarUrl(user.name, '0f766e')" [alt]="user.name" />
+          </ion-avatar>
+          <ion-label class="recipient-label">
+            <h3>{{ user.name }}</h3>
+            <p>{{ user.email }}</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </section>
+
+    <section class="group" *ngIf="!freelancers.length && !clients.length && allUsers.length">
+      <h2>Users</h2>
+      <ion-list lines="none" class="recipients-list">
+        <ion-item button detail="false" *ngFor="let user of allUsers" (click)="selectRecipient(user)" class="recipient-item">
+          <ion-avatar slot="start" class="recipient-avatar">
+            <img [src]="avatarUrl(user.name, '475569')" [alt]="user.name" />
+          </ion-avatar>
+          <ion-label class="recipient-label">
+            <h3>{{ user.name }}</h3>
+            <p>{{ user.email }} - {{ user.role }}</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </section>
+
+    <div class="status-box" *ngIf="!freelancers.length && !clients.length && !allUsers.length">
+      No available users found.
+    </div>
+  </ng-container>
+</ion-content>

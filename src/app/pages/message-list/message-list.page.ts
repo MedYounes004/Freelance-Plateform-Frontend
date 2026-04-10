@@ -8,10 +8,11 @@ import {
   NavController,
 } from '@ionic/angular/standalone';
 import { BottomNavigationComponent } from 'src/app/components/bottom-navigation/bottom-navigation.component';
-import { ApiMessage, MessageService } from 'src/app/core/services/messages/message.service';
+import { ConversationItem, MessageService } from 'src/app/core/services/messages/message.service';
 
 export interface Conversation {
-  id: number;
+  id: string;
+  userId: string;
   name: string;
   message: string;
   time: string;
@@ -64,14 +65,14 @@ export class MessagesListPage implements OnInit {
     this.errorMessage = '';
 
     try {
-      const messages = await this.messageService.getMessages();
-      if (!messages.length) {
+      const conversations = await this.messageService.getConversations();
+      if (!conversations.length) {
         this.conversations = [];
         this.filteredConversations = [];
         return;
       }
 
-      this.conversations = this.toConversations(messages);
+      this.conversations = this.toConversations(conversations);
       this.filteredConversations = [...this.conversations];
     } catch {
       this.errorMessage = 'Unable to load messages. Please try again.';
@@ -82,28 +83,19 @@ export class MessagesListPage implements OnInit {
     }
   }
 
-  private toConversations(messages: ApiMessage[]): Conversation[] {
-    const grouped = new Map<string, ApiMessage>();
-
-    for (const msg of messages) {
-      const previous = grouped.get(msg.sender);
-      if (!previous || new Date(msg.timestamp).getTime() > new Date(previous.timestamp).getTime()) {
-        grouped.set(msg.sender, msg);
-      }
-    }
-
-    return Array.from(grouped.entries())
-      .sort(([, left], [, right]) => new Date(right.timestamp).getTime() - new Date(left.timestamp).getTime())
-      .map(([sender, msg], index) => ({
-        id: index + 1,
-        name: sender,
-        message: msg.text,
-        time: this.formatTime(msg.timestamp),
+  private toConversations(rows: ConversationItem[]): Conversation[] {
+    return rows
+      .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
+      .map((row) => ({
+        id: row.userId,
+        userId: row.userId,
+        name: row.name,
+        message: row.lastMessage,
+        time: this.formatTime(row.timestamp),
         unread: 0,
         online: false,
         avatar: 'https://images.unsplash.com/photo-1629507208649-70919ca33793?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400'
-      }))
-      .sort((a, b) => b.id - a.id);
+      }));
   }
 
   private formatTime(timestamp: string): string {
@@ -134,5 +126,9 @@ export class MessagesListPage implements OnInit {
 
     // Navigate to messaging screen and pass the conversation via navigation state
     this.navCtrl.navigateForward('/messaging', { state: { conversation } });
+  }
+
+  openRecipients(): void {
+    this.navCtrl.navigateForward('/message-recipients');
   }
 }

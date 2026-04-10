@@ -50,6 +50,10 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/message-list/message-list.page').then( m => m.MessagesListPage)
   },
   {
+    path: 'message-recipients',
+    loadComponent: () => import('./pages/message-recipients/message-recipients.page').then( m => m.MessageRecipientsPage)
+  },
+  {
     path: 'messaging',
     loadComponent: () => import('./pages/messaging-screen/messaging-screen.page').then( m => m.MessagingPage)
   },

@@ -1,0 +1,121 @@
+// recipients.page.scss
+
+// ─── Header ──────────────────────────────────────────────
+.recipients-header {
+  ion-toolbar {
+    --background: #ffffff;
+    --border-width: 0;
+    --padding-start: 0;
+    --padding-end: 0;
+    --padding-top: 0;
+    --padding-bottom: 0;
+  }
+
+  .header-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 48px 24px 16px;
+    background: #ffffff;
+
+    .back-btn-wrap {
+      margin: 0;
+
+      .back-btn {
+        --color: #111827;
+        --padding-start: 8px;
+        --padding-end: 8px;
+      }
+    }
+
+    .header-title {
+      h1 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #111827;
+        margin: 0 0 4px;
+        line-height: 1.3;
+      }
+
+      p {
+        font-size: 0.875rem;
+        color: #4b5563;
+        margin: 0;
+      }
+    }
+  }
+}
+
+// ─── Content ─────────────────────────────────────────────
+.recipients-content {
+  --background: #f9fafb;
+  --padding-bottom: 24px;
+
+  .status-box {
+    margin: 12px 24px;
+    padding: 12px;
+    border-radius: 10px;
+    background: #ffffff;
+    color: #4b5563;
+    font-size: 0.875rem;
+    text-align: center;
+
+    &.error {
+      background: #fef2f2;
+      color: #b91c1c;
+    }
+  }
+
+  .group {
+    margin-bottom: 8px;
+
+    h2 {
+      margin: 8px 24px 10px;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: #111827;
+    }
+
+    .recipients-list {
+      background: transparent;
+      padding: 0;
+
+      .recipient-item {
+        --background: #ffffff;
+        --border-color: #f3f4f6;
+        --inner-border-width: 0 0 1px 0;
+        --padding-start: 24px;
+        --padding-end: 24px;
+        --padding-top: 14px;
+        --padding-bottom: 14px;
+        --min-height: 76px;
+        --ripple-color: #f3f4f6;
+
+        &:hover {
+          --background: #f9fafb;
+        }
+
+        .recipient-avatar {
+          width: 50px;
+          height: 50px;
+          margin-right: 12px;
+        }
+
+        .recipient-label {
+          h3 {
+            margin: 0;
+            font-size: 0.9375rem;
+            font-weight: 500;
+            color: #111827;
+          }
+
+          p {
+            margin: 4px 0 0;
+            font-size: 0.8125rem;
+            color: #6b7280;
+          }
+        }
+      }
+    }
+  }
+}

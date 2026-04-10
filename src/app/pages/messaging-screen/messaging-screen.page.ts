@@ -12,12 +12,13 @@ import { addIcons } from 'ionicons';
 import {
   arrowBackOutline, callOutline, videocamOutline,
   ellipsisVerticalOutline, attachOutline, send,
+  personOutline,
 } from 'ionicons/icons';
 import { MessageService } from 'src/app/core/services/messages/message.service';
 import { AuthService } from 'src/app/core/services/auth/auth';
 
 export interface Message {
-  id: number;
+  id: string;
   sender: 'me' | 'other';
   text: string;
   time: string;
@@ -30,7 +31,8 @@ export interface Contact {
 }
 
 export interface Conversation {
-  id: number;
+  id: string;
+  userId: string;
   name: string;
   message: string;
   time: string;
@@ -62,7 +64,8 @@ export class MessagingPage implements OnInit, AfterViewInit {
   isSending = false;
   errorMessage = '';
 
-  private currentUserSender = 'me';
+  private currentUserId = '';
+  recipientUserId = '';
 
   contact: Contact = {
     name: 'TechStart Inc.',
@@ -81,24 +84,23 @@ export class MessagingPage implements OnInit, AfterViewInit {
   ) {
     addIcons({
       arrowBackOutline, callOutline, videocamOutline,
-      ellipsisVerticalOutline, attachOutline, send,
+      ellipsisVerticalOutline, attachOutline, send, personOutline,
     });
   }
 
   ngOnInit(): void {
     const user = this.authService.getUser();
-    this.currentUserSender = user?.name || user?.email || 'me';
+    this.currentUserId = user?.id || '';
 
-    // read conversation from navigation state if provided
     const navigation = this.router.getCurrentNavigation();
-    if (navigation?.extras?.state && navigation.extras.state['conversation']) {
-      this.selectedConversation = navigation.extras.state['conversation'];
-      // update contact info based on conversation
-      if (this.selectedConversation) {
-        this.contact.name = this.selectedConversation.name;
-        this.contact.online = this.selectedConversation.online;
-        this.contact.avatar = this.selectedConversation.avatar;
-      }
+    const state = navigation?.extras?.state as { conversation?: Conversation; recipient?: Conversation } | undefined;
+    const selected = state?.recipient || state?.conversation;
+    if (selected) {
+      this.selectedConversation = selected;
+      this.recipientUserId = selected.userId;
+      this.contact.name = selected.name;
+      this.contact.online = selected.online;
+      this.contact.avatar = selected.avatar;
     }
 
     void this.loadMessages();
@@ -112,6 +114,10 @@ export class MessagingPage implements OnInit, AfterViewInit {
     this.navCtrl.back();
   }
 
+  openRecipients(): void {
+    this.navCtrl.navigateForward('/message-recipients');
+  }
+
   async onSend(event?: KeyboardEvent): Promise<void> {
     // Prevent newline on Enter (without Shift)
     if (event) {
@@ -120,7 +126,7 @@ export class MessagingPage implements OnInit, AfterViewInit {
     }
 
     const text = this.messageText.trim();
-    if (!text || this.isSending) return;
+    if (!text || this.isSending || !this.recipientUserId) return;
 
     this.isSending = true;
     this.errorMessage = '';
@@ -128,14 +134,14 @@ export class MessagingPage implements OnInit, AfterViewInit {
     try {
       const savedMessage = await this.messageService.sendMessage({
         text,
-        sender: this.currentUserSender,
+        recipientId: this.recipientUserId,
       });
 
       this.messages = [
         ...this.messages,
         {
           id: savedMessage.id,
-          sender: this.toDisplaySender(savedMessage.sender),
+          sender: this.toDisplaySender(savedMessage.senderId),
           text: savedMessage.text,
           time: this.formatTime(savedMessage.timestamp),
         }
@@ -163,7 +169,13 @@ export class MessagingPage implements OnInit, AfterViewInit {
     this.errorMessage = '';
 
     try {
-      const apiMessages = await this.messageService.getMessages();
+      if (!this.recipientUserId) {
+        this.messages = [];
+        this.isLoading = false;
+        return;
+      }
+
+      const apiMessages = await this.messageService.getMessages(this.recipientUserId);
       if (!apiMessages.length) {
         this.messages = [];
         return;
@@ -173,7 +185,7 @@ export class MessagingPage implements OnInit, AfterViewInit {
         .sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime())
         .map((msg) => ({
           id: msg.id,
-          sender: this.toDisplaySender(msg.sender),
+          sender: this.toDisplaySender(msg.senderId),
           text: msg.text,
           time: this.formatTime(msg.timestamp),
         }));
@@ -186,8 +198,8 @@ export class MessagingPage implements OnInit, AfterViewInit {
     }
   }
 
-  private toDisplaySender(sender: string): 'me' | 'other' {
-    return sender === this.currentUserSender ? 'me' : 'other';
+  private toDisplaySender(senderId: string): 'me' | 'other' {
+    return senderId === this.currentUserId ? 'me' : 'other';
   }
 
   private formatTime(timestamp: string): string {
