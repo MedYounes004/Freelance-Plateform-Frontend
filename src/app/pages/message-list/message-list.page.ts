@@ -9,6 +9,8 @@ import {
 } from '@ionic/angular/standalone';
 import { BottomNavigationComponent } from 'src/app/components/bottom-navigation/bottom-navigation.component';
 import { ConversationItem, MessageService } from 'src/app/core/services/messages/message.service';
+import { LoginRequiredModalComponent } from 'src/app/components/login-required/login-required.component';
+import { AuthService } from 'src/app/core/services/auth/auth';
 
 export interface Conversation {
   id: string;
@@ -28,6 +30,7 @@ export interface Conversation {
   standalone: true,
   imports: [
     BottomNavigationComponent,
+    LoginRequiredModalComponent,
     CommonModule,
     FormsModule,
     RouterModule,
@@ -40,20 +43,22 @@ export class MessagesListPage implements OnInit {
   @Output() messageClicked = new EventEmitter<Conversation>();
 
   activeTab = 'messages';
+  showLoginModal = false;
+
   onTabChange(tab: string): void {
     this.activeTab = tab;
   }
+
   searchQuery: string = '';
   isLoading = false;
   errorMessage = '';
-
   conversations: Conversation[] = [];
-
   filteredConversations: Conversation[] = [];
 
   constructor(
     private navCtrl: NavController,
     private messageService: MessageService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -100,10 +105,7 @@ export class MessagesListPage implements OnInit {
 
   private formatTime(timestamp: string): string {
     const date = new Date(timestamp);
-    if (Number.isNaN(date.getTime())) {
-      return '';
-    }
-
+    if (Number.isNaN(date.getTime())) return '';
     return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   }
 
@@ -121,11 +123,21 @@ export class MessagesListPage implements OnInit {
   }
 
   onMessageClick(conversation: Conversation): void {
-    // Emit event for parent component
-    this.messageClicked.emit(conversation);
+    if (!this.authService.isLoggedIn()) {
+      this.showLoginModal = true;
+      return;
+    }
 
-    // Navigate to messaging screen and pass the conversation via navigation state
+    this.messageClicked.emit(conversation);
     this.navCtrl.navigateForward('/messaging', { state: { conversation } });
+  }
+
+  onGoToLogin(): void {
+    this.navCtrl.navigateForward('/login');
+  }
+
+  onGoToSignUp(): void {
+    this.navCtrl.navigateForward('/signup');
   }
 
   openRecipients(): void {

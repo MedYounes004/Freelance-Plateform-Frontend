@@ -15,6 +15,7 @@ import {
 import { BottomNavigationComponent } from '../../components/bottom-navigation/bottom-navigation.component';
 import { Shared } from 'src/app/core/services/shared/shared';
 import { AuthService } from '../../core/services/auth/auth';
+import { LoginRequiredModalComponent } from '../../components/login-required/login-required.component';  // ← added
 
 export type SubscriptionStatus = 'free' | 'freelancer-pro' | 'client-pro';
 
@@ -27,6 +28,7 @@ export type SubscriptionStatus = 'free' | 'freelancer-pro' | 'client-pro';
     IonCard, IonCardContent, IonButton, IonIcon,
     IonItem, IonLabel, IonList, IonListHeader,
     BottomNavigationComponent,
+    LoginRequiredModalComponent,   // ← added
   ],
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.scss'],
@@ -37,6 +39,8 @@ export class ProfilePage implements ViewWillEnter {
   @Input() subscriptionStatus: SubscriptionStatus = 'free';
 
   currentUser: any = null;
+  showLoginModal = false;   // ← added
+  isGuest = false;          // ← added
 
   get isPro(): boolean {
     return this.subscriptionStatus !== 'free';
@@ -58,12 +62,26 @@ export class ProfilePage implements ViewWillEnter {
     });
   }
 
-  // ← runs every time the page becomes active (after edit, after back, etc.)
   ionViewWillEnter(): void {
     this.currentUser = this.authService.getUser();
+    this.isGuest = !this.authService.isLoggedIn();  // ← added
+
+    // Show modal immediately if guest
+    if (this.isGuest) {
+      this.showLoginModal = true;  // ← added
+    }
   }
 
   onTabChange(tabId: string): void {}
+
+  // ── Modal navigation ──────────────────────
+  onGoToLogin(): void {
+    this.navCtrl.navigateForward('/login');
+  }
+
+  onGoToSignUp(): void {
+    this.navCtrl.navigateForward('/signup');
+  }
 
   onLogout(): void {
     this.authService.logout();
