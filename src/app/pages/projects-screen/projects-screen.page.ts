@@ -13,6 +13,7 @@ import { ProjectService } from '../../core/services/projects/project.service';
 import { Project, ProjectStatus } from '../../models/project.model';
 import { AuthService } from '../../core/services/auth/auth';
 import { BottomNavigationComponent } from 'src/app/components/bottom-navigation/bottom-navigation.component';
+import { LoginRequiredModalComponent } from 'src/app/components/login-required/login-required.component'; // ← added
 
 @Component({
   selector: 'app-projects',
@@ -21,6 +22,7 @@ import { BottomNavigationComponent } from 'src/app/components/bottom-navigation/
   standalone: true,
   imports: [
     BottomNavigationComponent,
+    LoginRequiredModalComponent,  // ← added
     CommonModule,
     FormsModule,
     RouterModule,
@@ -38,6 +40,7 @@ export class ProjectsPage implements OnInit {
   errorMessage = '';
   currentPage = 1;
   pageSize = 10;
+  showLoginModal = false;  // ← added
 
   activeTab = 'projects';
   onTabChange(tab: string): void {
@@ -56,8 +59,8 @@ export class ProjectsPage implements OnInit {
   currentUserRole: 'hire' | 'work' | null = null;
 
   constructor(
-    private navCtrl: NavController, //  Navigation entre pages
-    private projectService: ProjectService,  //  Communication avec backend
+    private navCtrl: NavController,
+    private projectService: ProjectService,
     private authService: AuthService
   ) {
     addIcons({ cashOutline, calendarOutline });
@@ -71,49 +74,44 @@ export class ProjectsPage implements OnInit {
   get canCreateProject(): boolean {
     return this.currentUserRole === 'hire';
   }
+loadProjects(): void {
+  this.isLoading = true;
+  this.errorMessage = '';
 
-  /**
-   * Charge les projets du backend
-   */
-  loadProjects(): void { // Appel backend pour afficher les projets
-    this.isLoading = true;
-    this.errorMessage = '';
+  const status = this.activeFilter !== 'all' ? this.activeFilter : undefined;
 
-    const status = this.activeFilter !== 'all' ? this.activeFilter : undefined;
+  const request$ = this.currentUserRole === 'hire'
+    ? this.projectService.getMyProjects(this.currentPage, this.pageSize, status as ProjectStatus | undefined)
+    : this.projectService.getProjects(this.currentPage, this.pageSize, status as ProjectStatus | undefined);
 
-    const request$ = this.currentUserRole === 'hire'
-      ? this.projectService.getMyProjects(this.currentPage, this.pageSize, status as ProjectStatus | undefined)
-      : this.projectService.getProjects(this.currentPage, this.pageSize, status as ProjectStatus | undefined);
+  request$.subscribe({
+    next: (response) => {
+      this.projects = response.projects || [];
+      this.applyFilters();
+      this.isLoading = false;
+      console.log('projects loaded:', this.projects.length);    // ← add
+      console.log('filtered:', this.filteredProjects.length);   // ← add
+    },
+    error: (err) => {
+      console.error('Error loading projects:', err);
+      this.errorMessage = 'Failed to load projects. Please try again.';
+      this.isLoading = false;
+    },
+  });
+}
 
-    request$.subscribe({
-        next: (response) => {
-          this.projects = response.projects || [];
-          this.applyFilters();
-          this.isLoading = false;
-        },
-        error: (err) => {
-          console.error('Error loading projects:', err);
-          this.errorMessage = 'Failed to load projects. Please try again.';
-          this.isLoading = false;
-        },
-      });
-  }
-
-  onSearch(event: CustomEvent): void { //  Recherche des projets (backend ou reset)
+  onSearch(event: CustomEvent): void {
     this.searchQuery = (event.detail.value as string) ?? '';
 
     if (this.currentUserRole === 'hire') {
-      // Clients already load only their own projects; apply local filter only.
       this.applyFilters();
       return;
     }
 
-    // Si la recherche est vide, recharger depuis le backend
     if (!this.searchQuery.trim()) {
       this.currentPage = 1;
       this.loadProjects();
     } else {
-      // Sinon, utiliser la recherche du backend
       this.isLoading = true;
       this.projectService
         .searchProjects(this.searchQuery, this.currentPage, this.pageSize)
@@ -132,19 +130,39 @@ export class ProjectsPage implements OnInit {
     }
   }
 
-  setFilter(filter: ProjectStatus | 'all'): void {  // Filtrer les projets par statut
+  setFilter(filter: ProjectStatus | 'all'): void {
     this.activeFilter = filter;
     this.currentPage = 1;
     this.loadProjects();
   }
 
-  onProjectClick(project: Project): void { //  Naviguer vers la page détails + envoyer au parent
-    this.projectClicked.emit(project);
-    this.navCtrl.navigateForward('/project-details', { state: { project } });
+ onProjectClick(project: Project): void {
+  console.log('token:', this.authService.getToken());
+  console.log('isLoggedIn:', this.authService.isLoggedIn());
+
+  if (!this.authService.isLoggedIn()) {
+    this.showLoginModal = true;
+    return;
+  }
+  this.projectClicked.emit(project);
+  this.navCtrl.navigateForward('/project-details', { state: { project } });
+}
+
+  onNewProject(): void {
+    if (!this.authService.isLoggedIn()) {
+      this.showLoginModal = true;  // ← show modal if guest
+      return;
+    }
+    this.navCtrl.navigateForward('/projects/new');
   }
 
-  onNewProject(): void { //  Naviguer vers la page création de projet
-    this.navCtrl.navigateForward('/projects/new');
+  // ── Modal navigation ──────────────────────
+  onGoToLogin(): void {
+    this.navCtrl.navigateForward('/login');
+  }
+
+  onGoToSignUp(): void {
+    this.navCtrl.navigateForward('/signup');
   }
 
   getStatusLabel(status: ProjectStatus): string {
@@ -165,7 +183,7 @@ export class ProjectsPage implements OnInit {
     return map[status];
   }
 
-  private applyFilters(): void { // Filtrage local (recherche + statut)
+  private applyFilters(): void {
     const query = this.searchQuery.toLowerCase().trim();
 
     this.filteredProjects = this.projects.filter((p) => {

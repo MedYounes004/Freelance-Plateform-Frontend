@@ -89,6 +89,11 @@ export class ProfilePage implements ViewWillEnter {
     this.shared.OnchangeGuestStatus(true);
   }
 
+  onContinueBrowsing(): void {
+  this.showLoginModal = false;
+  this.navCtrl.back();  // ← go back instead of staying on profile
+}
+
   onEditProfile(): void { this.navCtrl.navigateForward('/edit-profile'); }
   onCVManagement(): void { this.navCtrl.navigateForward('/cv-management'); }
   onManageSubscription(): void { this.navCtrl.navigateForward('/subscription'); }

@@ -205,7 +205,7 @@
 <app-login-required-modal
   [isOpen]="showLoginModal"
   [actionDescription]="'your profile'"
-  (close)="showLoginModal = false"
+ (close)="onContinueBrowsing()"
   (login)="onGoToLogin()"
   (signUp)="onGoToSignUp()"
 ></app-login-required-modal>
