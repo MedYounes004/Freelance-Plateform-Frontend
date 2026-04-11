@@ -9,6 +9,7 @@ import {
 } from '@ionic/angular/standalone';
 import { BottomNavigationComponent } from 'src/app/components/bottom-navigation/bottom-navigation.component';
 import { ConversationItem, MessageService } from 'src/app/core/services/messages/message.service';
+import { environment } from 'src/environments/environment';
 
 export interface Conversation {
   id: string;
@@ -48,6 +49,7 @@ export class MessagesListPage implements OnInit {
   errorMessage = '';
 
   conversations: Conversation[] = [];
+  private readonly defaultAvatar = 'assets/default-avatar.png';
 
   filteredConversations: Conversation[] = [];
 
@@ -55,6 +57,10 @@ export class MessagesListPage implements OnInit {
     private navCtrl: NavController,
     private messageService: MessageService,
   ) {}
+
+  avatarUrl(name: string, color: string): string {
+    return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=${color}&color=fff`;
+  }
 
   ngOnInit(): void {
     void this.loadConversations();
@@ -94,8 +100,27 @@ export class MessagesListPage implements OnInit {
         time: this.formatTime(row.timestamp),
         unread: 0,
         online: false,
-        avatar: 'https://images.unsplash.com/photo-1629507208649-70919ca33793?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400'
+        avatar: this.resolveAvatarUrl(row.avatar)
       }));
+  }
+
+  private resolveAvatarUrl(avatar?: string): string {
+    const value = (avatar || '').trim();
+    if (!value) {
+      return this.defaultAvatar;
+    }
+
+    if (/^https?:\/\//i.test(value) || /^data:/i.test(value)) {
+      return value;
+    }
+
+    // Backend may store relative image paths; prefix with API host when needed.
+    const apiBase = environment.apiUrl.replace(/\/api\/?$/, '');
+    if (value.startsWith('/')) {
+      return `${apiBase}${value}`;
+    }
+
+    return `${apiBase}/${value}`;
   }
 
   private formatTime(timestamp: string): string {

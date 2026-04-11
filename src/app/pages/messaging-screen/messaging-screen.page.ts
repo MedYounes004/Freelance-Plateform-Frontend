@@ -106,6 +106,10 @@ export class MessagingPage implements OnInit, AfterViewInit {
     void this.loadMessages();
   }
 
+  avatarUrl(name: string, color: string): string {
+    return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=${color}&color=fff`;
+  }
+  
   ngAfterViewInit(): void {
     this.scrollToBottom();
   }

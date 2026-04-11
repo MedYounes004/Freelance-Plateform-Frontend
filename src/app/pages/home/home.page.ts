@@ -114,7 +114,7 @@ export class HomePage {
   }
 
   get isGuest(): boolean {
-    return this.shared.getGuestStatus();
+    return !localStorage.getItem('token');
   }
 
   set isGuest(value: boolean) {

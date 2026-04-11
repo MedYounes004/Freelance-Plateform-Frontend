@@ -45,7 +45,10 @@
 
       <div slot="start" class="avatar-wrapper">
         <ion-avatar class="conversation-avatar">
-          <img [src]="conversation.avatar" [alt]="conversation.name" />
+          <img
+            [src]="avatarUrl(conversation.name, '4f46e5')"
+            [alt]="conversation.name"
+          />
         </ion-avatar>
         <span *ngIf="conversation.online" class="online-indicator"></span>
       </div>
