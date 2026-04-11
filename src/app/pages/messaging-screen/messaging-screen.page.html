@@ -106,3 +106,11 @@
     </ion-button>
   </div>
 </ion-footer>
+<!-- Login Required Modal -->
+<app-login-required-modal
+  [isOpen]="showLoginModal"
+  [actionDescription]="'messaging'"
+  (close)="onContinueBrowsing()"
+  (login)="onGoToLogin()"
+  (signUp)="onGoToSignUp()"
+></app-login-required-modal>
