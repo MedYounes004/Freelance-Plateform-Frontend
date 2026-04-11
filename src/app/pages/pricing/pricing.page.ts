@@ -10,9 +10,7 @@ import {
   checkmark, sparkles, flashOutline,
   briefcaseOutline, shieldCheckmark
 } from 'ionicons/icons';
-
-export type PlanType = 'freelancer' | 'client';
-export type BillingCycle = 'monthly' | 'yearly';
+import { BillingCycle, PlanType } from 'src/app/models/pricing.model';
 
 @Component({
   selector: 'app-pricing',

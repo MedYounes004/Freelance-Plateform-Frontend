@@ -19,7 +19,8 @@
       <!-- Search Bar -->
       <ion-searchbar
         placeholder="Search for freelancers or skills..."
-        
+        [(ngModel)]="searchQuery"
+        (ionInput)="onSearchChange()"
         class="custom-searchbar"
       ></ion-searchbar>
     </div>
@@ -30,14 +31,12 @@
       <div class="section">
         <div class="section-header">
           <h2>Categories</h2>
-          <ion-button fill="clear" size="small" color="primary">
-            See all
-          </ion-button>
         </div>
         <div class="categories-grid">
           <ion-button
             *ngFor="let category of categories"
             [class]="'category-btn category-' + category.color"
+            [fill]="selectedCategory === category.name ? 'solid' : 'clear'"
             (click)="onCategoryClick(category.name)"
             expand="block"
           >
@@ -53,13 +52,17 @@
       <div class="section">
         <div class="section-header">
           <h2>Featured Freelancers</h2>
-          <ion-button fill="clear" size="small" color="primary">
-            See all
-          </ion-button>
         </div>
+
+        <div class="status-text" *ngIf="isLoading">Loading freelancers...</div>
+        <div class="status-text error" *ngIf="!isLoading && errorMessage">{{ errorMessage }}</div>
+        <div class="status-text" *ngIf="!isLoading && !errorMessage && filteredFreelancers.length === 0">
+          No freelancers found.
+        </div>
+
         <div class="freelancers-list">
           <ion-card
-            *ngFor="let freelancer of featuredFreelancers"
+            *ngFor="let freelancer of filteredFreelancers"
             class="freelancer-card"
             button="true"
             (click)="onFreelancerClick(freelancer.id)"
@@ -67,27 +70,20 @@
             <ion-card-content>
               <div class="freelancer-content">
                 <img
-                  [src]="freelancer.image"
+                  [src]="freelancer.avatar"
                   [alt]="freelancer.name"
                   class="freelancer-image"
                 />
                 <div class="freelancer-info">
                   <h3>{{ freelancer.name }}</h3>
-                  <p class="freelancer-title">{{ freelancer.title }}</p>
-                  <div class="rating-container">
-                    <div class="rating">
-                      <ion-icon name="star" class="star-icon"></ion-icon>
-                      <span class="rating-value">{{ freelancer.rating }}</span>
-                    </div>
-                    <span class="reviews">({{ freelancer.reviews }})</span>
-                  </div>
+                  <p class="freelancer-title">{{ freelancer.bio }}</p>
                   <div class="location-container">
                     <ion-icon name="location-outline" class="location-icon"></ion-icon>
-                    <span class="location-text">{{ freelancer.location }}</span>
+                    <span class="location-text">{{ freelancer.category }}</span>
                   </div>
                 </div>
                 <div class="freelancer-right">
-                  <span class="hourly-rate">${{ freelancer.hourlyRate }}/hr</span>
+                  <span class="hourly-rate">{{ freelancer.subscription | titlecase }}</span>
                   <ion-icon name="chevron-forward-outline" class="chevron-icon"></ion-icon>
                 </div>
               </div>

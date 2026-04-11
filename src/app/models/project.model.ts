@@ -12,6 +12,13 @@ export type ProposalStatus = 'pending' | 'accepted' | 'rejected' | 'withdrawn';
 // Statut des jalons
 export type MilestoneStatus = 'pending' | 'in-progress' | 'completed';
 
+// Modèle utilisé dans les formulaires de création de projet
+export interface MilestoneForm {
+  title: string;
+  payment: number;
+  status: MilestoneStatus;
+}
+
 /**
  * Interface pour un jalon (milestone)
  */
