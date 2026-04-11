@@ -11,15 +11,9 @@ import {
 import { addIcons } from 'ionicons';
 import { arrowBackOutline, addCircleOutline, removeCircleOutline } from 'ionicons/icons';
 import { ProjectService } from '../../core/services/projects/project.service';
-import { CreateProjectRequest } from '../../models/project.model';
+import { CreateProjectRequest, MilestoneForm } from '../../models/project.model';
 import { ToastController } from '@ionic/angular';
 import { AuthService } from '../../core/services/auth/auth';
-
-interface MilestoneForm {
-  title: string;
-  payment: number;
-  status: 'pending' | 'in-progress' | 'completed';
-}
 
 @Component({
   selector: 'app-create-project',
@@ -146,7 +140,7 @@ export class CreateProjectPage implements OnInit {
     }
 
     const currentUser = this.authService.getUser();
-    if (!currentUser || currentUser.role !== 'client') {
+    if (!currentUser || !['client', 'hire'].includes((currentUser.role || '').toLowerCase())) {
       this.errorMessage = 'Only client accounts can create projects';
       this.presentToast(this.errorMessage, 'danger');
       return;

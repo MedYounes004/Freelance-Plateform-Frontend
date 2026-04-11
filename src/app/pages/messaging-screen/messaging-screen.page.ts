@@ -16,30 +16,7 @@ import {
 } from 'ionicons/icons';
 import { MessageService } from 'src/app/core/services/messages/message.service';
 import { AuthService } from 'src/app/core/services/auth/auth';
-
-export interface Message {
-  id: string;
-  sender: 'me' | 'other';
-  text: string;
-  time: string;
-}
-
-export interface Contact {
-  name: string;
-  online: boolean;
-  avatar: string;
-}
-
-export interface Conversation {
-  id: string;
-  userId: string;
-  name: string;
-  message: string;
-  time: string;
-  unread: number;
-  online: boolean;
-  avatar: string;
-}
+import { Contact, Conversation, Message } from 'src/app/models/message.model';
 
 @Component({
   selector: 'app-messaging',
@@ -106,6 +83,10 @@ export class MessagingPage implements OnInit, AfterViewInit {
     void this.loadMessages();
   }
 
+  avatarUrl(name: string, color: string): string {
+    return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=${color}&color=fff`;
+  }
+  
   ngAfterViewInit(): void {
     this.scrollToBottom();
   }

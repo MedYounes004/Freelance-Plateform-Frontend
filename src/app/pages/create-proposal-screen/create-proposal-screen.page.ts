@@ -70,7 +70,7 @@ export class CreateProposalPage implements OnInit {
    */
   onSubmit(): void {
     const currentUser = this.authService.getUser();
-    if (!currentUser || currentUser.role !== 'freelancer') {
+    if (!currentUser || !['freelancer', 'work'].includes((currentUser.role || '').toLowerCase())) {
       this.errorMessage = 'Only freelancer accounts can submit proposals';
       return;
     }

@@ -8,7 +8,10 @@
       <div class="contact-info">
         <div class="avatar-wrapper">
           <ion-avatar class="contact-avatar">
-            <img [src]="contact.avatar" [alt]="contact.name" />
+            <img
+            [src]="avatarUrl(contact.name, '4f46e5')"
+            [alt]="contact.name"
+            />
           </ion-avatar>
           <span *ngIf="contact.online" class="online-dot"></span>
         </div>

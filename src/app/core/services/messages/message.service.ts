@@ -12,6 +12,7 @@ export interface ChatMessage {
 export interface ConversationItem {
   userId: string;
   name: string;
+  avatar?: string;
   lastMessage: string;
   timestamp: string;
 }
