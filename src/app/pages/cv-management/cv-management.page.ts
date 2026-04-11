@@ -9,14 +9,7 @@ import { addIcons } from 'ionicons';
 import {
   cloudUpload, documentText, download, trash, checkmarkCircle
 } from 'ionicons/icons';
-
-interface CV {
-  id: number;
-  name: string;
-  size: string;
-  uploadDate: string;
-  isPrimary: boolean;
-}
+import { CV } from 'src/app/models/cv.model';
 
 @Component({
   selector: 'app-cv-management',

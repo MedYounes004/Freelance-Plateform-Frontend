@@ -15,8 +15,7 @@ import {
 import { BottomNavigationComponent } from '../../components/bottom-navigation/bottom-navigation.component';
 import { Shared } from 'src/app/core/services/shared/shared';
 import { AuthService } from '../../core/services/auth/auth';
-
-export type SubscriptionStatus = 'free' | 'freelancer-pro' | 'client-pro';
+import { SubscriptionStatus } from 'src/app/models/profile.model';
 
 @Component({
   selector: 'app-profile',

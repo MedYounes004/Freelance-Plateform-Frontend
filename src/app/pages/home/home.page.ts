@@ -8,23 +8,7 @@ import { star, notifications, locationOutline, chevronForwardOutline } from 'ion
 import { addIcons } from 'ionicons';
 import { NavController } from '@ionic/angular/standalone';
 import { Shared } from 'src/app/core/services/shared/shared';
-interface Category {
-  name: string;
-  icon: string;
-  color: string;
-}
-
-interface Freelancer {
-  id: number;
-  name: string;
-  title: string;
-  rating: number;
-  reviews: number;
-  hourlyRate: number;
-  location: string;
-  image: string;
-  skills: string[];
-}
+import { Category, Freelancer } from 'src/app/models/home.model';
 
 @Component({
   selector: 'app-home',

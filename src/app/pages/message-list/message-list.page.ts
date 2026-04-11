@@ -10,17 +10,7 @@ import {
 import { BottomNavigationComponent } from 'src/app/components/bottom-navigation/bottom-navigation.component';
 import { ConversationItem, MessageService } from 'src/app/core/services/messages/message.service';
 import { environment } from 'src/environments/environment';
-
-export interface Conversation {
-  id: string;
-  userId: string;
-  name: string;
-  message: string;
-  time: string;
-  unread: number;
-  online: boolean;
-  avatar: string;
-}
+import { Conversation } from 'src/app/models/message.model';
 
 @Component({
   selector: 'app-messages-list',
