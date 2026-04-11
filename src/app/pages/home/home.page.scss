@@ -176,6 +176,21 @@
   --color: #db2777;
 }
 
+.category-gray {
+  --background: #f3f4f6;
+  --color: #4b5563;
+}
+
+.status-text {
+  color: #6b7280;
+  font-size: 14px;
+  margin-bottom: 12px;
+
+  &.error {
+    color: #dc2626;
+  }
+}
+
 // Freelancers
 .freelancers-list {
   display: flex;

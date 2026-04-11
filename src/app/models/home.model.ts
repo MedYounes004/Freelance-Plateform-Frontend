@@ -5,13 +5,11 @@ export interface Category {
 }
 
 export interface Freelancer {
-  id: number;
+  id: string;
   name: string;
-  title: string;
-  rating: number;
-  reviews: number;
-  hourlyRate: number;
-  location: string;
-  image: string;
-  skills: string[];
+  bio: string;
+  avatar: string;
+  subscription: string;
+  createdAt?: string;
+  category: string;
 }

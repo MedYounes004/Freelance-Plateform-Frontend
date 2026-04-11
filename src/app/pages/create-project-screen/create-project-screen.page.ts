@@ -140,7 +140,7 @@ export class CreateProjectPage implements OnInit {
     }
 
     const currentUser = this.authService.getUser();
-    if (!currentUser || currentUser.role !== 'client') {
+    if (!currentUser || !['client', 'hire'].includes((currentUser.role || '').toLowerCase())) {
       this.errorMessage = 'Only client accounts can create projects';
       this.presentToast(this.errorMessage, 'danger');
       return;

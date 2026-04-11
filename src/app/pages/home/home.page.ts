@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
@@ -9,6 +9,8 @@ import { addIcons } from 'ionicons';
 import { NavController } from '@ionic/angular/standalone';
 import { Shared } from 'src/app/core/services/shared/shared';
 import { Category, Freelancer } from 'src/app/models/home.model';
+import { User } from 'src/app/models/user.model';
+import { UserService } from 'src/app/core/services/users/user.service';
 
 @Component({
   selector: 'app-home',
@@ -17,11 +19,19 @@ import { Category, Freelancer } from 'src/app/models/home.model';
   imports: [GuestBannerComponent,CommonModule,FormsModule,IonicModule, BottomNavigationComponent]
 })
 export class HomePage {
-  @Output() freelancerClick = new EventEmitter<number>();
+  @Output() freelancerClick = new EventEmitter<string>();
   @Output() categoryClick = new EventEmitter<string>();
   @Output() signIn = new EventEmitter<void>();
 
+  isLoading = false;
+  errorMessage = '';
+  searchQuery = '';
+  selectedCategory = 'All';
+
+  freelancers: Freelancer[] = [];
+
   categories: Category[] = [
+    { name: 'All', icon: '✨', color: 'gray' },
     { name: 'Design', icon: '🎨', color: 'purple' },
     { name: 'Development', icon: '💻', color: 'blue' },
     { name: 'Writing', icon: '✍️', color: 'green' },
@@ -30,66 +40,115 @@ export class HomePage {
     { name: 'Music', icon: '🎵', color: 'pink' }
   ];
 
-  featuredFreelancers: Freelancer[] = [
-    {
-      id: 1,
-      name: 'Sarah Johnson',
-      title: 'UI/UX Designer',
-      rating: 4.9,
-      reviews: 127,
-      hourlyRate: 85,
-      location: 'San Francisco, CA',
-      image: 'https://images.unsplash.com/photo-1765648684604-fd0accdbe617?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjB3b21hbiUyMGZyZWVsYW5jZXJ8ZW58MXx8fHwxNzcwMTk5NDkyfDA&ixlib=rb-4.1.0&q=80&w=400',
-      skills: ['Figma', 'Adobe XD', 'Sketch']
-    },
-    {
-      id: 2,
-      name: 'Michael Chen',
-      title: 'Full Stack Developer',
-      rating: 5.0,
-      reviews: 203,
-      hourlyRate: 95,
-      location: 'New York, NY',
-      image: 'https://images.unsplash.com/photo-1752170080622-18196de87763?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjBtYW4lMjBkZXZlbG9wZXJ8ZW58MXx8fHwxNzcwMTQ4NjM1fDA&ixlib=rb-4.1.0&q=80&w=400',
-      skills: ['React', 'Node.js', 'TypeScript']
-    },
-    {
-      id: 3,
-      name: 'Emma Davis',
-      title: 'Content Writer',
-      rating: 4.8,
-      reviews: 89,
-      hourlyRate: 65,
-      location: 'Austin, TX',
-      image: 'https://images.unsplash.com/photo-1769694609721-98f8bab9735a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjB3b21hbiUyMHdyaXRlcnxlbnwxfHx8fDE3NzAxOTk0OTR8MA&ixlib=rb-4.1.0&q=80&w=400',
-      skills: ['SEO', 'Copywriting', 'Blogging']
-    },
-    {
-      id: 4,
-      name: 'Alex Martinez',
-      title: 'Graphic Designer',
-      rating: 4.9,
-      reviews: 156,
-      hourlyRate: 75,
-      location: 'Los Angeles, CA',
-      image: 'https://images.unsplash.com/photo-1629507208649-70919ca33793?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxidXNpbmVzcyUyMHByb2Zlc3Npb25hbCUyMHBvcnRyYWl0fGVufDF8fHx8MTc3MDExMTAyN3ww&ixlib=rb-4.1.0&q=80&w=400',
-      skills: ['Illustrator', 'Photoshop', 'Branding']
-    }
-  ];
+  featuredFreelancers: Freelancer[] = [];
+  filteredFreelancers: Freelancer[] = [];
   
-  constructor(private navCtrl: NavController, private shared: Shared) {
+  constructor(
+    private navCtrl: NavController,
+    private shared: Shared,
+    private userService: UserService,
+  ) {
     addIcons({ star, notifications, locationOutline, chevronForwardOutline });
   }
+
   activeTab = 'home';
+
   onTabChange(tab: string): void {
     this.activeTab = tab;
   }
-  onFreelancerClick(id: number): void {
+
+  onFreelancerClick(id: string): void {
     this.freelancerClick.emit(id);
   }
 
   onCategoryClick(category: string): void {
+    this.selectedCategory = category;
+    this.applyFilters();
     this.categoryClick.emit(category);
+  }
+
+  onSearchChange(): void {
+    this.applyFilters();
+  }
+
+  private loadFreelancers(): void {
+    this.isLoading = true;
+    this.errorMessage = '';
+
+    this.userService.getFreelancers().subscribe({
+      next: (users) => {
+        const mapped = users.map((user) => this.toFreelancer(user));
+        this.freelancers = mapped;
+        this.featuredFreelancers = this.selectFeaturedFreelancers(mapped);
+        this.applyFilters();
+        this.isLoading = false;
+      },
+      error: () => {
+        this.errorMessage = 'Unable to load freelancers.';
+        this.freelancers = [];
+        this.featuredFreelancers = [];
+        this.filteredFreelancers = [];
+        this.isLoading = false;
+      },
+    });
+  }
+
+  private toFreelancer(user: User): Freelancer {
+    return {
+      id: user.id,
+      name: user.name,
+      bio: user.bio || 'Freelancer available for new projects.',
+      avatar: user.avatar || 'assets/default-avatar.png',
+      subscription: user.subscription || 'free',
+      createdAt: user.createdAt,
+      category: this.inferCategoryFromBio(user.bio),
+    };
+  }
+
+  private inferCategoryFromBio(bio: string): string {
+    const text = (bio || '').toLowerCase();
+
+    if (/(design|ui|ux|figma|illustrator|photoshop|branding)/.test(text)) return 'Design';
+    if (/(develop|frontend|backend|full.?stack|react|angular|node|flutter|mobile|web)/.test(text)) return 'Development';
+    if (/(write|writer|content|copy|seo|blog)/.test(text)) return 'Writing';
+    if (/(market|marketing|social media|ads|growth)/.test(text)) return 'Marketing';
+    if (/(video|edit|animation|premiere|after effects|film)/.test(text)) return 'Video';
+    if (/(music|audio|producer|sound|mix|master)/.test(text)) return 'Music';
+
+    return 'Development';
+  }
+
+  private selectFeaturedFreelancers(rows: Freelancer[]): Freelancer[] {
+    const premium = rows.filter((f) => (f.subscription || '').toLowerCase() === 'premium');
+    const latest = [...rows].sort(
+      (a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime()
+    );
+
+    const map = new Map<string, Freelancer>();
+    premium.forEach((item) => map.set(item.id, item));
+    latest.forEach((item) => {
+      if (map.size < 12) {
+        map.set(item.id, item);
+      }
+    });
+
+    return Array.from(map.values());
+  }
+
+  private applyFilters(): void {
+    const query = this.searchQuery.trim().toLowerCase();
+
+    this.filteredFreelancers = this.featuredFreelancers.filter((freelancer) => {
+      const matchesCategory =
+        this.selectedCategory === 'All' || freelancer.category === this.selectedCategory;
+
+      const matchesSearch =
+        !query ||
+        freelancer.name.toLowerCase().includes(query) ||
+        freelancer.bio.toLowerCase().includes(query);
+
+      return matchesCategory && matchesSearch;
+    });
   }
 
   onSignInClick(): void {
@@ -106,6 +165,6 @@ export class HomePage {
   }
 
   ngOnInit(): void {
-    console.log('Guest status:', this.shared.getGuestStatus());
+    this.loadFreelancers();
   }
 }

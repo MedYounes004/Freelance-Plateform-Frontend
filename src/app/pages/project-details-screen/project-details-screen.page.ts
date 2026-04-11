@@ -60,7 +60,7 @@ export class ProjectDetailsPage implements OnInit {
   }
 
   ngOnInit(): void {
-    this.currentUserRole = this.authService.getUser()?.role || null;
+    this.currentUserRole = this.normalizeRole(this.authService.getUser()?.role || null);
      //  Charger les détails du projet au démarrage
     this.loadProjectDetails();
   }
@@ -71,6 +71,24 @@ export class ProjectDetailsPage implements OnInit {
 
   get isFreelancer(): boolean {
     return this.currentUserRole === 'freelancer';
+  }
+
+  private normalizeRole(role: string | null): 'client' | 'freelancer' | null {
+    const value = (role || '').toLowerCase();
+
+    if (value === 'hire') {
+      return 'client';
+    }
+
+    if (value === 'work') {
+      return 'freelancer';
+    }
+
+    if (value === 'client' || value === 'freelancer') {
+      return value;
+    }
+
+    return null;
   }
 
   get canViewProposals(): boolean {
