@@ -61,7 +61,7 @@
     </div>
 
     <!-- Projects -->
-    <button
+    <div
       *ngFor="let project of filteredProjects"
       class="project-card"
       (click)="onProjectClick(project)">
@@ -105,11 +105,22 @@
         </div>
       </div>
 
-    </button>
+    </div>  <!-- ← changed from </button> to </div> -->
 
-  </div>
+  </div>  <!-- ← projects-list closes here -->
+
 </ion-content>
+
 <app-bottom-navigation
   [currentTab]="activeTab"
   (tabChange)="onTabChange($event)"
 ></app-bottom-navigation>
+
+<!-- Login Required Modal → outside everything ✅ -->
+<app-login-required-modal
+  [isOpen]="showLoginModal"
+  [actionDescription]="'projects'"
+  (close)="showLoginModal = false"
+  (login)="onGoToLogin()"
+  (signUp)="onGoToSignUp()"
+></app-login-required-modal>
