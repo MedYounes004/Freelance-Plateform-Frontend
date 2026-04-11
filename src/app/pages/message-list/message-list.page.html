@@ -78,7 +78,7 @@
 <app-login-required-modal
   [isOpen]="showLoginModal"
   [actionDescription]="'messaging'"
-  (close)="showLoginModal = false"
+  (close)="onContinueBrowsing()"
   (login)="onGoToLogin()"
   (signUp)="onGoToSignUp()"
 ></app-login-required-modal>

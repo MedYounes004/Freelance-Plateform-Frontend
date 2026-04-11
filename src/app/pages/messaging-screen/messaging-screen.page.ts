@@ -17,6 +17,7 @@ import {
 import { MessageService } from 'src/app/core/services/messages/message.service';
 import { AuthService } from 'src/app/core/services/auth/auth';
 import { Contact, Conversation, Message } from 'src/app/models/message.model';
+import { LoginRequiredModalComponent } from 'src/app/components/login-required/login-required.component';
 
 @Component({
   selector: 'app-messaging',
@@ -29,6 +30,7 @@ import { Contact, Conversation, Message } from 'src/app/models/message.model';
     RouterModule,
     IonHeader, IonToolbar, IonContent, IonFooter,
     IonButton, IonIcon, IonAvatar, IonTextarea,
+    LoginRequiredModalComponent,
   ],
 })
 export class MessagingPage implements OnInit, AfterViewInit {
@@ -40,6 +42,8 @@ export class MessagingPage implements OnInit, AfterViewInit {
   isLoading = false;
   isSending = false;
   errorMessage = '';
+  showLoginModal = false;
+  isGuest = false;
 
   private currentUserId = '';
   recipientUserId = '';
@@ -66,6 +70,13 @@ export class MessagingPage implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    // ← check first thing
+    this.isGuest = !this.authService.isLoggedIn();
+    if (this.isGuest) {
+      this.showLoginModal = true;
+      return;  // ← stop everything
+    }
+
     const user = this.authService.getUser();
     this.currentUserId = user?.id || '';
 
@@ -86,7 +97,7 @@ export class MessagingPage implements OnInit, AfterViewInit {
   avatarUrl(name: string, color: string): string {
     return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=${color}&color=fff`;
   }
-  
+
   ngAfterViewInit(): void {
     this.scrollToBottom();
   }
@@ -99,8 +110,20 @@ export class MessagingPage implements OnInit, AfterViewInit {
     this.navCtrl.navigateForward('/message-recipients');
   }
 
+  onGoToLogin(): void {
+    this.navCtrl.navigateForward('/login');
+  }
+
+  onGoToSignUp(): void {
+    this.navCtrl.navigateForward('/signup');
+  }
+
+  onContinueBrowsing(): void {
+    this.showLoginModal = false;
+    this.navCtrl.back();
+  }
+
   async onSend(event?: KeyboardEvent): Promise<void> {
-    // Prevent newline on Enter (without Shift)
     if (event) {
       if (event.shiftKey) return;
       event.preventDefault();
@@ -137,7 +160,6 @@ export class MessagingPage implements OnInit, AfterViewInit {
   }
 
   onAttach(): void {
-    // Handle file attachment
     console.log('Attach file');
   }
 
@@ -185,10 +207,7 @@ export class MessagingPage implements OnInit, AfterViewInit {
 
   private formatTime(timestamp: string): string {
     const date = new Date(timestamp);
-    if (Number.isNaN(date.getTime())) {
-      return '';
-    }
-
+    if (Number.isNaN(date.getTime())) return '';
     return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   }
 }

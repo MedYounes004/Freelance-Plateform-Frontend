@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 import {
   IonHeader, IonToolbar, IonContent, IonList, IonItem,
   IonLabel, IonAvatar, IonBadge, IonSearchbar,
-  NavController,
+  NavController, ViewWillEnter,
 } from '@ionic/angular/standalone';
 import { BottomNavigationComponent } from 'src/app/components/bottom-navigation/bottom-navigation.component';
 import { ConversationItem, MessageService } from 'src/app/core/services/messages/message.service';
@@ -29,12 +29,13 @@ import { Conversation } from 'src/app/models/message.model';
     IonLabel, IonAvatar, IonBadge, IonSearchbar,
   ],
 })
-export class MessagesListPage implements OnInit {
+export class MessagesListPage implements OnInit, ViewWillEnter {
 
   @Output() messageClicked = new EventEmitter<Conversation>();
 
   activeTab = 'messages';
   showLoginModal = false;
+  isGuest = false;          // ← added
 
   onTabChange(tab: string): void {
     this.activeTab = tab;
@@ -45,7 +46,6 @@ export class MessagesListPage implements OnInit {
   errorMessage = '';
   conversations: Conversation[] = [];
   private readonly defaultAvatar = 'assets/default-avatar.png';
-
   filteredConversations: Conversation[] = [];
 
   constructor(
@@ -56,6 +56,14 @@ export class MessagesListPage implements OnInit {
 
   avatarUrl(name: string, color: string): string {
     return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=${color}&color=fff`;
+  }
+
+  // ← exact same as profile page
+  ionViewWillEnter(): void {
+    this.isGuest = !this.authService.isLoggedIn();
+    if (this.isGuest) {
+      this.showLoginModal = true;
+    }
   }
 
   ngOnInit(): void {
@@ -102,19 +110,12 @@ export class MessagesListPage implements OnInit {
 
   private resolveAvatarUrl(avatar?: string): string {
     const value = (avatar || '').trim();
-    if (!value) {
-      return this.defaultAvatar;
-    }
+    if (!value) return this.defaultAvatar;
 
-    if (/^https?:\/\//i.test(value) || /^data:/i.test(value)) {
-      return value;
-    }
+    if (/^https?:\/\//i.test(value) || /^data:/i.test(value)) return value;
 
-    // Backend may store relative image paths; prefix with API host when needed.
     const apiBase = environment.apiUrl.replace(/\/api\/?$/, '');
-    if (value.startsWith('/')) {
-      return `${apiBase}${value}`;
-    }
+    if (value.startsWith('/')) return `${apiBase}${value}`;
 
     return `${apiBase}/${value}`;
   }
@@ -146,6 +147,12 @@ export class MessagesListPage implements OnInit {
 
     this.messageClicked.emit(conversation);
     this.navCtrl.navigateForward('/messaging', { state: { conversation } });
+  }
+
+  // ← exact same as profile page
+  onContinueBrowsing(): void {
+    this.showLoginModal = false;
+    this.navCtrl.back();
   }
 
   onGoToLogin(): void {
