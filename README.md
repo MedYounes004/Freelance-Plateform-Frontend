@@ -25,6 +25,8 @@ Une plateforme de freelancing moderne construite avec **Angular/Ionic** (Fronten
 
 | Document | Description | Lien |
 |----------|-------------|------|
+| **📄 Project Documentation (PDF)** | Documentation complète du projet (PDF professionnel) | [docs/Project_Documentation.pdf](./docs/Project_Documentation.pdf) |
+| **📝 Project Documentation (Markdown)** | Source de la documentation (Markdown) | [docs/Project_Documentation.md](./docs/Project_Documentation.md) |
 | **Integration Guide** | Guide détaillé de l'intégration Front-Backend | [INTEGRATION_GUIDE.md](./INTEGRATION_GUIDE.md) |
 | **Integration Status** | État actuel de l'intégration | [INTEGRATION_STATUS.md](./INTEGRATION_STATUS.md) |
 | **Testing Guide** | Guide complet de test de l'API | [TESTING_GUIDE.md](./TESTING_GUIDE.md) |
